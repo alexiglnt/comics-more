@@ -18,7 +18,7 @@
         methods: {
             // Récupération des liens des images du comics depuis la BDD liée à l'API
             recupImage() {
-                const URL = `${instance}/api/stock_images`;
+                const URL = `${instance.baseURL}/api/stock_images`;
 
                 axios.get(URL)
                 .then(response => {
@@ -33,7 +33,7 @@
             // Récupération des liens des images du comics depuis la BDD liée à l'API avec le systeme de pagination
             recupImageWithPagination(URI) {
                 // const URL = `${instance}/api/stock_images?page=1`;
-                const URL = `${instance}${URI}`;
+                const URL = `${instance.baseURL}${URI}`;
 
                 axios.get(URL)
                 .then(response => {

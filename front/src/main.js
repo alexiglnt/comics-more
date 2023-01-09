@@ -9,11 +9,21 @@ import Home from './components/Home.vue';
 import PageItem from './components/PageItem.vue';
 import OldPageItem from './components/OldPageItem.vue';
 
+
+
+
+
 const routes = [
 	{ path: '/', component: Home, name: 'Home' },
-	{ path: '/PageItem', component: OldPageItem, name: 'Comics' }, // ATTENTIION CHANGERT LE NOM DE LA ROUTE
-	// { path: '/articles/:id', component: PostDetail, name: 'Article', props: true },
+	{ path: '/OldPageItem', component: OldPageItem, name: 'OldPage' }, 
+	{ path: '/PageItem', component: PageItem, name: 'Comics' }, 
+	{ path: '/PageItem/:id', component: PageItem, name: 'Comicss', props: true }, 
 ];
+
+
+
+
+
 
 const router = createRouter({
 	// 4. Provide the history implementation to use. We are using the hash history for simplicity here.

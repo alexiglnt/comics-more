@@ -1,10 +1,30 @@
 <script>
-    import Navbar from './Elements/Navbar.vue'
+    import Navbar from './Elements/Navbar.vue';
 
     export default {
         components: {
             Navbar
         },
+        methods: {
+            goTo(routeName)
+            {
+                this.$router.push({
+                    name: routeName,
+                });
+            },
+            handleClick() {
+                console.log('click');
+
+                const test = {collection_id: 1 , name: 'Maestro', extension: 'jpeg', nb_pages: 129}
+
+                localStorage.setItem('currentComic', JSON.stringify(test));
+
+                this.goTo('Comics');
+            }
+        },
+        mounted() {
+
+        }
     }
 
 </script>
@@ -12,21 +32,35 @@
 <template>
 
     <div class="container">
-        <h1> HOME </h1>
-        <a href="/PageItem"> CLICK </a> <br>
+
+        <Navbar />
+
+        <h1> HOME </h1> <br>
 
         <div class="grid-container" > 
-            <div class="card">
-                <a href="/PageItem"> Maestro </a>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
             </div>
-            <div class="card">
-                <a href="/PageItem"> Maestro </a>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
             </div>
-            <div class="card">
-                <a href="/PageItem"> Maestro </a>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
             </div>
-            <div class="card">
-                <a href="/PageItem"> Maestro </a>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
+            </div>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
+            </div>
+
+            <div class="card" @click="handleClick" >
+                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Maestro/001.jpeg" alt="" width="100%">
             </div>
         </div>
 
@@ -62,16 +96,21 @@
     }
     
     .card {
-        background-color: #fff;
+        background-color: transparent;
         color: #333;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
         padding: 20px;
         font-size: 1.5em;
         text-align: center;
+        margin-bottom: 100px;
 
         width: 200px;
         height: 200px;
+    }
+
+    .card img {
+        width: 200px;
     }
 
 </style>

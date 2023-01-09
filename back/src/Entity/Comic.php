@@ -25,6 +25,9 @@ class Comic
     #[ORM\JoinColumn(nullable: false)]
     private ?ComicsCollection $ComicsCollection = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $extension = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,18 @@ class Comic
     public function setComicsCollection(?ComicsCollection $ComicsCollection): self
     {
         $this->ComicsCollection = $ComicsCollection;
+
+        return $this;
+    }
+
+    public function getExtension(): ?string
+    {
+        return $this->extension;
+    }
+
+    public function setExtension(string $extension): self
+    {
+        $this->extension = $extension;
 
         return $this;
     }
