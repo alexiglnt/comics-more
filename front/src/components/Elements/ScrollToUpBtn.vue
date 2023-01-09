@@ -37,7 +37,9 @@
     }
 
     button:hover {
-        background-color: var(--main-color-hover);
+        /* background-color: var(--main-color-hover); */
+        transform: rotate(360deg);
+        transition: all 0.3s ease-in-out;
     }
 
     button:focus {

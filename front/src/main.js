@@ -34,7 +34,7 @@ const pinia = createPinia();
 
 // Pour nomer la page selon le nom de la route
 router.beforeEach((to, from, next) => {
-	document.title = to.name;
+	document.title = `${to.name} | Comics More`;
 	next();
 });
 

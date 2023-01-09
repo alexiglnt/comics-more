@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "Dimis";
+	src: url(../src/assets/font/DIMIS___.TTF) format('truetype');
+}
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -5,13 +10,14 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: #242424;
+  background-color: #f1f1f1;
 
-  --main-color: #e06a0f;
-  --bg-color: #242424;
-  --font-color: #f1f1f1;
-  --navbar-color: #375a7f;
+  --main-color: #ffa800;
+  --bg-color: #f1f1f1;
+  --font-color: #242424;
+  --secondary-color: #1e72a2;
+  --transparent-color: rgba(0, 0, 0, 0.6);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

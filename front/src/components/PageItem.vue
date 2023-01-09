@@ -60,7 +60,16 @@ export default {
         }
     },
     async mounted() {
+        // Récupération de la collection
         await this.recupCollection();
+
+        document.title = `Lecture - ${this.currentComic.name}`
+
+        // On scroll en haut de la page (car spawn au milieu en arrivant sur la page)
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 }
 
@@ -69,39 +78,41 @@ export default {
 
 <template>
 
-    <Navbar />
+    <div>
+        <Navbar />
 
-    <div class="container-infos">
+        <div class="container-infos">
 
-        <div class="left-right">
-            <div class="left">
-                <img :src="linkImages[0]" width="1000px">
-            </div>
-            <div class="right">
-                <div>
-                    <h1> {{ this.currentComic.name }} </h1>
-                    <h2> Collection : {{ this.currentCollection.name }} </h2>
-                    <h2> Nombre de pages : <b> {{ this.currentComic.nb_pages }} </b> </h2>
+            <div class="left-right">
+                <div class="left">
+                    <img :src="linkImages[0]" width="1000px">
+                </div>
+                <div class="right">
+                    <div>
+                        <h1> {{ this.currentComic.name }} </h1>
+                        <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
+                        <p> Nombre de pages : <b> {{ this.currentComic.nb_pages }} </b> </p>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-    </div>
+
+        <p class="nbPage"> Pages : <b> {{ this.currentComic.nb_pages }} </b> </p>
 
 
-    <p class="nbPage"> Total Pages : <b> {{ this.currentComic.nb_pages }} </b> </p>
+        <h1> Lecture </h1> <br>
 
-
-    <h1> Lecture </h1> <br>
-
-    <!-- On affiche les images du comics -->
-    <div class="container-images">
-        <div class="images" v-for="image in linkImages">
-            <img :src="image" alt="page">
+        <!-- On affiche les images du comics -->
+        <div class="container-images">
+            <div class="images" v-for="image in linkImages">
+                <img :src="image" alt="page">
+            </div>
         </div>
-    </div>
 
-    <ScrollToTop />
+        <ScrollToTop />
+    </div>
 
 </template>
 
@@ -129,6 +140,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .left {
@@ -142,10 +154,24 @@ h2 {
 
 .left,
 .right {
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
     width: 50vw;
+}
+
+.right h1 {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 5px solid var(--main-color);
+    position: absolute;
+    top: 0;
+    width: 500px;
+}
+
+.right p {
+    font-size: 1.5em;
 }
 
 .container-images img {
@@ -164,6 +190,6 @@ h2 {
     position: fixed;
     bottom: 30px;
     left: 30px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--transparent-color);
 }
 </style>
