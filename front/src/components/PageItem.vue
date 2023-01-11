@@ -57,6 +57,10 @@ export default {
                 }
             }
 
+        },
+        test() {
+            const images = document.querySelectorAll('img');
+            images[1].style.width = '500px';
         }
     },
     async mounted() {
@@ -92,6 +96,8 @@ export default {
                         <h1> {{ this.currentComic.name }} </h1>
                         <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
                         <p> Nombre de pages : <b> {{ this.currentComic.nb_pages }} </b> </p>
+                        <button type="button" @click="test" > + </button> 
+                        <button type="button" > - </button>
                     </div>
                 </div>
             </div>

@@ -26,12 +26,16 @@ export default {
         <div class="container">
             <nav id="nav-container">
                 <img src="../../assets/logo.png" width="5%">
-                <div class="anchor-pack" >
+                <div class="anchor-pack">
                     <a href="/" class="nav-links"> Marvel </a>
                     <a href="#/" class="nav-links"> DC Comics </a>
                     <a href="#/" class="nav-links"> Autres </a>
                 </div>
-                <a href="/" id="btn-contact"> Contact </a>
+                <a href="/Login" id="btn-contact">
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+                </a>
             </nav>
         </div>
 
@@ -40,6 +44,15 @@ export default {
 </template>
 
 <style scoped >
+.material-symbols-outlined {
+    font-size: 30px;
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 48
+}
+
 .big-container {
     margin-top: 90px;
 }
@@ -122,7 +135,7 @@ a {
 
 a#btn-contact {
     background-color: #3D91C0;
-    width: 110px;
+    width: 80px;
     border-radius: 5px;
     color: white;
     font-size: 20px;

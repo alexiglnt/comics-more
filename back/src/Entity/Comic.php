@@ -6,6 +6,9 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ComicRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use ApiPlatform\Metadata\Get;
+
+#[Get]
 #[ORM\Entity(repositoryClass: ComicRepository::class)]
 #[ApiResource]
 class Comic

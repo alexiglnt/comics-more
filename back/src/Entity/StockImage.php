@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: StockImageRepository::class)]
 #[ApiResource(paginationEnabled: false)]
-class StockImage
+class StockImage            // ANCIENNE ENTITY (ON NE VA SUREMENT PLUS S'EN SERVIR)
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
