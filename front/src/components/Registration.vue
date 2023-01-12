@@ -113,7 +113,7 @@ export default {
                     <label for="passwordInput">Mot de passe</label>
                     <input type="password" id="password" name="passwordInput" placeholder="Entrez mot de passe"
                         v-model="password">
-                    <button type="button" @click="() => { changeVisibility('password') }">
+                    <button type="button" tabindex="-1" @click="() => { changeVisibility('password') }">
                         <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
                     </button>
                 </div>
@@ -122,7 +122,7 @@ export default {
                     <label for="confirmPasswordInput">Confirm Password</label>
                     <input type="password" id="confirmPass" name="confirmPasswordInput"
                         placeholder="Confirmez mot de passe" v-model="confirmPassword">
-                    <button type="button" @click="() => { changeVisibility('confirmPass') }">
+                    <button type="button" tabindex="-1" @click="() => { changeVisibility('confirmPass') }">
                         <span class="material-symbols-outlined "> {{ visibilityModeConfirm }} </span>
                     </button>
                 </div> <br>

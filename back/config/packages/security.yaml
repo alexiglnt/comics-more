@@ -61,10 +61,5 @@ security:
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY, methods: [GET, PUT, DELETE, PATCH] }
-        # - { path: ^/api/comics, roles: IS_AUTHENTICATED_FULLY } 
         - { path: ^/api/comics, roles: PUBLIC_ACCESS,  methods: [GET] }
-
-
-        # IS_AUTHENTICATED_FULLY
-        # IS_AUTHENTICATED_ANONYMOUSLY
-        # PUBLIC_ACCESS
+        - { path: ^/api/comics_collections, roles: PUBLIC_ACCESS,  methods: [GET] }

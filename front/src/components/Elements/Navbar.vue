@@ -62,7 +62,7 @@ export default {
     padding: 0;
     background: var(--bg-color);
     width: 100%;
-    height: 80px;
+    height: 0px;
     position: fixed;
     top: 0;
     left: 0;
@@ -96,7 +96,7 @@ a {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 100px;
+    height: var(--navbar-height);
     max-height: 120px;
     box-shadow: 3px 3px 5px rgba(51, 51, 51, 0.418);
     background-color: #f1f1f1b6;
@@ -111,7 +111,7 @@ a {
 }
 
 #nav-container img:hover {
-    transform: scale(1.2);
+    transform: skew(10deg, 10deg);
     transition: 0.5s ease;
 }
 

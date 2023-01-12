@@ -18,12 +18,50 @@
   --font-color: #242424;
   --secondary-color: #1e72a2;
   --transparent-color: rgba(0, 0, 0, 0.6);
+  --navbar-height: 100px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+select {
+  font-family: inherit;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 0.3em;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: var(--bg-color);
+  background-color: #094466;
+  border: none;
+  outline: none;
+}
+
+option {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  color: var(--font-color);
+  background-color: var(--bg-color);
+  border: none;
+  height: 50px;
+  border-radius: none;
+}
+
+select:hover {
+  background-color: #0a5a7f;
 }
 
 /* a {

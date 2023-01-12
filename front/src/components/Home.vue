@@ -3,24 +3,28 @@ import Navbar from './Elements/Navbar.vue';
 import ScrollToUpBtn from './Elements/ScrollToUpBtn.vue';
 import Card from './Elements/Card.vue';
 
+import axios from 'axios';
+import instance from '../../axios-infos';
+
 export default {
     components: {
         Navbar, ScrollToUpBtn, Card
     },
     data() {
         return {
-            comics: [
-                { id: 1, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 2, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 3, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 4, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 5, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 6, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 7, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 8, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 9, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-                { id: 10, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            ]
+            comics: [],
+            // comics: [
+            //     { id: 1, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 2, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 3, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 4, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 5, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 6, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 7, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 8, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 9, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            //     { id: 10, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
+            // ]
         }
     },
     methods: {
@@ -30,21 +34,34 @@ export default {
                 params: { id: data.name }
             });
         },
-        handleClick() {
-            console.log('click');
-
+        readTheComic(comic) {
             const test = { id: 1, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 }
 
-            localStorage.setItem('currentComic', JSON.stringify(test));
+            localStorage.setItem('currentComic', JSON.stringify(comic));
 
-            this.goToComicPage(test);
+            this.goToComicPage(comic);
         },
         ScrollTo(id) {
             const element = document.querySelector(id);
             element.scrollIntoView({ behavior: 'smooth' });
+        },
+        recupComics() {
+
+            const URL = `${instance.baseURL}/api/comics`;
+
+            axios.get(URL)
+                .then((response) => {
+                    this.comics = response.data['hydra:member'];
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
         }
     },
     mounted() {
+
+        this.recupComics();
 
     }
 }
@@ -82,7 +99,7 @@ export default {
         <div class="grid-container">
 
             <div v-for="comic in comics" :key="comic.id">
-                <div class="card" @click="handleClick">
+                <div class="card" @click="() => readTheComic(comic)">
                     <Card :data="comic" />
                 </div>
             </div>
@@ -99,6 +116,11 @@ export default {
 #homepage {
     background-color: var(--background-color);
     height: 100vh;
+    width: 100%;
+}
+
+.accueil, .presentation {
+    background-color: var(--background-color);
     width: 100%;
 }
 

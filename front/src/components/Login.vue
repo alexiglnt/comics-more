@@ -29,7 +29,43 @@ export default {
                 this.visibilityMode = 'visibility_off';
             }
         },
-        Login(e) {
+        async getUserInformation() {
+            const URL_users = `${instance.baseURL}/api/users`;
+
+            // Requete GET pour récupérer les infos de tous les utilisateurs
+            axios.get(URL_users, {
+                headers: {
+                    Authorization: `Bearer ${this.token}`
+                }
+            })
+                .then(res => {
+
+                    this.usersData = res.data['hydra:member'];
+                    console.log('USERS : ', this.usersData);
+
+                })
+                .then(() => {
+                    // Parcours de tous les utilisateurs pour trouver l'utilisateur connecté
+                    for (let i = 0; i < this.usersData.length; i++) {
+                        // Si l'utilisateur connecté est trouvé, on récupère ses infos
+                        if (this.usersData[i].email == this.mail) {
+                            // On stocke les infos de l'utilisateur connecté dans une variable userInfos
+                            this.userInfos = this.usersData[i];
+                            console.log('USER INFOS : ', this.userInfos);
+
+                            // On enregistre les infos de l'utilisateur connecté dans le localStorage
+                            localStorage.setItem('userInfos', JSON.stringify(this.userInfos));
+
+                            // On redirige l'utilisateur vers la page de profil
+                            this.$router.push({
+                                name: 'ProfilUser',
+                            });
+
+                        }
+                    }
+                })
+        },
+        connectUser(e) {
             e.preventDefault();
             console.log('submit', this.mail, this.password);
 
@@ -45,11 +81,10 @@ export default {
                     this.isConnected = true;
                     this.token = response.data.token;
 
-                    //localStorage.setItem('token', this.token);
+                    localStorage.setItem('token', this.token);
+                    localStorage.setItem('isConnected', true);
 
-                    this.$router.push({
-                        name: 'Home',
-                    });
+                    this.getUserInformation();
                 })
                 .catch(error => {
                     console.log(error);
@@ -75,7 +110,7 @@ export default {
 
             <h1> Connectez-vous ! </h1>
 
-            <form @submit="Login">
+            <form @submit="connectUser">
                 <!-- Email -->
                 <div class="container-input">
                     <label for="mailInput">Mail</label>
@@ -90,7 +125,7 @@ export default {
                         v-model="password">
 
                     <!-- Visibility Button -->
-                    <button type="button" @click="changeVisibility">
+                    <button type="button" tabindex="-1" @click="changeVisibility">
                         <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
                     </button>
 
@@ -115,13 +150,13 @@ export default {
 
 
 <style scoped>
-
 .center {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
+    margin-top: 140px;
 }
+
 .container {
     display: flex;
     flex-direction: column;
@@ -213,5 +248,4 @@ a {
     margin-bottom: 20px;
     text-align: center;
 }
-
 </style>

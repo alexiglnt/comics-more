@@ -10,6 +10,7 @@ import PageItem from './components/PageItem.vue';
 import OldPageItem from './components/OldPageItem.vue';
 import Login from './components/Login.vue';
 import Registration from './components/Registration.vue';
+import ProfilUser from './components/ProfilUser.vue';
 
 
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
 	{ path: '/PageItem/:id', component: PageItem, name: 'Comicss', props: true }, 
 	{ path: '/Login', component: Login, name: 'Login'}, 
 	{ path: '/Registration', component: Registration, name: 'Registration'}, 
+	{ path: '/MyAccount', component: ProfilUser, name: 'ProfilUser'}, 
 ];
 
 

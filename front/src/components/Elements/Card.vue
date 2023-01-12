@@ -25,7 +25,7 @@ export default {
         // },
         // methods who find the collection with the id of the comic_collection
         recupCollection() {
-            const URL = `${instance.baseURL}/api/comics_collections/${this.comic.collection_id}`;
+            const URL = `${instance.baseURL}${this.comic.comicsCollection}`;
 
             axios.get(URL)
                 .then(response => {
@@ -39,7 +39,7 @@ export default {
     },
 
     async mounted() {
-        this.comic = await this.data;
+        this.comic = this.data;
         this.recupCollection();
         this.link = `https://comicsmore.s3.eu-west-3.amazonaws.com/${this.comic.name}/001.${this.comic.extension}`;
     }
