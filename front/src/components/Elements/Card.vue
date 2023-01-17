@@ -15,15 +15,8 @@ export default {
 
     methods: {
         clicked() {
-            // sthis.handleClick(data)
+            this.handleClick(this.data)
         },
-        // goToComicPage(data) {
-        //     this.$router.push({
-        //         name: 'Comics',
-        //         params: { id: data.name }
-        //     });
-        // },
-        // methods who find the collection with the id of the comic_collection
         recupCollection() {
             const URL = `${instance.baseURL}${this.comic.comicsCollection}`;
 
@@ -78,6 +71,7 @@ img {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    text-align: start;
     font-size: 0.8em;
     margin: 5px;
     margin-inline: 0;

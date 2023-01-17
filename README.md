@@ -1,13 +1,12 @@
 # PROBLEMES A REGLER !
 
 - probleme de tokens quand on on veut acceder au comics alors qu'ils sont en AUTHENTIFICATED_FULLY dans security.yaml (a verifier si le probleme est toujours la car l'API a étét refaite)
+- PageItem en fonction du nom du comics ou de l'id ( path: '/PageItem/:id' ) qui est biaisé a cause du localStorage
 
 # TRUCS A FAIRE
 
-- navbar qui disparait en scroll-down et reaparait en scroll-top (mieux pour la lecture) 
-- différents systemes de lectures
+- navbar qui disparait en scroll-down et reaparait en scroll-top (mieux pour la lecture) (voir https://www.w3schools.com/howto/howto_js_navbar_hide_scroll.asp)
 - infinite scroll (pour eviter de charger toutes les images du comics d'un coup)
-- PageItem en fonction du nom du comics ou de l'id ( path: '/PageItem/:id' )
 - styliser le site (pages connexion/inscription, PageItem, etc...)
 - gerer systeme de paiement (PayPal, carte bancaire, Pitou Coin, etc...)
 - changer d'hebergeur d'images (VPS, Digital Ocean, etc...)

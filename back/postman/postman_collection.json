@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "7e3381ab-d4ab-40d5-a355-76daf77b4f8c",
+		"name": "TEST API - BLOG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23967560"
+	},
+	"item": [
+		{
+			"name": "should create a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", pm.response.json().username);\r",
+							"\r",
+							"pm.test(\"Status test\", function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/users",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "should not create a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function() {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{username}}\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/users",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "should generate a token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", pm.response.json().token);\r",
+							"\r",
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/login_check",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"login_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "should create article",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"lastArticle\", pm.response.json()['id']);\r",
+							"\r",
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjczOTk4NjEsImV4cCI6MTY2NzQwMzQ2MSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiQXJlbHlfU2NoaWxsZXI4MkB5YWhvby5jb20ifQ.nbOWZX00L2s-BF5dMg1qiDl3R2I2PL_bisPsObPz7RJN1pmwDlT4knQcTDgpg-a_h9_ezyrEO8SARxnEG4Dt-g2f11W2VO2TYA54gGEAVoegUwqU9FLaUytSwOTRll-HkS51JPJTOS3pQOgd7mruSKdKl8qqEfaAfuy_L3rcHPbH4WIxeXOlxPSUVg4B0goKf3Cz6KKm4i9s42BCEZIfrJbR5SeHI5p3I0_N6GuVJFHIITMZu2r6IZZPfe4djhftccQ4SoiXTa9VazMOCS6JqsbHOgry3thJAbGkZRlh5LjXWFPpyBVNCMmHchLyoMf7YqubcmdSaewJysM-LB_2gjCP-gqORrTUo7GnHF1tohYjEjBssXaK70OJ_KC8A-F0X5puh4pGmtFxLrHpHS_48tmuzSPYTGu7oA1WnxBQzi7_nepc4_NcVSJhtD4JR8clWR2HPkDb4w56yzMYmN7P7J_uvs0MJthwLk7XneszfjgV83lJYmYXhF5LOfb7mT5ve0lp0vmXI4IzaP0CHmn__zljYuLBFWFdfShSm8SBsilANfyGU59NzgQHyOJ3aNFuLi08ngLA0-idlcLSwjHvUS6idyxAuRojz4YJkCu5HCcoVx5CdZ6e_LuFU6DiVui7j95-qHEC9YXJYGPigDC6gNWuQ9zaZwFMGOFPuxq2e6M",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Comment manger des pates ?\",\r\n    \"description\": \"Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore eius deleniti eligendi quis debitis aspernatur, molestias quae animi? Dolorem consequuntur, velit distinctio nobis eligendi accusantium reiciendis debitis in doloribus quis. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil explicabo reiciendis, neque accusantium atque cumque ullam unde harum cum dolorum officiis architecto a, consectetur accusamus aut. Ad error eum aspernatur!lorem\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/articles",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "should edit article",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Update name\", function () {\r",
+							"    pm.expect(pm.response.json()['description']).to.eql(\"Lorem ipsum dolor sit amet consectetur modification.\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Comment manger des pates ?\",\r\n    \"description\": \"Lorem ipsum dolor sit amet consectetur modification.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api/articles/{{lastArticle}}",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"articles",
+						"{{lastArticle}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "should remove a article",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api/articles/{{lastArticle}}",
+					"host": [
+						"{{url}}api"
+					],
+					"path": [
+						"articles",
+						"{{lastArticle}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

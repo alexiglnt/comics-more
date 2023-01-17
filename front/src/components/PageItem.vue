@@ -14,11 +14,16 @@ export default {
         return {
             currentCollection: [],      // les infos de la collection courante
             currentComic: {},            // les infos du comics courant
+            currentHouse: [],        // les infos de la maison d'édition
             linkImages: [],
             readMode: 'scroll',         // mode de lecture (scroll ou onePage)
             currentPage: 1,             // page courante
             linkCurrentPage: '',
             optionPageValue: 1,
+            navbar: {
+                isNavbarHidden: false,
+                navbarState: 'expand_less',
+            }
         }
     },
     methods: {
@@ -36,6 +41,9 @@ export default {
                     // On récupère les infos de la collection actuelle
                     this.currentCollection = response.data;
 
+                    // On récupère les infos de la maison d'édition
+                    this.currentHouse = this.currentCollection.house;
+
                     // On lance cette fonction pour récupérer les infos du comics actuel
                     this.recupComic();
                 })
@@ -50,12 +58,10 @@ export default {
                 if (i <= 9) {
                     numero = '00' + i.toString();
                     this.linkImages.push({ numero: numero, url: `${instance.AWS_URL}/${this.currentComic.name}/${numero}.${this.currentComic.extension}` });
-                }
-                else if (i > 9 && i <= 99) {
+                } else if (i > 9 && i <= 99) {
                     numero = '0' + i.toString();
                     this.linkImages.push({ numero: numero, url: `${instance.AWS_URL}/${this.currentComic.name}/${numero}.${this.currentComic.extension}` });
-                }
-                else {
+                } else {
                     numero = i.toString();
                     this.linkImages.push({ numero: numero, url: `${instance.AWS_URL}/${this.currentComic.name}/${numero}.${this.currentComic.extension}` });
                 }
@@ -72,60 +78,80 @@ export default {
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else if (this.currentPage > 9 && this.currentPage <= 99) {
+                } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else {
+                } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
                 }
-            }
-            else if (value === 'back') {
+            } else if (value === 'back') {
                 this.currentPage--;
 
                 if (this.currentpage < 1) {
                     this.currentPage = 1;
                     document.querySelector('.arrow-back').disabled = true;
-                }
-                else if (this.currentPage <= 9) {
+                } else if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else if (this.currentPage > 9 && this.currentPage <= 99) {
+                } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else {
+                } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
                 }
-            }
-            else {
+            } else {
                 this.currentPage = value;
-                console.log(this.currentPage);
 
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else if (this.currentPage > 9 && this.currentPage <= 99) {
+                } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                }
-                else {
+                } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
                 }
             }
 
+        },
+        hideNavbar() {
+            this.navbar.isNavbarHidden = !this.navbar.isNavbarHidden;
+
+            if (this.navbar.navbarState === 'expand_more') {
+                this.navbar.navbarState = 'expand_less';
+            } else {
+                this.navbar.navbarState = 'expand_more';
+            }
+
+            // document.querySelector('.select-readMode').style.top = "-var(--navbar-height)";
+
+        },
+        ScrollEventListener() {
+            var prevScrollpos = window.pageYOffset;
+
+            window.addEventListener('scroll', function () {
+                var currentScrollPos = window.pageYOffset;
+
+                console.log('scroll', prevScrollpos, currentScrollPos);
+
+                if (prevScrollpos > currentScrollPos) {
+                    document.getElementById("navbar").style.top = "0px";
+                    document.querySelector('.select-readMode').style.top = "var(--navbar-height)";
+                } else {
+                    document.getElementById("navbar").style.top = "-50px";
+                    document.querySelector('.select-readMode').style.top = "-var(--navbar-height)";
+                }
+
+                prevScrollpos = currentScrollPos;
+            });
         }
     },
     async mounted() {
         // Récupération de la collection
         await this.recupCollection();
-        console.log('dlkdhuqsfsqvbfic', this.currentComic);
 
         this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/001.${this.currentComic.extension}`
 
@@ -136,6 +162,10 @@ export default {
             top: 0,
             behavior: "smooth"
         });
+
+
+
+        // this.ScrollEventListener(); // Elle a arrete de fonctionner du jour au lendemain, je sais pas pourquoi
     }
 }
 
@@ -144,8 +174,10 @@ export default {
 
 <template>
 
-    <div>
-        <Navbar />
+    <div id="container">
+        <div v-if="!navbar.isNavbarHidden" id="navbar">
+            <Navbar />
+        </div>
 
         <!-- On affiche le mode de lecture -->
         <div class="select-readMode">
@@ -157,13 +189,13 @@ export default {
 
             <select name="selectPage" id="selectPage" v-if="this.readMode == 'onePage'" v-model="this.currentPage"
                 @click="() => changePage(this.currentPage)">
-                <option v-for="page in this.currentComic.nbPage" :value="page"> {{ page }}</option>
+                <option v-for="page in this.currentComic.nbPage" :value="page"> 
+                    <i class="fa fa-arrows-h" aria-hidden="true"></i> Page {{ page }}
+                </option>
             </select>
-
-
-
         </div>
 
+        <!-- On affiche les infos du comics -->
         <div class="container-infos">
 
             <div class="left-right">
@@ -173,9 +205,15 @@ export default {
                 <div class="right">
                     <div>
                         <h1> Informations </h1>
-                        <p> Nom du comics : <b> {{ this.currentComic.name }} </b> </p>
+                        <h3> <b> {{ this.currentComic.name }} </b> </h3>
                         <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
                         <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
+                        <p v-if="this.currentHouse.name == 'MARVEL'" > 
+                            Maison d'édition : <img id="house-logo-marvel" src="../assets/Marvel_Logo.svg" title="MARVEL" alt="" >
+                        </p>
+                        <p v-else-if="this.currentHouse.name == 'DC COMICS'" > 
+                            Maison d'édition : <img id="house-logo-dc" src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="" >
+                        </p>
                     </div>
                 </div>
             </div>
@@ -183,7 +221,7 @@ export default {
         </div>
 
 
-        <h1> Bonne lecture 😀  </h1> <br>
+        <h1> Bonne lecture 😀 </h1> <br>
 
         <!-- On affiche les images du comics -->
         <div v-if="this.readMode === 'scroll'">
@@ -204,7 +242,10 @@ export default {
             </div>
         </div>
 
-        <p class="nbPage"> Pages : <b> {{ this.currentComic.nbPage }} </b> </p>
+        <button class="nbPage hideNavbar" type="button" @click="hideNavbar"> 
+            <span class="textBtnHideNavbar" v-if="navbar.isNavbarHidden" > Afficher la navbar </span>
+            <span class="material-symbols-outlined"> {{ navbar.navbarState }} </span> 
+        </button>
         <ScrollToTop />
     </div>
 
@@ -212,6 +253,15 @@ export default {
 
 
 <style scoped >
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: block;
+    transition: top 0.3s;
+    z-index: 1000000000000;
+}
+
 h1 {
     text-align: center;
     font-size: 3em;
@@ -226,6 +276,7 @@ h2 {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin-top: 120px;
 }
 
 .left-right {
@@ -264,8 +315,22 @@ h2 {
     width: 500px;
 }
 
+.right h3 {
+    font-size: 2em;
+}
+
 .right p {
     font-size: 1.5em;
+}
+
+#house-logo-marvel {
+    width: 75px;
+    transform: translateY(5px);
+}
+
+#house-logo-dc {
+    width: 50px;
+    transform: translateY(10px);
 }
 
 .container-images-scroll img {
@@ -324,11 +389,27 @@ h2 {
     flex-direction: column;
 }
 
-.nbPage {
+
+
+.hideNavbar {
+    background: transparent;
+    color: #000;
+    border: none;
+    cursor: pointer;
     position: fixed;
-    bottom: 30px;
-    left: 30px;
-    color: var(--transparent-color);
+    top: 30px;
+    right: 30px;
+    z-index: 100000000000000000000;
+}
+.hideNavbar span {
+    font-size: 3em;
+}
+
+.hideNavbar span.textBtnHideNavbar {
+    font-size: 1.5em;
+    position: fixed;
+    top: 38px;
+    right: 100px;
 }
 
 /* button disabled */

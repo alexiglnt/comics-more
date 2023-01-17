@@ -14,9 +14,13 @@
   background-color: #f1f1f1;
 
   --main-color: #ffa800;
+  --main-color-hover: #eb9202;
   --bg-color: #f1f1f1;
   --font-color: #242424;
-  --secondary-color: #1e72a2;
+  --secondary-color: #3D91C0;
+  --secondary-color-hover: #1e72a2;
+  --marvel-color: #ed1d24;
+  --dc-color: #0078f0;
   --transparent-color: rgba(0, 0, 0, 0.6);
   --navbar-height: 100px;
 
@@ -34,14 +38,11 @@
 }
 
 select {
-  font-family: inherit;
   padding: 10px;
   margin: 10px;
   text-align: center;
   border-radius: 0.3em;
   font-size: inherit;
-  line-height: inherit;
-  font-weight: inherit;
   color: var(--bg-color);
   background-color: #094466;
   border: none;
@@ -58,10 +59,34 @@ option {
   border: none;
   height: 50px;
   border-radius: none;
+  text-align: start;
 }
 
 select:hover {
   background-color: #0a5a7f;
+}
+
+.btn {
+  background-color: #3D91C0;
+  border-radius: 5px;
+  color: white;
+  font-size: 20px;
+  border: none;
+  box-shadow: 5px 5px 0px #003d61;
+  transition: 0.4s ease;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 25px;
+  align-items: center;
+}
+
+.btn:hover {
+  background-color: #1e72a2;
+  box-shadow: 0px 0px 0px rgba(51, 51, 51, 0);
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s ease;
 }
 
 /* a {

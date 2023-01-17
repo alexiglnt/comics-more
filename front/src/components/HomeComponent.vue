@@ -13,33 +13,20 @@ export default {
     data() {
         return {
             comics: [],
-            // comics: [
-            //     { id: 1, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 2, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 3, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 4, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 5, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 6, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 7, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 8, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 9, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            //     { id: 10, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 },
-            // ]
+            comicsByResearch: [],
+            research: ''
         }
     },
     methods: {
         goToComicPage(data) {
             this.$router.push({
                 name: 'Comics',
-                params: { id: data.name }
+                params: { id: data.id }
             });
         },
         readTheComic(comic) {
-            const test = { id: 1, collection_id: 1, name: 'Maestro', extension: 'jpeg', nb_pages: 129 }
-
             localStorage.setItem('currentComic', JSON.stringify(comic));
-
-            this.goToComicPage(comic);
+            this.$router.push({ path: `/Comics/${comic.name}` })
         },
         ScrollTo(id) {
             const element = document.querySelector(id);
@@ -52,17 +39,37 @@ export default {
             axios.get(URL)
                 .then((response) => {
                     this.comics = response.data['hydra:member'];
+                    console.log(this.comics);
+
+                    // Replace + by space in the name of the comics
+                    this.comics.forEach(comic => {
+                        comic.name = this.convertName(comic.name, '+', ' ');
+                    });
+
                 })
                 .catch((error) => {
                     console.log(error);
                 });
 
+        },
+        convertName(str, pattern, replacement) {
+            str = str.replaceAll(pattern, replacement);
+            return str;
+        },
+        searchComics() {
+            this.comicsByResearch = [];
+            // search comics by research
+            this.comics.forEach(comic => {
+                if (comic.name.toLowerCase().includes(this.research.toLowerCase())) {
+
+                    this.comicsByResearch.push(comic);
+                }
+            });
+
         }
     },
     mounted() {
-
         this.recupComics();
-
     }
 }
 
@@ -82,7 +89,7 @@ export default {
         <div class="presentation">
             <p>Bienvenue sur</p> <br>
             <h1> Comics More </h1> <br>
-            <a id="btn-scroll" @click="() => ScrollTo('#btn-scroll')" > 
+            <a id="btn-scroll" class="btn" @click="() => ScrollTo('#btn-scroll')">
                 Découvrir
                 <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
             </a>
@@ -95,16 +102,30 @@ export default {
             <h1> <span> C</span>hoisissez, <span>&nbspL</span>isez et<span>&nbsp P</span>rofitez ! </h1>
         </div>
 
+        <!-- RESEARCH BAR -->
+        <form @submit.prevent="searchComics">
+            <input type="text" placeholder="Rechercher un comic" v-model="this.research">
+            <button type="submit">
+                <span class="material-symbols-outlined"> search </span>
+            </button>
+        </form>
 
-        <div class="grid-container">
-
-            <div v-for="comic in comics" :key="comic.id">
-                <div class="card" @click="() => readTheComic(comic)">
-                    <Card :data="comic" />
+        <!-- COMICS -->
+        <div class="grid-container" v-if="this.comicsByResearch.length != 0">
+            <div v-for="comic in comicsByResearch" :key="comic.id">
+                <div class="card">
+                    <Card :data="comic" :handle-click="this.readTheComic" />
                 </div>
             </div>
-
         </div>
+        <div class="grid-container" v-else>
+            <div v-for="comic in comics" :key="comic.id">
+                <div class="card">
+                    <Card :data="comic" :handle-click="this.readTheComic" />
+                </div>
+            </div>
+        </div>
+
 
         <ScrollToUpBtn />
 
@@ -119,7 +140,8 @@ export default {
     width: 100%;
 }
 
-.accueil, .presentation {
+.accueil,
+.presentation {
     background-color: var(--background-color);
     width: 100%;
 }
@@ -130,6 +152,55 @@ export default {
     align-items: center;
     flex-direction: column;
     width: 100%;
+}
+
+.container form {
+    width: 1500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.container form input {
+    width: 50%;
+    height: 50px;
+    border-radius: 10px;
+    border: 3px solid var(--font-color);
+    padding: 0 20px;
+    font-size: 1.5em;
+    outline: none;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+.container form input:focus {
+    border: 5px solid var(--main-color);
+}
+
+.container form button {
+    width: 70px;
+    height: 70px;
+    border-radius: 1em;
+    border: 0px solid var(--font-color);
+    background-color: var(--main-color);
+    color: var(--font-color);
+    font-size: 1.5em;
+    outline: none;
+    cursor: pointer;
+    margin: 0 0px;
+    position: absolute;
+    right: 300px;
+    transition: 0.3s ease;
+}
+
+.container form button span {
+    font-size: 1.5em;
+}
+.container form button:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
 }
 
 h1 {
@@ -226,27 +297,7 @@ a {
     margin-bottom: 10px;
 }
 
-.presentation a {
-    background-color: #3D91C0;
-    width: 220px;
-    height: 50px;
-    border-radius: 5px;
-    color: white;
-    font-size: 20px;
-    border: none;
-    box-shadow: 5px 5px 0px #003d61;
-    transition: 0.4s ease;
-    text-decoration: none;
-    text-align: center;
-    align-items: center;
-    padding: 7px 0;
-}
 
-.presentation a:hover {
-    background-color: #1e72a2;
-    box-shadow: 0px 0px 0px rgba(51, 51, 51, 0);
-    transition: 0.4s ease;
-}
 
 .presentation a span {
     transform: translateY(5px);
@@ -257,5 +308,6 @@ a {
     font-family: 'Dimis';
     font-weight: 900;
     margin: 50px;
+    transform: skew(4deg, 4deg);
 }
 </style>

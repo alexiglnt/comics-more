@@ -1,26 +1,35 @@
+import './style.css';
+
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import './style.css';
-import App from './App.vue';
 import { createRouter, createWebHistory } from 'vue-router';
-// import PostDetail from './components/PostDetail.vue';
-// import ListPost from './components/ListPost.vue';
-import Home from './components/Home.vue';
-import PageItem from './components/PageItem.vue';
-import OldPageItem from './components/OldPageItem.vue';
-import Login from './components/Login.vue';
-import Registration from './components/Registration.vue';
-import ProfilUser from './components/ProfilUser.vue';
+import { authGuard, MyAccountGuard, AdminGuard } from './_helpers/guards.js';
+
+import App from './App.vue';
+import * as Page from './views/route-import.js';
 
 
 const routes = [
-	{ path: '/', component: Home, name: 'Home' },
-	{ path: '/OldPageItem', component: OldPageItem, name: 'OldPage' }, 
-	{ path: '/PageItem', component: PageItem, name: 'Comics' }, 
-	{ path: '/PageItem/:id', component: PageItem, name: 'Comicss', props: true }, 
-	{ path: '/Login', component: Login, name: 'Login'}, 
-	{ path: '/Registration', component: Registration, name: 'Registration'}, 
-	{ path: '/MyAccount', component: ProfilUser, name: 'ProfilUser'}, 
+	{ path: '/', component: Page.Home, name: 'Home' },
+	// { path: '/Comics', component: Page.Comics, name: 'Comics' }, 
+	{ path: '/Comics/:id', component: Page.Comics, name: 'Comicss', props: true }, 
+	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
+	{ 
+		path: '/Login', component: Page.Login, name: 'Login', beforeEnter: authGuard
+	}, 
+	{ 
+		path: '/MyAccount', component: Page.ProfilUser, name: 'ProfilUser', beforeEnter: MyAccountGuard
+	}, 
+	{ 
+		path: '/Marvel', component: Page.MarvelPage, name: 'MarvelPage'
+	}, 
+	{ 
+		path: '/DC-Comics', component: Page.DcComics, name: 'DC-Comics'
+	}, 
+	{ 
+		path: '/Admin', component: Page.Admin, name: 'Admin', beforeEnter: AdminGuard
+	}, 
+	{ path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 
 

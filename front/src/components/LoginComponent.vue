@@ -1,9 +1,12 @@
 <script>
 import axios from 'axios';
 import instance from '../../axios-infos';
+import { accountService } from '../_services';
+
 import Navbar from './Elements/Navbar.vue';
 
 export default {
+    name: 'LoginComponent',
     components: { Navbar },
     data() {
         return {
@@ -81,7 +84,8 @@ export default {
                     this.isConnected = true;
                     this.token = response.data.token;
 
-                    localStorage.setItem('token', this.token);
+                    // On enregistre le token dans le localStorage
+                    accountService.saveToken(this.token);
                     localStorage.setItem('isConnected', true);
 
                     this.getUserInformation();
@@ -103,6 +107,7 @@ export default {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <Navbar />
+    <div class="background"></div>
 
 
     <div class="center">
@@ -136,20 +141,30 @@ export default {
                     <p> Email ou mot de passe incorrect ! </p>
                 </div>
 
-                <button type="submit"> Connection </button>
+                <button type="submit" class="btn"> Connection </button>
             </form>
             <hr>
 
-            <p> Vous n'avez pas de compte ? <a href="/Registration"> Cliquez ici </a> </p>
+            <p> Vous n'avez pas de compte ? <a href="/Registration"> Inscrivez-vous </a> </p>
 
         </div>
     </div>
-
 
 </template>
 
 
 <style scoped>
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-color);
+    background-image: linear-gradient(10deg, var(--bg-color) 50%, transparent 30%), linear-gradient(-60deg, var(--secondary-color) 30%, transparent 30%);
+    z-index: -10;
+}
 .center {
     display: flex;
     justify-content: center;
@@ -167,6 +182,7 @@ export default {
     border-radius: 0.5em;
     box-shadow: 0 0 1em #00000033;
     width: 500px;
+    background-color: var(--bg-color);
 }
 
 .container h1 {

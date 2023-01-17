@@ -4,6 +4,7 @@ import instance from '../../axios-infos';
 import Navbar from './Elements/Navbar.vue';
 
 export default {
+    name: 'RegistrationComponent',
     components: { Navbar },
     data() {
         return {
@@ -87,6 +88,7 @@ export default {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <Navbar />
+    <div class="background"></div>
 
     <div class="center">
         <div class="container">
@@ -131,7 +133,7 @@ export default {
                     <p> {{ errorEntry }} </p>
                 </div>
 
-                <button type="submit">S'inscrire</button>
+                <button type="submit" class="btn" >S'inscrire</button>
             </form>
 
             <hr>
@@ -145,6 +147,17 @@ export default {
 
 
 <style scoped>
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondary-color);
+    background-image: linear-gradient(10deg, var(--bg-color) 50%, transparent 30%), linear-gradient(-60deg, var(--main-color) 30%, transparent 30%);
+    z-index: -10;
+}
 .center {
     display: flex;
     justify-content: center;
@@ -161,7 +174,7 @@ export default {
     margin-top: 0px;
     border-radius: 0.5em;
     box-shadow: 0 0 1em #00000033;
-    background: var(--card-color);
+    background: var(--bg-color);
     width: 500px;
 }
 

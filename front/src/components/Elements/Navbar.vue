@@ -1,6 +1,11 @@
 <script>
 
 export default {
+    data() {
+        return {
+            isAdmin: false,
+        }
+    },
     methods: {
         scrollToTop() {
             window.scrollTo({
@@ -8,13 +13,39 @@ export default {
                 behavior: "smooth"
             });
         },
-        goToHome() {
+        redirect(routeName) {
             this.$router.push({
-                name: 'Home',
+                name: routeName,
             });
         },
     },
+    mounted() {
+        // Logo redirection to home
+        document.getElementById("imgCM").addEventListener("click", () => this.redirect('Home'));
 
+
+        // Navbar links redirection
+        const navLinks = document.querySelectorAll('.nav-links');
+        navLinks[0].addEventListener('click', () => {
+            this.redirect('MarvelPage')
+        });
+        navLinks[1].addEventListener('click', () => {
+            this.redirect('DC-Comics')
+        });
+        navLinks[2].addEventListener('click', () => {
+            this.redirect('Home')
+        });
+
+
+        // Check if user is admin
+        const userInfos = JSON.parse(localStorage.getItem('userInfos'));
+        if (userInfos) {
+            if (userInfos.roles[0] === 'ROLE_ADMIN') {
+                this.isAdmin = true;
+            }
+        }
+
+    },
 }
 
 </script>
@@ -25,17 +56,24 @@ export default {
 
         <div class="container">
             <nav id="nav-container">
-                <img src="../../assets/logo.png" width="5%">
+                <img id="imgCM" src="../../assets/logo.png" width="5%">
                 <div class="anchor-pack">
-                    <a href="/" class="nav-links"> Marvel </a>
-                    <a href="#/" class="nav-links"> DC Comics </a>
-                    <a href="#/" class="nav-links"> Autres </a>
+                    <a class="nav-links"> Marvel </a>
+                    <a class="nav-links"> DC Comics </a>
+                    <a class="nav-links"> Autres </a>
                 </div>
-                <a href="/Login" id="btn-contact">
-                    <span class="material-symbols-outlined">
-                        person
-                    </span>
-                </a>
+                <div>
+                    <a @click="() => redirect('Login')" class="btn">
+                        <span class="material-symbols-outlined">
+                            person
+                        </span>
+                    </a>
+                    <a v-if="isAdmin === true"  @click="() => redirect('Admin')" class="btn">
+                        <span class="material-symbols-outlined">
+                            admin_panel_settings
+                        </span>
+                    </a>
+                </div>
             </nav>
         </div>
 
@@ -44,6 +82,31 @@ export default {
 </template>
 
 <style scoped >
+.anchor-pack a {
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    color: #333;
+    font-size: 20px;
+}
+
+.anchor-pack a::after {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    width: 100%;
+    height: 1.5px;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: var(--main-color);
+    transition: transform 0.3s ease-out;
+}
+
+.anchor-pack a:hover::after {
+    transform: scaleX(1)
+}
+
 .material-symbols-outlined {
     font-size: 30px;
     font-variation-settings:
@@ -86,6 +149,15 @@ a {
     color: var(--font-color);
     text-decoration: none;
     font-size: 2em;
+    margin-inline: 0.2em;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+a span {
+    color: var(--bg-color);
 }
 
 #nav-container {
@@ -113,17 +185,6 @@ a {
 #nav-container img:hover {
     transform: skew(10deg, 10deg);
     transition: 0.5s ease;
-}
-
-#nav-container a {
-    text-decoration: none;
-    color: #333;
-    font-size: 20px;
-}
-
-#nav-container a:hover {
-    text-decoration: underline;
-    color: #FFA800;
 }
 
 #nav-container .anchor-pack {

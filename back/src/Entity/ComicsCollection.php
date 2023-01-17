@@ -7,24 +7,32 @@ use App\Repository\ComicsCollectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ComicsCollectionRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+)]
 class ComicsCollection
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['read', 'write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $link = null;
-
     #[ORM\OneToMany(mappedBy: 'ComicsCollection', targetEntity: Comic::class)]
+    #[Groups(['read'])]
     private Collection $comics;
+
+    #[ORM\ManyToOne(inversedBy: 'collection')]
+    #[Groups(['read'])]
+    private ?House $house = null;
 
     public function __construct()
     {
@@ -44,18 +52,6 @@ class ComicsCollection
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getLink(): ?string
-    {
-        return $this->link;
-    }
-
-    public function setLink(string $link): self
-    {
-        $this->link = $link;
 
         return $this;
     }
@@ -86,6 +82,18 @@ class ComicsCollection
                 $comic->setComicsCollection(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getHouse(): ?House
+    {
+        return $this->house;
+    }
+
+    public function setHouse(?House $house): self
+    {
+        $this->house = $house;
 
         return $this;
     }
