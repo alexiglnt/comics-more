@@ -108,7 +108,7 @@ export default {
 
                 <div class="container-input">
                     <label for="mailInput">Mail</label>
-                    <input type="email" name="mailInput" placeholder="johndoe@gmail.com" v-model="mail">
+                    <input type="email" name="mailInput" placeholder="johndoe@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" v-model="mail">
                 </div>
 
                 <div class="container-input">

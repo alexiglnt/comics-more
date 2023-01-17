@@ -18,7 +18,7 @@ export default {
     methods: {
         readTheComic(comic) {
             localStorage.setItem('currentComic', JSON.stringify(comic));
-            this.$router.push({ path: `/Comics/${comic.name}` })
+            this.$router.push({ path: `/Comics/${comic.id}` })
         },
         getCollection() {
             const URL = `${instance.baseURL}/api/comics_collections`;

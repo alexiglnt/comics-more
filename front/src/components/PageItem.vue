@@ -10,10 +10,15 @@ export default {
     components: {
         ScrollToTop, Navbar
     },
+    props: {
+        id: Number
+    },
     data() {
         return {
             currentCollection: [],      // les infos de la collection courante
             currentComic: {},            // les infos du comics courant
+            currentComicName: '',       // le nom du comics courant
+            comic: [],                  // les infos du comics
             currentHouse: [],        // les infos de la maison d'édition
             linkImages: [],
             readMode: 'scroll',         // mode de lecture (scroll ou onePage)
@@ -23,10 +28,14 @@ export default {
             navbar: {
                 isNavbarHidden: false,
                 navbarState: 'expand_less',
-            }
+            },
+            isConnected: localStorage.getItem('isConnected'),
         }
     },
     methods: {
+        redirect(routeName) {
+            this.$router.push({ name: routeName });
+        },
         // Récupération des liens des images du comics depuis la BDD liée à l'API
         async recupCollection() {
             // On sauvegarde les infos du comics actuel dans la variable currentComic
@@ -36,13 +45,35 @@ export default {
             const URL = `${instance.baseURL}${this.currentComic.comicsCollection}`;
             axios.get(URL)
                 .then(response => {
-                    console.log(response.data);
-
                     // On récupère les infos de la collection actuelle
                     this.currentCollection = response.data;
 
                     // On récupère les infos de la maison d'édition
                     this.currentHouse = this.currentCollection.house;
+
+                    // On lance cette fonction pour récupérer les infos du comics actuel
+                    this.recupCurrentComic();
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+        // Récupération des infos du comics actuel en fonction de l'id contenu dans l'url
+        recupCurrentComic() {
+            let paramsID = this.$route.params.id;
+
+            // Requete GET pour récupérer le comics actuel
+            const URL = `${instance.baseURL}/api/comics/${paramsID}`;
+
+            axios.get(URL)
+                .then(response => {
+                    // On récupère les infos du comics actuel
+                    this.currentComic = response.data;
+
+                    // convert name
+                    this.currentComicName = this.currentComic.name.replaceAll('+', ' ');
+
+                    console.log('CURRENT COMICS MOTHER FICKER', this.currentComic);
 
                     // On lance cette fonction pour récupérer les infos du comics actuel
                     this.recupComic();
@@ -51,6 +82,7 @@ export default {
                     console.log(error)
                 })
         },
+        // Récupération des liens des images du comics depuis la BDD liée à l'API
         recupComic() {
 
             let numero = 0;
@@ -78,12 +110,15 @@ export default {
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 }
             } else if (value === 'back') {
                 this.currentPage--;
@@ -94,12 +129,15 @@ export default {
                 } else if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 }
             } else {
                 this.currentPage = value;
@@ -107,12 +145,15 @@ export default {
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
+                    console.log(this.linkCurrentPage);
                 }
             }
 
@@ -147,9 +188,12 @@ export default {
 
                 prevScrollpos = currentScrollPos;
             });
-        }
+        },
     },
     async mounted() {
+
+        console.log(this.$route.params.id);
+
         // Récupération de la collection
         await this.recupCollection();
 
@@ -180,7 +224,7 @@ export default {
         </div>
 
         <!-- On affiche le mode de lecture -->
-        <div class="select-readMode">
+        <div class="select-readMode" v-if="isConnected == 'true'">
             <!-- <label for="selectReadMode"> Mode de lecture : </label> -->
             <select name="selectReadMode" id="selectReadMode" v-model="this.readMode">
                 <option value="scroll">Tout sur la même page</option>
@@ -189,7 +233,7 @@ export default {
 
             <select name="selectPage" id="selectPage" v-if="this.readMode == 'onePage'" v-model="this.currentPage"
                 @click="() => changePage(this.currentPage)">
-                <option v-for="page in this.currentComic.nbPage" :value="page"> 
+                <option v-for="page in this.currentComic.nbPage" :value="page">
                     <i class="fa fa-arrows-h" aria-hidden="true"></i> Page {{ page }}
                 </option>
             </select>
@@ -205,14 +249,16 @@ export default {
                 <div class="right">
                     <div>
                         <h1> Informations </h1>
-                        <h3> <b> {{ this.currentComic.name }} </b> </h3>
+                        <h3> <b> {{ this.currentComicName }} </b> </h3>
                         <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
                         <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
-                        <p v-if="this.currentHouse.name == 'MARVEL'" > 
-                            Maison d'édition : <img id="house-logo-marvel" src="../assets/Marvel_Logo.svg" title="MARVEL" alt="" >
+                        <p v-if="this.currentHouse.name == 'MARVEL'">
+                            Maison d'édition : <img id="house-logo-marvel" src="../assets/Marvel_Logo.svg"
+                                title="MARVEL" alt="">
                         </p>
-                        <p v-else-if="this.currentHouse.name == 'DC COMICS'" > 
-                            Maison d'édition : <img id="house-logo-dc" src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="" >
+                        <p v-else-if="this.currentHouse.name == 'DC COMICS'">
+                            Maison d'édition : <img id="house-logo-dc" src="../assets/DC_Comics_logo.png"
+                                title="DC COMICS" alt="">
                         </p>
                     </div>
                 </div>
@@ -224,30 +270,49 @@ export default {
         <h1> Bonne lecture 😀 </h1> <br>
 
         <!-- On affiche les images du comics -->
-        <div v-if="this.readMode === 'scroll'">
-            <div class="container-images-scroll">
-                <div class="images" v-for="image in linkImages">
-                    <img v-if="image" :src="image.url" :alt="`Page ${image.numero} - ${this.currentComic.name}`"
-                        :title="`Page ${image.numero} - ${this.currentComic.name}`">
+        <div v-if="isConnected == 'true'">
+            <div v-if="this.readMode === 'scroll'">
+                <div class="container-images-scroll">
+                    <div class="images" v-for="image in linkImages">
+                        <img v-if="image" :src="image.url" :alt="`Page ${image.numero} - ${this.currentComic.name}`"
+                            :title="`Page ${image.numero} - ${this.currentComic.name}`">
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <div class="container-images-onePage">
+                    <button v-if="currentPage > 1" type="button" class="arrow-back" @click="() => changePage('back')">
+                        &lt
+                    </button>
+                    <button v-else type="button" class="arrow-back" disabled> &lt </button>
+                    <img id="currentImg" :src="this.linkCurrentPage" @click="() => changePage('next')">
+                    <button type="button" class="arrow-next" @click="() => changePage('next')"> > </button>
                 </div>
             </div>
         </div>
         <div v-else>
-            <div class="container-images-onePage">
-                <button v-if="currentPage > 1" type="button" class="arrow-back" @click="() => changePage('back')"> &lt
-                </button>
-                <button v-else type="button" class="arrow-back" disabled> &lt </button>
-                <img id="currentImg" :src="this.linkCurrentPage" @click="() => changePage('next')">
-                <button type="button" class="arrow-next" @click="() => changePage('next')"> > </button>
+            <div class="band-connect">
+                <div class="band-connect-left">
+                    <h2> Vous voulez lire ce comics ? </h2>
+                    <button type="button" class="btn" @click="() => this.redirect('Login')" > 
+                        Connectez-vous 
+                    </button>
+                </div>
+                <img :src="this.linkCurrentPage" alt="">
             </div>
         </div>
 
-        <button class="nbPage hideNavbar" type="button" @click="hideNavbar"> 
-            <span class="textBtnHideNavbar" v-if="navbar.isNavbarHidden" > Afficher la navbar </span>
-            <span class="material-symbols-outlined"> {{ navbar.navbarState }} </span> 
+        <button class="nbPage hideNavbar" type="button" @click="hideNavbar">
+            <span class="textBtnHideNavbar" v-if="navbar.isNavbarHidden"> Afficher la navbar </span>
+            <span class="material-symbols-outlined"> {{ navbar.navbarState }} </span>
         </button>
+
+        
         <ScrollToTop />
+
     </div>
+
+    
 
 </template>
 
@@ -365,6 +430,38 @@ h2 {
     max-width: 760px;
 }
 
+.band-connect {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 50px auto;
+    width: 80%;
+    height: 400px;
+
+    background: var(--main-color);
+}
+
+.band-connect h2 {
+    font-size: 2em;
+    color: var(--font-color);
+    line-height: 40px;
+}
+
+.band-connect img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.band-connect-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
 .select-readMode {
     position: fixed;
     left: 20px;
@@ -401,6 +498,7 @@ h2 {
     right: 30px;
     z-index: 100000000000000000000;
 }
+
 .hideNavbar span {
     font-size: 3em;
 }
@@ -423,4 +521,11 @@ button:disabled:hover {
     transform: scale(1);
     cursor: not-allowed;
 }
+
+.footer {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
 </style>

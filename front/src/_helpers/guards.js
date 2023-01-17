@@ -27,11 +27,17 @@ export function MyAccountGuard(to) {
 
 export function AdminGuard(to) {
 
-    let isAdmin = JSON.parse(localStorage.getItem('userInfos')).roles[0];
+    if (localStorage.getItem('userInfos')) {
+        let isAdmin = JSON.parse(localStorage.getItem('userInfos')).roles[0];
 
-    // Si l'utilisateur est admin on le redirige vers la page admin
-    if (isAdmin == 'ROLE_ADMIN') {
-        return true;
+        // Si l'utilisateur est admin on le redirige vers la page admin
+        if (isAdmin == 'ROLE_ADMIN') {
+            return true;
+        }
+
+        // Sinon on le redirige vers la page Home
+        alert('Hop hop hop, tu n\'es pas admin ! Allez ouste !');
+        window.location.href = '/Home';
     }
 
     // Sinon on le redirige vers la page Home

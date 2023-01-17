@@ -2,13 +2,14 @@
 import Navbar from './Elements/Navbar.vue';
 import ScrollToUpBtn from './Elements/ScrollToUpBtn.vue';
 import Card from './Elements/Card.vue';
+import Footer from './Elements/Footer.vue';
 
 import axios from 'axios';
 import instance from '../../axios-infos';
 
 export default {
     components: {
-        Navbar, ScrollToUpBtn, Card
+        Navbar, ScrollToUpBtn, Card, Footer
     },
     data() {
         return {
@@ -26,7 +27,7 @@ export default {
         },
         readTheComic(comic) {
             localStorage.setItem('currentComic', JSON.stringify(comic));
-            this.$router.push({ path: `/Comics/${comic.name}` })
+            this.$router.push({ path: `/Comics/${comic.id}` })
         },
         ScrollTo(id) {
             const element = document.querySelector(id);
@@ -41,7 +42,7 @@ export default {
                     this.comics = response.data['hydra:member'];
                     console.log(this.comics);
 
-                    // Replace + by space in the name of the comics
+                    // convert name
                     this.comics.forEach(comic => {
                         comic.name = this.convertName(comic.name, '+', ' ');
                     });
@@ -65,6 +66,10 @@ export default {
                     this.comicsByResearch.push(comic);
                 }
             });
+
+            if (this.comicsByResearch.length == 0) {
+                alert('Aucun résultat trouvé !')
+            }
 
         }
     },
@@ -128,10 +133,13 @@ export default {
 
 
         <ScrollToUpBtn />
+        <Footer/>
 
     </div>
 
 </template>
+
+
 
 <style scoped >
 #homepage {
