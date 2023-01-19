@@ -1,3 +1,8 @@
+import axios from 'axios';
+import instance from '../../axios-infos';
+
+
+
 export function authGuard(to) {
 
     let isAuth = localStorage.getItem('isConnected');
@@ -12,6 +17,8 @@ export function authGuard(to) {
     window.location.href = '/MyAccount';
 }
 
+
+
 export function MyAccountGuard(to) {
 
     let isAuth = localStorage.getItem('isConnected');
@@ -24,6 +31,8 @@ export function MyAccountGuard(to) {
     // Sinon on le redirige vers la page de login
     window.location.href = '/Login';
 }
+
+
 
 export function AdminGuard(to) {
 
@@ -39,8 +48,35 @@ export function AdminGuard(to) {
         alert('Hop hop hop, tu n\'es pas admin ! Allez ouste !');
         window.location.href = '/Home';
     }
+    else {
+        // Sinon on le redirige vers la page Home
+        alert('Hop hop hop, tu n\'es pas admin ! Allez ouste !');
+        window.location.href = '/Home';
+    }
 
-    // Sinon on le redirige vers la page Home
-    alert('Hop hop hop, tu n\'es pas admin ! Allez ouste !');
-    window.location.href = '/Home';
+}
+
+
+
+// Vérifie si l'ID de la page Comics existe dans la base de données
+export function ComicsGuard(to) {
+
+    let id = to.params.id;
+    let URL = `${instance.baseURL}/api/comics/${id}`;
+
+    axios.get(URL)
+        .then((response) => {
+            // Si l'ID existe on redirige vers la page Comics
+            if (response.status == 200) {
+                return true;
+            }
+        })
+        .catch((error) => {
+            // Si l'ID n'existe pas on redirige vers la page Home
+            if (error.response.status == 404) {
+                window.location.href = '/';
+            }
+            console.log(error);
+        }
+        );
 }

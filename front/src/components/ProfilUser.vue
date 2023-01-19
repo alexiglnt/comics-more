@@ -1,11 +1,13 @@
 <script>
 import Navbar from './Elements/Navbar.vue';
+import Bookmarks from './Elements/Bookmarks.vue';
+
 import axios from 'axios';
 import instance from '../../axios-infos';
 import { accountService } from '../_services';
 
 export default {
-    components: { Navbar },
+    components: { Navbar, Bookmarks },
     data() {
         return {
             isConnected: false,
@@ -156,7 +158,7 @@ export default {
                 <div class="title-logout">
                     <h1 v-if="user.prenom"> Bonjour <span> {{ user.prenom }} | </span> </h1>
                     <button type="button" id="btn-logout" @click="logout">
-                        Logout
+                        Déconnexion
                         <span class="material-symbols-outlined"> logout </span>
                     </button>
                 </div>
@@ -209,7 +211,10 @@ export default {
 
         <div class="separation"> </div>
 
-
+        <div class="bookmarks">
+            <h1> Vos favoris ✨ </h1>
+            <Bookmarks />
+        </div>
 
     </div>
 
@@ -511,6 +516,9 @@ td input:hover {
 .bookmarks h1 {
     font-family: var(--font-title);
     letter-spacing: 2px;
+    font-size: 2.5em;
+
+    text-align: center;
 }
 
 .separation {

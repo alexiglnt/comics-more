@@ -3,7 +3,7 @@ import './style.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createRouter, createWebHistory } from 'vue-router';
-import { authGuard, MyAccountGuard, AdminGuard } from './_helpers/guards.js';
+import { authGuard, MyAccountGuard, AdminGuard, ComicsGuard } from './_helpers/guards.js';
 
 import App from './App.vue';
 import * as Page from './views/route-import.js';
@@ -11,9 +11,10 @@ import * as Page from './views/route-import.js';
 
 const routes = [
 	{ path: '/', component: Page.Home, name: 'Home' },
-	// { path: '/Comics', component: Page.Comics, name: 'Comics' }, 
-	{ path: '/Comics/:id', component: Page.Comics, name: 'Comicss', props: true }, 
 	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
+	{ 
+		path: '/Comics/:id(\\d+)', component: Page.Comics, name: 'Comics', props: true, beforeEnter: ComicsGuard
+	}, 
 	{ 
 		path: '/Login', component: Page.Login, name: 'Login', beforeEnter: authGuard
 	}, 

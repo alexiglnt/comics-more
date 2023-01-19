@@ -4,6 +4,7 @@ import Navbar from './Elements/Navbar.vue';
 
 import instance from '../../axios-infos.js'
 import axios from 'axios';
+import { accountService } from '../_services';
 
 export default {
     name: 'Home',
@@ -30,6 +31,11 @@ export default {
                 navbarState: 'expand_less',
             },
             isConnected: localStorage.getItem('isConnected'),
+            bookmark: {
+                state: 'bookmark_add',
+                data: {},
+                isChecked: false,
+            }
         }
     },
     methods: {
@@ -110,15 +116,12 @@ export default {
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 }
             } else if (value === 'back') {
                 this.currentPage--;
@@ -129,15 +132,12 @@ export default {
                 } else if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 }
             } else {
                 this.currentPage = value;
@@ -145,15 +145,12 @@ export default {
                 if (this.currentPage <= 9) {
                     numeroPage = '00' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else if (this.currentPage > 9 && this.currentPage <= 99) {
                     numeroPage = '0' + this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 } else {
                     numeroPage = this.currentPage.toString();
                     this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/${numeroPage}.${this.currentComic.extension}`;
-                    console.log(this.linkCurrentPage);
                 }
             }
 
@@ -189,6 +186,129 @@ export default {
                 prevScrollpos = currentScrollPos;
             });
         },
+        splitAndReplace(str, number) {
+            return `/${str.split('/').filter((item) => item !== '').join('/').replace(`${number}/`, '')}/`;
+        },
+        // Change la couleur/icone du bouton bookmark
+        changeDesignBookmark() {
+            const bookmarkBtn = document.querySelector('.bookmark-span');
+
+            bookmarkBtn.classList.toggle('added');
+            this.bookmark.state = this.bookmark.state === 'bookmark_add' ? 'bookmark' : 'bookmark_add';
+        },
+        handleBookmarked() {
+            this.changeDesignBookmark();
+
+            // On vérifie si l'utilisateur est connecté
+            if (localStorage.getItem('isConnected') === 'true') {
+
+                // On vérifie si le comic est déjà bookmarké
+                if (this.bookmark.isChecked === false) {
+                    this.addToBookmarks();
+                } else {
+                    this.removeFromBookmarks();
+                }
+            } else {
+                this.$router.push('/Login');
+            }
+        },
+        recupBookmarkInfos() {
+            const URL = `${instance.baseURL}/api/bookmarks`;
+
+            axios.get(URL, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+                .then((response) => {
+                    const bookmarks = response.data['hydra:member'];
+
+                    // On vérifie si l'utilisateur est connecté
+                    if (localStorage.getItem('isConnected') === 'true') {
+                        bookmarks.forEach((bookmark) => {
+
+                            // On vérifie si le bookmark contient l'id du comic et si l'id du bookmark correspond à l'id de l'utilisateur connecté
+                            if (bookmark.userID === JSON.parse(localStorage.getItem('userInfos')).id) {
+
+                                // On récupère l'id du bookmark et on le stocke dans une variable
+                                this.bookmark.data = bookmark;
+                            }
+                        });
+                    }
+                })
+                .then(() => {
+                    // On vérifie si le bookmark contient l'id du comic
+                    if (this.bookmark.data.comicsId.includes(`${this.$route.params.id}/`)) {
+                        this.bookmark.isChecked = true;
+                        this.changeDesignBookmark();
+                    }
+
+                })
+                .catch((error) => {
+                    accountService.tokenExpired(error);
+                })
+        },
+        addToBookmarks() {
+
+            const URL = `${instance.baseURL}/api/bookmarks/${this.bookmark.data.id}`;
+
+            // On récupère le contenu de comicsId du bookmark
+            let comicsID = this.bookmark.data.comicsId;
+
+            // Si le 1er caractere en'est pas un / on l'ajoute
+            if (comicsID.charAt(0) !== '/') {
+                comicsID = `/${this.bookmark.data.comicsId}`;
+            }
+
+            axios.put(URL, {
+                // On ajoute l'id du comic au contenu de comicsId
+                comicsId: `${comicsID}${this.$route.params.id}/`,
+            },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    accountService.tokenExpired(error);
+                    console.log(error);
+                });
+
+        },
+        removeFromBookmarks() {
+
+            const URL = `${instance.baseURL}/api/bookmarks/${this.bookmark.data.id}`;
+
+            // On récupère le contenu de comicsId du bookmark
+            const comicsID = this.bookmark.data.comicsId;
+
+            // On supprime l'id du comic du contenu de comicsId
+            const comicsIDUpdated = this.splitAndReplace(comicsID, this.$route.params.id);
+            console.log(comicsIDUpdated);
+            
+
+            axios.put(URL, {
+                comicsId: comicsIDUpdated,
+            },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    accountService.tokenExpired(error);
+                    console.log(error);
+                });
+        },
     },
     async mounted() {
 
@@ -196,6 +316,9 @@ export default {
 
         // Récupération de la collection
         await this.recupCollection();
+
+        // Récupération des informations du bookmark
+        await this.recupBookmarkInfos();
 
         this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/001.${this.currentComic.extension}`
 
@@ -206,10 +329,6 @@ export default {
             top: 0,
             behavior: "smooth"
         });
-
-
-
-        // this.ScrollEventListener(); // Elle a arrete de fonctionner du jour au lendemain, je sais pas pourquoi
     }
 }
 
@@ -248,7 +367,16 @@ export default {
                 </div>
                 <div class="right">
                     <div>
-                        <h1> Informations </h1>
+                        <div>
+                            <h1> Informations </h1>
+
+                            <!-- BOOKMARK BUTTON -->
+                            <button title="Ajouter aux favoris" type="button" class="bookmark-btn"
+                                v-if="this.isConnected == 'true'" @click="handleBookmarked">
+                                <span class="material-symbols-outlined bookmark-span"> {{ bookmark.state }} </span>
+                            </button>
+
+                        </div>
                         <h3> <b> {{ this.currentComicName }} </b> </h3>
                         <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
                         <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
@@ -294,8 +422,8 @@ export default {
             <div class="band-connect">
                 <div class="band-connect-left">
                     <h2> Vous voulez lire ce comics ? </h2>
-                    <button type="button" class="btn" @click="() => this.redirect('Login')" > 
-                        Connectez-vous 
+                    <button type="button" class="btn" @click="() => this.redirect('Login')">
+                        Connectez-vous
                     </button>
                 </div>
                 <img :src="this.linkCurrentPage" alt="">
@@ -307,12 +435,12 @@ export default {
             <span class="material-symbols-outlined"> {{ navbar.navbarState }} </span>
         </button>
 
-        
+
         <ScrollToTop />
 
     </div>
 
-    
+
 
 </template>
 
@@ -342,6 +470,41 @@ h2 {
     align-items: center;
     height: 100vh;
     margin-top: 120px;
+}
+
+.bookmark-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--font-color);
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 20px 2px;
+    cursor: pointer;
+
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    user-select: none;
+}
+
+.bookmark-span {
+    font-size: 2em;
+}
+
+.material-symbols-outlined:hover {
+    color: #efc000;
+}
+
+.added {
+    color: #efc000;
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 700,
+        'GRAD' 0,
+        'opsz' 48
 }
 
 .left-right {
@@ -378,6 +541,8 @@ h2 {
     position: absolute;
     top: 0;
     width: 500px;
+    font-family: Dimis;
+    letter-spacing: 1px;
 }
 
 .right h3 {
@@ -446,6 +611,7 @@ h2 {
     font-size: 2em;
     color: var(--font-color);
     line-height: 40px;
+    margin-inline: 50px;
 }
 
 .band-connect img {
@@ -527,5 +693,4 @@ button:disabled:hover {
     left: 0;
     width: 100%;
 }
-
 </style>

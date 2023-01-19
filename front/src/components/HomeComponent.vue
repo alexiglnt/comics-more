@@ -15,7 +15,8 @@ export default {
         return {
             comics: [],
             comicsByResearch: [],
-            research: ''
+            research: '',
+            researchNotFound: false
         }
     },
     methods: {
@@ -59,6 +60,7 @@ export default {
         },
         searchComics() {
             this.comicsByResearch = [];
+            this.researchNotFound = false;
             // search comics by research
             this.comics.forEach(comic => {
                 if (comic.name.toLowerCase().includes(this.research.toLowerCase())) {
@@ -68,9 +70,15 @@ export default {
             });
 
             if (this.comicsByResearch.length == 0) {
-                alert('Aucun résultat trouvé !')
+                this.researchNotFound = true;
+                document.querySelector('.grid-container').style.display = 'none';
             }
-
+        },
+        resetResearch() {
+            this.comicsByResearch = [];
+            this.research = '';
+            this.researchNotFound = false;
+            document.querySelector('.grid-container').style.display = 'grid';
         }
     },
     mounted() {
@@ -101,6 +109,9 @@ export default {
         </div>
     </section>
 
+
+
+    <!-- CONTAINER Searchbar + Comics -->
     <div class="container">
 
         <div class="slogan">
@@ -116,7 +127,15 @@ export default {
         </form>
 
         <!-- COMICS -->
-        <div class="grid-container" v-if="this.comicsByResearch.length != 0">
+        
+
+        <div class="research-not-found" v-if="this.researchNotFound == true" >
+            <h2> Aucun résultat trouvé 😔 </h2>
+            <button type="button" class="btn" @click="resetResearch" > 
+                Réinitialiser la recherche 
+            </button>
+        </div>
+        <div class="grid-container" v-else-if="this.comicsByResearch.length != 0">
             <div v-for="comic in comicsByResearch" :key="comic.id">
                 <div class="card">
                     <Card :data="comic" :handle-click="this.readTheComic" />
@@ -318,4 +337,12 @@ a {
     margin: 50px;
     transform: skew(4deg, 4deg);
 }
+
+.research-not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 </style>
