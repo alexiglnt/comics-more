@@ -317,8 +317,10 @@ export default {
         // Récupération de la collection
         await this.recupCollection();
 
-        // Récupération des informations du bookmark
-        await this.recupBookmarkInfos();
+        if (this.isConnected == 'true') {
+            // Récupération des bookmarks
+            await this.recupBookmarks();
+        }
 
         this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/001.${this.currentComic.extension}`
 

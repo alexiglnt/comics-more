@@ -3,13 +3,14 @@ import Navbar from './Elements/Navbar.vue';
 import ScrollToUpBtn from './Elements/ScrollToUpBtn.vue';
 import Card from './Elements/Card.vue';
 import Footer from './Elements/Footer.vue';
+import Carousel from './Elements/Carousel.vue';
 
 import axios from 'axios';
 import instance from '../../axios-infos';
 
 export default {
     components: {
-        Navbar, ScrollToUpBtn, Card, Footer
+        Navbar, ScrollToUpBtn, Card, Footer, Carousel
     },
     data() {
         return {
@@ -107,6 +108,11 @@ export default {
                 <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
             </a>
         </div>
+    </section>
+
+    <!-- CAROUSEL -->
+    <section class="carousel-container">
+        <Carousel />
     </section>
 
 
@@ -228,6 +234,14 @@ export default {
 .container form button:hover {
     transform: scale(1.1);
     transition: 0.3s ease;
+}
+
+.carousel-container {
+    width: 90%;
+    height: 90%;
+    margin: 0px auto;
+    margin-top: 0;
+    margin-bottom: 100px;
 }
 
 h1 {
