@@ -23,6 +23,7 @@ export default {
 
     <div class="collections-container" >
         <Collection name="Batman" house="dc" />
+        <Collection name="Flash" house="dc" />
     </div>
 
 

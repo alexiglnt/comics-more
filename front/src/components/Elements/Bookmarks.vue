@@ -109,7 +109,6 @@ export default {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 20px;
     margin: 0 auto;
-    width: 80%;
 }
 
 .card {

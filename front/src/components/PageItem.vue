@@ -212,6 +212,46 @@ export default {
                 this.$router.push('/Login');
             }
         },
+        createBookmark() {
+
+            const URL = `${instance.baseURL}/api/bookmarks`;
+
+            axios.get(URL)
+                .then((response) => {
+                    let bookmarks = response.data['hydra:member'];
+
+                    bookmarks.forEach((bookmark) => {
+                        if (bookmark.userID === JSON.parse(localStorage.getItem('userInfos')).id) {
+                            // this.bookmark.data = bookmark;
+                            return;
+                        }
+                    });
+
+                    // Si l'utilisateur n'a pas de bookmark on en crée un
+                    axios.post(URL,
+                        {
+                            comicsId: `/`,
+                            userID: JSON.parse(localStorage.getItem('userInfos')).id
+                        },
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            }
+                        })
+                        .then((response) => {
+                            // this.bookmark.data = response.data;
+                            console.log('createBookmark', response);
+
+                            this.recupBookmarkInfos();
+                        })
+                        .catch((error) => {
+                            accountService.tokenExpired(error);
+                        })
+
+                })
+
+        },
         recupBookmarkInfos() {
             const URL = `${instance.baseURL}/api/bookmarks`;
 
@@ -225,40 +265,58 @@ export default {
                     const bookmarks = response.data['hydra:member'];
 
                     // On vérifie si l'utilisateur est connecté
-                    if (localStorage.getItem('isConnected') === 'true') {
+                    if (localStorage.getItem('isConnected') == 'true') {
                         bookmarks.forEach((bookmark) => {
+                            console.log('ICI', bookmark.userID, JSON.parse(localStorage.getItem('userInfos')).id);
 
                             // On vérifie si le bookmark contient l'id du comic et si l'id du bookmark correspond à l'id de l'utilisateur connecté
                             if (bookmark.userID === JSON.parse(localStorage.getItem('userInfos')).id) {
 
-                                // On récupère l'id du bookmark et on le stocke dans une variable
+                                // On récupère les données du bookmark et on le stocke dans une variable
                                 this.bookmark.data = bookmark;
+                                console.log(this.bookmark.data);
                             }
                         });
+                        console.log('this.bookmark.data', this.bookmark.data);
                     }
                 })
                 .then(() => {
-                    // On vérifie si le bookmark contient l'id du comic
-                    if (this.bookmark.data.comicsId.includes(`${this.$route.params.id}/`)) {
+                    // si l'utilisateur na pas de bookmark on en crée un
+                    // if (this.bookmark.data[0] == undefined) {
+                    //     this.createBookmark();
+                    //     console.log('pas de bookmark');
+                    // } else {
+                    //     // On vérifie si le comic est déjà bookmarké
+                    //     if (this.bookmark.data.comicsId.includes(`/${this.$route.params.id}/`)) {
+                    //         this.bookmark.isChecked = true;
+                    //         this.changeDesignBookmark();
+                    //     }
+                    // }
+
+                    if (this.bookmark.data.comicsId.includes(`/${this.$route.params.id}/`)) {
                         this.bookmark.isChecked = true;
                         this.changeDesignBookmark();
                     }
 
                 })
                 .catch((error) => {
-                    accountService.tokenExpired(error);
+                    if (error.status == 401) {
+                        accountService.tokenExpired(error);
+                    }
                 })
         },
         addToBookmarks() {
 
             const URL = `${instance.baseURL}/api/bookmarks/${this.bookmark.data.id}`;
 
-            // On récupère le contenu de comicsId du bookmark
-            let comicsID = this.bookmark.data.comicsId;
+            if (this.bookmark.data.comicsId) {
+                // On récupère le contenu de comicsId du bookmark (ex: /1/2/3/)
+                var comicsID = this.bookmark.data.comicsId;
 
-            // Si le 1er caractere en'est pas un / on l'ajoute
-            if (comicsID.charAt(0) !== '/') {
-                comicsID = `/${this.bookmark.data.comicsId}`;
+                // Si le 1er caractere en'est pas un / on l'ajoute
+                if (comicsID.charAt(0) !== '/') {
+                    comicsID = `/${this.bookmark.data.comicsId}`;
+                }
             }
 
             axios.put(URL, {
@@ -290,7 +348,7 @@ export default {
             // On supprime l'id du comic du contenu de comicsId
             const comicsIDUpdated = this.splitAndReplace(comicsID, this.$route.params.id);
             console.log(comicsIDUpdated);
-            
+
 
             axios.put(URL, {
                 comicsId: comicsIDUpdated,
@@ -319,7 +377,7 @@ export default {
 
         if (this.isConnected == 'true') {
             // Récupération des bookmarks
-            await this.recupBookmarks();
+            await this.recupBookmarkInfos();
         }
 
         this.linkCurrentPage = `${instance.AWS_URL}/${this.currentComic.name}/001.${this.currentComic.extension}`

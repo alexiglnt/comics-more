@@ -17,7 +17,8 @@ export default {
             comics: [],
             comicsByResearch: [],
             research: '',
-            researchNotFound: false
+            researchNotFound: false,
+            lastComics: [],
         }
     },
     methods: {
@@ -48,6 +49,8 @@ export default {
                     this.comics.forEach(comic => {
                         comic.name = this.convertName(comic.name, '+', ' ');
                     });
+
+                    this.recupLastComics(9);
 
                 })
                 .catch((error) => {
@@ -80,10 +83,28 @@ export default {
             this.research = '';
             this.researchNotFound = false;
             document.querySelector('.grid-container').style.display = 'grid';
-        }
+        },
+        recupLastComics(n) {
+
+            // En dessous de 9, le carousel s'affiche mal
+            if (n < 9) {
+                n = 9;
+            }
+
+            // On recupere les n derniers comics
+            let negatif = -n;
+            for (let i = 0; i < n; i++) {
+
+                this.lastComics.push(this.comics.at(negatif));
+                negatif++;
+            }
+
+            console.log('les n derniers', this.lastComics);
+
+        },
     },
-    mounted() {
-        this.recupComics();
+    async mounted() {
+        await this.recupComics();
     }
 }
 
@@ -103,17 +124,21 @@ export default {
         <div class="presentation">
             <p>Bienvenue sur</p> <br>
             <h1> Comics More </h1> <br>
-            <a id="btn-scroll" class="btn" @click="() => ScrollTo('#btn-scroll')">
-                Découvrir
-                <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
-            </a>
+            <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
+                Découvrir <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
+            </button>
         </div>
     </section>
 
+
+
     <!-- CAROUSEL -->
-    <section class="carousel-container">
-        <Carousel />
-    </section>
+    <div class="slogan">
+        <h1> <span> D</span>écouvrez <span>&nbsp N</span>os <span>&nbsp D</span>ernier<span>&nbsp A</span>jout ! </h1>
+    </div>
+    <div class="carousel-container">
+        <Carousel :data="lastComics" />
+    </div>
 
 
 
@@ -124,6 +149,7 @@ export default {
             <h1> <span> C</span>hoisissez, <span>&nbspL</span>isez et<span>&nbsp P</span>rofitez ! </h1>
         </div>
 
+
         <!-- RESEARCH BAR -->
         <form @submit.prevent="searchComics">
             <input type="text" placeholder="Rechercher un comic" v-model="this.research">
@@ -132,13 +158,12 @@ export default {
             </button>
         </form>
 
-        <!-- COMICS -->
-        
 
-        <div class="research-not-found" v-if="this.researchNotFound == true" >
+        <!-- COMICS -->
+        <div class="research-not-found" v-if="this.researchNotFound == true">
             <h2> Aucun résultat trouvé 😔 </h2>
-            <button type="button" class="btn" @click="resetResearch" > 
-                Réinitialiser la recherche 
+            <button type="button" class="btn" @click="resetResearch">
+                Réinitialiser la recherche
             </button>
         </div>
         <div class="grid-container" v-else-if="this.comicsByResearch.length != 0">
@@ -158,7 +183,7 @@ export default {
 
 
         <ScrollToUpBtn />
-        <Footer/>
+        <Footer />
 
     </div>
 
@@ -179,6 +204,20 @@ export default {
     width: 100%;
 }
 
+.presentation p {
+    font-family: var(--secondary-font);
+}
+
+.presentation button {
+    background-color: var(--secondary-color);
+    color: var(--bg-color);
+    font-size: 1.5em;
+}
+
+.presentation button span {
+    transform: translateY(5px);
+}
+
 .container {
     display: flex;
     justify-content: center;
@@ -193,6 +232,7 @@ export default {
     justify-content: center;
     align-items: center;
     margin-bottom: 50px;
+    margin-top: 50px;
     position: relative;
 }
 
@@ -231,14 +271,15 @@ export default {
 .container form button span {
     font-size: 1.5em;
 }
+
 .container form button:hover {
     transform: scale(1.1);
     transition: 0.3s ease;
 }
 
 .carousel-container {
-    width: 90%;
-    height: 90%;
+    width: 50%;
+    height: 50%;
     margin: 0px auto;
     margin-top: 0;
     margin-bottom: 100px;
@@ -254,7 +295,6 @@ h1 {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    margin-bottom: 50px;
 }
 
 .slogan h1 {
@@ -358,5 +398,4 @@ a {
     align-items: center;
     flex-direction: column;
 }
-
 </style>

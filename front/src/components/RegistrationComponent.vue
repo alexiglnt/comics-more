@@ -56,6 +56,7 @@ export default {
             else {
                 const URL = `${instance.baseURL}/api/users`;
 
+                // On crée un nouvel utilisateur
                 axios.post(URL, {
                     email: this.mail,
                     password: this.password,
@@ -64,22 +65,26 @@ export default {
                 })
                     .then(response => {
                         console.log('response', response);
+
+                        // On redirige vers la page de login
                         this.$router.push({
                             name: 'Login',
                         });
                     })
                     .catch(error => {
-                        if (error.response.status == 500) {
+                        if (error.status == 500) {
                             this.errorEntry = 'Cette adresse mail est déja utilisée';
                         } else {
                             console.log(error);
                         }
                     });
+
+
+
             }
         },
     }
 }
-
 </script>
 
 
@@ -108,7 +113,8 @@ export default {
 
                 <div class="container-input">
                     <label for="mailInput">Mail</label>
-                    <input type="email" name="mailInput" placeholder="johndoe@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" v-model="mail">
+                    <input type="email" name="mailInput" placeholder="johndoe@gmail.com"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" v-model="mail">
                 </div>
 
                 <div class="container-input">
@@ -133,7 +139,7 @@ export default {
                     <p> {{ errorEntry }} </p>
                 </div>
 
-                <button type="submit" class="btn" >S'inscrire</button>
+                <button type="submit" class="btn">S'inscrire</button>
             </form>
 
             <hr>
@@ -147,7 +153,6 @@ export default {
 
 
 <style scoped>
-
 .background {
     position: absolute;
     top: 0;
@@ -158,6 +163,7 @@ export default {
     background-image: linear-gradient(10deg, var(--bg-color) 50%, transparent 30%), linear-gradient(-60deg, var(--main-color) 30%, transparent 30%);
     z-index: -10;
 }
+
 .center {
     display: flex;
     justify-content: center;

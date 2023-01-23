@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Solitreo&display=swap');
+
 @font-face {
   font-family: "Dimis";
   src: url(../src/assets/font/DIMIS___.TTF) format('truetype');
@@ -21,20 +23,32 @@
   --main-color: #ffa800;
   --main-color-hover: #eb9202;
   --main-color-transparent: #ffaa00b6;
+
   --bg-color: #f1f1f1;
   --font-color: #242424;
+  
   --secondary-color: #3D91C0;
   --secondary-color-hover: #1e72a2;
+  --secondary-color-transparent: #1e72a2ad;
+
   --marvel-color: #ed1d24;
   --dc-color: #0078f0;
+
   --transparent-color: rgba(0, 0, 0, 0.6);
   --navbar-height: 100px;
+
+  --font: 'Dimis', cursive;
+  --secondary-font: 'Solitreo', cursive;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+.font {
+  font-family: 'Solitreo', cursive;
 }
 
 .center {

@@ -18,9 +18,18 @@ function isLoggedIn() {
     return !!getToken();
 }
 
+function reconnect() {
+
+    alert('Votre session a expiré, veuillez vous reconnecter');
+    removeToken();
+    localStorage.setItem('isConnected', false);
+    window.location = '/Login';
+}
+
 function tokenExpired(error) {
-    
-    if (error.response.status === 401) {
+
+
+    if (error.status == 401) {
         alert('Votre session a expiré, veuillez vous reconnecter');
         removeToken();
         localStorage.setItem('isConnected', false);
@@ -39,5 +48,6 @@ export const accountService = {
     getToken,
     removeToken,
     isLoggedIn,
+    reconnect,
     tokenExpired
 };

@@ -201,14 +201,6 @@ export default {
             </div>
         </div>
 
-        <!-- Si l'utilisateurs n'est pas connecté on affiche ça -->
-        <div v-else>
-            <div>
-                <h1> Vous n'êtes pas connecté </h1>
-                <ButtonVue text="Back to Login" icon="undo" @click="backToLogin" />
-            </div>
-        </div>
-
         <div class="separation"> </div>
 
         <div class="bookmarks">

@@ -7,6 +7,20 @@ use App\Repository\BookmarkRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+
+
+
+#[Get(
+    security: "is_granted('ROLE_USER') or is_granted('IS_AUTHENTICATED_FULLY')",
+    securityMessage: "You are not authentificated",
+)]
+#[Put(
+    security: "is_granted('IS_AUTHENTICATED_FULLY')",
+    securityMessage: "You are not authentificated",
+)]
+
 #[ORM\Entity(repositoryClass: BookmarkRepository::class)]
 #[ApiResource]
 class Bookmark

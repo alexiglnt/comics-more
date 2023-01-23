@@ -32,6 +32,55 @@ export default {
                 this.visibilityMode = 'visibility_off';
             }
         },
+        createBookmark() {
+            const URL = `${instance.baseURL}/api/bookmarks`;
+
+            axios.post(URL, {
+                userID: this.userInfos.id,
+                comicsId: '/'
+            })
+                .then(res => {
+                    console.log('BOOKMARK CREATED', res);
+
+                    // On redirige l'utilisateur vers la page de profil
+                    this.$router.push({
+                        name: 'ProfilUser',
+                    });
+                })
+        },
+        isBookmarkExist() {
+
+            const URL = `${instance.baseURL}/api/bookmarks`;
+
+            axios.get(URL)
+                .then(res => {
+                    let cpt = 0;
+                    let bookmarks = res.data['hydra:member'];
+                    console.log('BOOKMARKS : ', bookmarks);
+
+                    // Si l'utilisateur connecté n'a pas de bookmarks (on le sait avec son id), on en crée un
+                    bookmarks.forEach(bm => {
+                        if (bm.userID == this.userInfos.id) {
+                            console.log('BOOKMARK EXIST');
+
+                            // On incrémente le compteur pour savoir si l'utilisateur connecté a déjà un bookmark
+                            cpt++;
+                        }
+                    });
+                })
+                .then((cpt) => {
+                    // Si l'utilisateur connecté n'a pas de bookmarks, on en crée un
+                    if (cpt == 0) {
+                        this.createBookmark();
+                    }
+                })
+                .then(() => {
+                    // On redirige l'utilisateur vers la page de profil
+                    this.$router.push({
+                        name: 'ProfilUser',
+                    });
+                })
+        },
         async getUserInformation() {
             const URL_users = `${instance.baseURL}/api/users`;
 
@@ -59,11 +108,8 @@ export default {
                             // On enregistre les infos de l'utilisateur connecté dans le localStorage
                             localStorage.setItem('userInfos', JSON.stringify(this.userInfos));
 
-                            // On redirige l'utilisateur vers la page de profil
-                            this.$router.push({
-                                name: 'ProfilUser',
-                            });
-
+                            // On vérifie si l'utilisateur connecté a déjà des bookmarks
+                            this.isBookmarkExist();
                         }
                     }
                 })
@@ -154,7 +200,6 @@ export default {
 
 
 <style scoped>
-
 .background {
     position: absolute;
     top: 0;
@@ -165,6 +210,7 @@ export default {
     background-image: linear-gradient(10deg, var(--bg-color) 50%, transparent 30%), linear-gradient(-60deg, var(--secondary-color) 30%, transparent 30%);
     z-index: -10;
 }
+
 .center {
     display: flex;
     justify-content: center;

@@ -1,8 +1,3 @@
-# PROBLEMES A REGLER !
-
-- probleme de tokens quand on on veut acceder au comics alors qu'ils sont en AUTHENTIFICATED_FULLY dans security.yaml (a verifier si le probleme est toujours la car l'API a étét refaite)
-- PageItem en fonction du nom du comics ou de l'id ( path: '/PageItem/:id' ) qui est biaisé a cause du localStorage
-
 # TRUCS A FAIRE
 
 - navbar qui disparait en scroll-down et reaparait en scroll-top (mieux pour la lecture) (voir https://www.w3schools.com/howto/howto_js_navbar_hide_scroll.asp)
@@ -16,8 +11,3 @@
 - page de gestion des paiements (ajout, suppression, modification)
 - commentaires
 - notes du comics
-
-
-# A GARDER EN TETE
-
-- normalement pas besoin d'implementer les guard quand les tokens expirent car jai fixé leur durée de vie à 10h ( averifier)
