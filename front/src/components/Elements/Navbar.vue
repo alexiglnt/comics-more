@@ -82,6 +82,7 @@ export default {
 </template>
 
 <style scoped >
+
 .anchor-pack a {
     text-decoration: none;
     position: relative;

@@ -14,7 +14,7 @@
             },
             handleScroll() {
                 const scrollY = window.scrollY;
-                if (scrollY > 500) {
+                if (scrollY > 800) {
                     this.show = true;
                 } else {
                     this.show = false;

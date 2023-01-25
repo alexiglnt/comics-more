@@ -441,12 +441,12 @@ export default {
                         <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
                         <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
                         <p v-if="this.currentHouse.name == 'MARVEL'">
-                            Maison d'édition : <img id="house-logo-marvel" src="../assets/Marvel_Logo.svg"
-                                title="MARVEL" alt="">
+                            Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
+                                src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
                         </p>
                         <p v-else-if="this.currentHouse.name == 'DC COMICS'">
-                            Maison d'édition : <img id="house-logo-dc" src="../assets/DC_Comics_logo.png"
-                                title="DC COMICS" alt="">
+                            Maison d'édition : <img @click="() => redirect('DC-Comics')" id="house-logo-dc"
+                                src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
                         </p>
                     </div>
                 </div>
@@ -611,6 +611,10 @@ h2 {
 
 .right p {
     font-size: 1.5em;
+}
+
+.right img {
+    cursor: pointer;
 }
 
 #house-logo-marvel {

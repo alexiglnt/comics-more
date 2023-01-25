@@ -122,10 +122,10 @@ export default {
         </div>
 
         <div class="presentation">
-            <p>Bienvenue sur</p> <br>
+            <h1 class="bienvenue" >Bienvenue sur</h1> <br>
             <h1> Comics More </h1> <br>
             <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
-                Découvrir <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
+                Voir le catalogue <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
             </button>
         </div>
     </section>
@@ -134,7 +134,7 @@ export default {
 
     <!-- CAROUSEL -->
     <div class="slogan">
-        <h1> <span> D</span>écouvrez <span>&nbsp N</span>os <span>&nbsp D</span>ernier<span>&nbsp A</span>jout ! </h1>
+        <h1> <span> D</span>ecouvrez <span>&nbsp N</span>os <span>&nbsp D</span>erniers<span>&nbsp A</span>jouts ! </h1>
     </div>
     <div class="carousel-container">
         <Carousel :data="lastComics" />
@@ -204,8 +204,11 @@ export default {
     width: 100%;
 }
 
-.presentation p {
+.presentation .bienvenue {
     font-family: var(--secondary-font);
+    font-size: 3.5em;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .presentation button {
@@ -301,8 +304,8 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
-    font-family: 'Verdana', sans-serif;
+    font-size: 80px;
+    font-family: var(--secondary-font);
 }
 
 h1 span {

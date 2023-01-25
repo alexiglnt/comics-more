@@ -5,6 +5,12 @@
   src: url(../src/assets/font/DIMIS___.TTF) format('truetype');
 }
 
+@font-face {
+  font-family: "Wigglye";
+  src: url(../src/assets/font/Wigglye.ttf) format('truetype');
+}
+
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -38,7 +44,7 @@
   --navbar-height: 100px;
 
   --font: 'Dimis', cursive;
-  --secondary-font: 'Solitreo', cursive;
+  --secondary-font: 'Wigglye';
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

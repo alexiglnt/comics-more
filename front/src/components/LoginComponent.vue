@@ -18,6 +18,7 @@ export default {
             userInfos: '',
             visibilityMode: 'visibility_off',
             badRequest: false,
+            cpt: 0
         }
     },
     methods: {
@@ -54,7 +55,6 @@ export default {
 
             axios.get(URL)
                 .then(res => {
-                    let cpt = 0;
                     let bookmarks = res.data['hydra:member'];
                     console.log('BOOKMARKS : ', bookmarks);
 
@@ -64,18 +64,20 @@ export default {
                             console.log('BOOKMARK EXIST');
 
                             // On incrémente le compteur pour savoir si l'utilisateur connecté a déjà un bookmark
-                            cpt++;
+                            this.cpt++;
                         }
                     });
                 })
-                .then((cpt) => {
+                .then(() => {
                     // Si l'utilisateur connecté n'a pas de bookmarks, on en crée un
-                    if (cpt == 0) {
+                    console.log('CPT : ', this.cpt);
+                    if (this.cpt == 0) {
                         this.createBookmark();
                     }
                 })
                 .then(() => {
                     // On redirige l'utilisateur vers la page de profil
+                    console.log('REDIRECTION');
                     this.$router.push({
                         name: 'ProfilUser',
                     });

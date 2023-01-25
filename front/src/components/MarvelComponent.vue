@@ -23,8 +23,8 @@ export default {
 
     <div class="collections-container" >
         <Collection name="Wolverine" house="marvel" />
-        <Collection name="Ghost Rider" house="marvel" />
         <Collection name="Spider-Man" house="marvel" />
+        <Collection name="Ghost Rider" house="marvel" />
     </div>
 
 
