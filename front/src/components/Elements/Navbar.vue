@@ -4,6 +4,7 @@ export default {
     data() {
         return {
             isAdmin: false,
+            isConnected: localStorage.getItem('isConnected')
         }
     },
     methods: {
@@ -33,7 +34,7 @@ export default {
             this.redirect('DC-Comics')
         });
         navLinks[2].addEventListener('click', () => {
-            this.redirect('Home')
+            this.redirect('OtherComics')
         });
 
 
@@ -45,6 +46,16 @@ export default {
             }
         }
 
+
+        if (window.location.pathname === '/Marvel') {
+            document.querySelectorAll('.nav-links')[0].classList.add('active');
+        }
+        if (window.location.pathname === '/DC-Comics') {
+            document.querySelectorAll('.nav-links')[1].classList.add('active');
+        }
+        if (window.location.pathname === '/OtherComics') {
+            document.querySelectorAll('.nav-links')[2].classList.add('active');
+        }
     },
 }
 
@@ -60,15 +71,20 @@ export default {
                 <div class="anchor-pack">
                     <a class="nav-links"> Marvel </a>
                     <a class="nav-links"> DC Comics </a>
-                    <a class="nav-links"> Autres </a>
+                    <a class="nav-links"> Plus de comics </a>
                 </div>
                 <div>
-                    <a @click="() => redirect('Login')" class="btn">
+                    <a v-if="isConnected == 'false'" @click="() => redirect('Login')" class="btn">
                         <span class="material-symbols-outlined">
                             person
                         </span>
                     </a>
-                    <a v-if="isAdmin === true"  @click="() => redirect('Admin')" class="btn">
+                    <a v-else @click="() => redirect('Login')" class="btn">
+                        <span class="material-symbols-outlined">
+                            settings_account_box
+                        </span>
+                    </a>
+                    <a v-if="isAdmin === true" @click="() => redirect('Admin')" class="btn">
                         <span class="material-symbols-outlined">
                             admin_panel_settings
                         </span>
@@ -82,7 +98,6 @@ export default {
 </template>
 
 <style scoped >
-
 .anchor-pack a {
     text-decoration: none;
     position: relative;
@@ -92,16 +107,21 @@ export default {
 }
 
 .anchor-pack a::after {
-    content: "";
-    display: block;
+    content: '';
     position: absolute;
-    bottom: -3px;
+    left: 0;
+    bottom: -5px;
     width: 100%;
-    height: 1.5px;
+    height: 2px;
+    background-color: var(--main-color);
     transform: scaleX(0);
-    transform-origin: left;
-    background: var(--main-color);
-    transition: transform 0.3s ease-out;
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+}
+
+.anchor-pack .active {
+    color: var(--main-color);
+    font-weight: 700;
 }
 
 .anchor-pack a:hover::after {
@@ -109,7 +129,8 @@ export default {
 }
 
 .material-symbols-outlined {
-    font-size: 30px;
+    transform: translateY(5px);
+    font-size: 35px;
     font-variation-settings:
         'FILL' 0,
         'wght' 300,

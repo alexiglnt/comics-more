@@ -18,7 +18,7 @@ export default {
 
     <div class="container">
         <img class="logo-house" src="../assets/Marvel_Logo.svg" alt="logo marvel" >
-        <h1 class="title" > Découvrez les collections de <b> Marvel </b> ! </h1>
+        <h1 class="title" > DECOUVREZ LES COLLECTIONS DE <b> MARVEL </b> </h1>
     </div>
 
     <div class="collections-container" >
@@ -47,6 +47,7 @@ export default {
     font-weight: 300;
     font-size: 2.5em;
     margin-top: 50px;
+    font-family: var(--secondary-font);
 }
 
 </style>

@@ -1,141 +1,99 @@
-<script>
+<script >
 
 export default {
-    name: 'Footer',
-    methods: {
-        redirect(routeName) {
-            this.$router.push({
-                name: routeName,
-            });
-        },
-    },
+  name: 'Footer',
+  data() {
+    return {
+      date: new Date().getFullYear(),
+    };
+  },
+  methods: {
+    redirect(routeName) {
+      this.$router.push({ name: routeName });
+    }
+  },
 }
 
 </script>
 
-
-
 <template>
-
-    <div class="container">
-        <div class="line">
-            <div class="logo">
-                <img src="../../assets/logo_contour.png" alt="logo">
-            </div>
-            <!-- <div>
-                <h2>© 2023 - Comic-Book</h2>
-            </div> -->
-            <div class="links">
-                <div class="link">
-                    <a @click="() => this.redirect('Home')" >Home</a>
-                </div>
-                <div class="link">
-                    <a @click="() => this.redirect('Login')" >Login</a>
-                </div>
-                <div class="link">
-                    <a @click="() => this.redirect('Registration')" >Registration</a>
-                </div>
-            </div>
+  <footer>
+    <div class="footer-container">
+      <div class="content">
+        <div class="left">
+          <img src="../../assets/logo_contour.png" alt="">
+          
         </div>
+        <div class="middle">
+          <ul>
+            <li @click="() => redirect('MentionsLegales')" > Mentions légales </li>
+            <li @click="() => redirect('PolitiqueConfidentialite')" > Politique de confidentialité </li>
+            <li @click="() => redirect('ConditionsGeneralesUtilisations')" > Conditions générales d'utilisation </li>
+            <li @click="() => redirect('Home')" > Nous contacter </li>
+            <li @click="() => redirect('Home')" > Plan du site </li>
+          </ul>
+        </div>
+        <div class="right">
+          <p>© {{ date }} - <span @click="redirect('Home')"> Comics More </span></p>
+        </div>
+      </div>
     </div>
 
+  </footer>
 </template>
 
+<style scoped>
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  padding: 3em;
 
+  margin-top: 200px;
 
-<style>
-
-body {
-    margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-</style>
-
-<style scoped >
-
-.container {
-    margin-inline: 5%;
-    background: var(--secondary-color);
-
-    bottom: 0;
-    width: 100%;
-    height: 250px;
-
-    margin-top: 100px;
-}
-
-h2 {
-    color: var(--bg-color);
-    font-size: 25px;
-    font-weight: 400;
-    width: 300px;
-    text-align: end;
-}
-
-.line {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-}
-
-.logo {
-    width: 100px;
-}
-
-.logo img {
-    width: 100%;
-}
-
-.links {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 300px;
-}
-
-.link {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.link a {
-    color: var(--bg-color);
-    font-size: 1.5em;
-    text-decoration: none;
+  border-top: 7px solid var(--main-color);
 }
 
 
-.links a {
-    text-decoration: none;
-    position: relative;
-    cursor: pointer;
-    color: var(--bg-color);
-    font-size: 15px;
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.links a::after {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: -3px;
-    width: 100%;
-    height: 1.5px;
-    transform: scaleX(0);
-    transform-origin: left;
-    background: var(--main-color);
-    transition: transform 0.3s ease-out;
+.content div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-.links a:hover::after {
-    transform: scaleX(1)
+.left img {
+  width: 100px;
+  margin-right: 1em;
 }
 
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+li {
+  list-style: none;
+  margin-bottom: 1em;
+  cursor: pointer;
+}
+
+li:hover {
+  text-decoration: underline var(--main-color) ;
+}
 
 </style>

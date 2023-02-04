@@ -10,6 +10,10 @@
   src: url(../src/assets/font/Wigglye.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: "Amazing Spider-Man";
+  src: url(../src/assets/font/The\ Amazing\ Spider-Man.ttf) format('truetype');
+}
 
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -26,13 +30,13 @@
   color: #242424;
   background-color: #f1f1f1;
 
-  --main-color: #ffa800;
+  --main-color: #d54c45;
   --main-color-hover: #eb9202;
   --main-color-transparent: #ffaa00b6;
 
   --bg-color: #f1f1f1;
   --font-color: #242424;
-  
+
   --secondary-color: #3D91C0;
   --secondary-color-hover: #1e72a2;
   --secondary-color-transparent: #1e72a2ad;
@@ -44,7 +48,7 @@
   --navbar-height: 100px;
 
   --font: 'Dimis', cursive;
-  --secondary-font: 'Wigglye';
+  --secondary-font: "Amazing Spider-Man";
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -52,6 +56,8 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+
 
 .font {
   font-family: 'Solitreo', cursive;
@@ -113,6 +119,10 @@ select:hover {
   cursor: pointer;
   color: white;
   transition: 0.2s ease;
+}
+
+.btn:active {
+  box-shadow: 2px 2px 5px var(--font-color);
 }
 
 /* a {

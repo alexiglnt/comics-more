@@ -38,7 +38,8 @@ export default {
 
                     // On récupère les id des comics et on les met dans un tableau
                     this.tabIDComics = this.bookmark.comicsId.split('/').filter((item) => item !== '');
-
+                    console.log(this.tabIDComics);
+                    
                     // On récupère les infos des comics
                     this.getComics();
 

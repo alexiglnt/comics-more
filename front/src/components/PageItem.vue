@@ -107,6 +107,8 @@ export default {
 
         },
         changePage(value) {
+            console.log('current page', this.currentPage);
+            console.log('nbpage', this.currentComic.nbPage);
 
             let numeroPage;
 
@@ -204,8 +206,10 @@ export default {
 
                 // On vérifie si le comic est déjà bookmarké
                 if (this.bookmark.isChecked === false) {
+                    alert(`${this.currentComic.name.replaceAll('+', ' ')} ajouté aux favoris `);
                     this.addToBookmarks();
                 } else {
+                    alert(`${this.currentComic.name.replaceAll('+', ' ')} retiré des favoris `);
                     this.removeFromBookmarks();
                 }
             } else {
@@ -404,7 +408,7 @@ export default {
 
         <!-- On affiche le mode de lecture -->
         <div class="select-readMode" v-if="isConnected == 'true'">
-            <!-- <label for="selectReadMode"> Mode de lecture : </label> -->
+            <label for="selectReadMode"> Mode de lecture  </label>
             <select name="selectReadMode" id="selectReadMode" v-model="this.readMode">
                 <option value="scroll">Tout sur la même page</option>
                 <option value="onePage">Page par Page</option>
@@ -426,7 +430,7 @@ export default {
                     <img v-if="linkImages[0]" :src="linkImages[0].url" width="1000px">
                 </div>
                 <div class="right">
-                    <div>
+                    <div class="rt">
                         <div>
                             <h1> Informations </h1>
 
@@ -437,17 +441,27 @@ export default {
                             </button>
 
                         </div>
-                        <h3> <b> {{ this.currentComicName }} </b> </h3>
-                        <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
-                        <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
-                        <p v-if="this.currentHouse.name == 'MARVEL'">
-                            Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
-                                src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
-                        </p>
-                        <p v-else-if="this.currentHouse.name == 'DC COMICS'">
-                            Maison d'édition : <img @click="() => redirect('DC-Comics')" id="house-logo-dc"
-                                src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
-                        </p>
+                        <div class="rt">
+                            <h3> <b> {{ this.currentComicName }} </b> </h3>
+                            <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
+                            <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
+                            <p v-if="this.currentHouse.name == 'MARVEL'">
+                                Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
+                                    src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
+                            </p>
+                            <p v-else-if="this.currentHouse.name == 'DC COMICS'">
+                                Maison d'édition : <img @click="() => redirect('DC-Comics')" id="house-logo-dc"
+                                    src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
+                            </p>
+                            <p v-else>
+                                Maison d'édition : <b @click="() => redirect('OtherComics')"> {{
+                                    this.currentHouse.name
+                                }} </b>
+                            </p>
+                            <p class="redArrow">
+                                <span class="material-symbols-outlined "> south </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -469,12 +483,19 @@ export default {
             </div>
             <div v-else>
                 <div class="container-images-onePage">
+                    <!-- Bouton gauche -->
                     <button v-if="currentPage > 1" type="button" class="arrow-back" @click="() => changePage('back')">
                         &lt
                     </button>
                     <button v-else type="button" class="arrow-back" disabled> &lt </button>
+
                     <img id="currentImg" :src="this.linkCurrentPage" @click="() => changePage('next')">
-                    <button type="button" class="arrow-next" @click="() => changePage('next')"> > </button>
+
+                    <!-- Bouton droit -->
+                    <button v-if="currentPage < this.currentComic.nbPage" type="button" class="arrow-next" @click="() => changePage('next')">
+                        >
+                    </button>
+                    <button v-else type="button" class="arrow-next" disabled> > </button>
                 </div>
             </div>
         </div>
@@ -506,6 +527,46 @@ export default {
 
 
 <style scoped >
+
+.rt {
+    height: 100%;
+}
+.redArrow {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+.redArrow span {
+    width: 50px;
+    margin-left: 10px;
+    color: var(--main-color);
+    font-size: 50px;
+    animation: upDown 1s infinite;
+}
+
+.redArrow span:hover {
+    color: var(--main-color);
+}
+
+@keyframes upDown {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(20px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+
+
 #navbar {
     position: fixed;
     top: 0;
@@ -591,6 +652,7 @@ h2 {
     justify-content: center;
     align-items: center;
     width: 50vw;
+    height: 100%;
 }
 
 .right h1 {
@@ -637,6 +699,7 @@ h2 {
     align-items: center;
     height: 100vh;
     margin-top: 220px;
+    margin-bottom: 300px;
 }
 
 .container-images-onePage button {
@@ -702,6 +765,11 @@ h2 {
     justify-content: flex-start;
     align-items: flex-start;
     z-index: 1;
+}
+
+.select-readMode label {
+    font-size: 1.2em;
+    margin-left: 10px;
 }
 
 .select-readMode p {

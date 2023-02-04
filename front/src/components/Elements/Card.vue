@@ -60,7 +60,7 @@ export default {
 .container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
 }
 
 img {

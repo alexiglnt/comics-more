@@ -122,10 +122,10 @@ export default {
         </div>
 
         <div class="presentation">
-            <h1 class="bienvenue" >Bienvenue sur</h1> <br>
+            <h1 class="bienvenue" >BIENVENUE SUR</h1> <br>
             <h1> Comics More </h1> <br>
             <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
-                Voir le catalogue <span class="material-symbols-outlined"> keyboard_double_arrow_down </span>
+                Choisissez votre comics !
             </button>
         </div>
     </section>
@@ -134,7 +134,8 @@ export default {
 
     <!-- CAROUSEL -->
     <div class="slogan">
-        <h1> <span> D</span>ecouvrez <span>&nbsp N</span>os <span>&nbsp D</span>erniers<span>&nbsp A</span>jouts ! </h1>
+        <h1> <span>&nbsp N</span>OS <span>&nbsp D</span>ERNIERS<span>&nbsp A</span>JOUTS @ </h1>
+        <!-- <h1> $ £ @ # % & </h1> -->
     </div>
     <div class="carousel-container">
         <Carousel :data="lastComics" />
@@ -146,13 +147,13 @@ export default {
     <div class="container">
 
         <div class="slogan">
-            <h1> <span> C</span>hoisissez, <span>&nbspL</span>isez et<span>&nbsp P</span>rofitez ! </h1>
+            <h1> <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
         </div>
 
 
         <!-- RESEARCH BAR -->
         <form @submit.prevent="searchComics">
-            <input type="text" placeholder="Rechercher un comic" v-model="this.research">
+            <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
             <button type="submit">
                 <span class="material-symbols-outlined"> search </span>
             </button>
@@ -183,7 +184,7 @@ export default {
 
 
         <ScrollToUpBtn />
-        <Footer />
+        <!-- <Footer /> -->
 
     </div>
 
@@ -198,7 +199,6 @@ export default {
     width: 100%;
 }
 
-.accueil,
 .presentation {
     background-color: var(--background-color);
     width: 100%;
@@ -365,7 +365,7 @@ a {
 .accueil {
     height: 10vh;
     width: 100%;
-    background-color: #FFA800;
+    background-color: var(--main-color);
     max-height: 60vh;
 }
 

@@ -56,7 +56,7 @@ export default {
                     <p title="Nombre de pages" > Nombre de pages : <b> {{ comic.nbPage }} </b> </p> -->
                 </div>
                 <button type="button" class="btn" @click="() => this.readTheComic(comic) ">
-                    Je veux le lire !
+                    Vous voulez le lire ?
                 </button>
             </div>
             <img :src="this.link" alt="">

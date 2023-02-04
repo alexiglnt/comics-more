@@ -9,6 +9,8 @@ import App from './App.vue';
 import * as Page from './views/route-import.js';
 
 
+import BuyCredits from './components/BuyCredits.vue';
+
 const routes = [
 	{ path: '/', component: Page.Home, name: 'Home' },
 	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
@@ -28,7 +30,22 @@ const routes = [
 		path: '/DC-Comics', component: Page.DcComics, name: 'DC-Comics'
 	}, 
 	{ 
+		path: '/OtherComics', component: Page.OtherComics, name: 'OtherComics'
+	}, 
+	{ 
 		path: '/Admin', component: Page.Admin, name: 'Admin', beforeEnter: AdminGuard
+	}, 
+	{ 
+		path: '/BuyCredits', component: BuyCredits, name: 'BuyCredits',
+	}, 
+	{ 
+		path: '/MentionsLegales', component: Page.MentionsLegales, name: 'MentionsLegales',
+	}, 
+	{ 
+		path: '/PolitiqueConfidentialite', component: Page.PolitiqueConfidentialite, name: 'PolitiqueConfidentialite',
+	}, 
+	{ 
+		path: '/ConditionsGeneralesUtilisations', component: Page.ConditionUtilisations, name: 'ConditionsGeneralesUtilisations',
 	}, 
 	{ path: '/:pathMatch(.*)*', redirect: '/' }
 ];
