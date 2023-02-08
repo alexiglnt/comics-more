@@ -64,3 +64,5 @@ security:
         - { path: ^/api/comics, roles: PUBLIC_ACCESS,  methods: [GET] }
         - { path: ^/api/comics_collections, roles: PUBLIC_ACCESS,  methods: [GET] }
         - { path: ^/api/bookmarks, roles: PUBLIC_ACCESS,  methods: [POST] }
+        - { path: ^/api/credits, roles: IS_AUTHENTICATED_FULLY,  methods: [GET] }
+        - { path: ^/api/library, roles: IS_AUTHENTICATED_FULLY,  methods: [GET, POST, PUT] }

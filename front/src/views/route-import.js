@@ -10,6 +10,8 @@ import OtherComics from './OtherComics.vue';
 import MentionsLegales from './FooterLinks/MentionsLegales.vue';
 import PolitiqueConfidentialite from './FooterLinks/PolitiqueConfidentialite.vue';
 import ConditionUtilisations from './FooterLinks/ConditionUtilisations.vue';
+import BuyCredits from './BuyCredits.vue';
+import BuyCreditsPayment from './BuyCreditsPayment.vue';
 
 export { 
     Home, 
@@ -23,5 +25,7 @@ export {
     OtherComics,
     MentionsLegales,
     PolitiqueConfidentialite,
-    ConditionUtilisations
+    ConditionUtilisations,
+    BuyCredits,
+    BuyCreditsPayment
 };

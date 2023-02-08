@@ -18,6 +18,7 @@ export default {
                 nom: '',
                 mail: '',
                 role: '',
+                credits: null
             },
             editBtnMode: 'edit_square',
         }
@@ -35,6 +36,7 @@ export default {
             this.modifiedUser.nom = this.user.nom;
             this.modifiedUser.mail = this.user.email;
             this.modifiedUser.role = this.user.roles;
+            this.modifiedUser.credits = this.user.credits;
         },
         logout() {
             // On vide le localStorage
@@ -184,6 +186,12 @@ export default {
                             <tr>
                                 <td> <b> Mail </b> </td>
                                 <td> <input type="text" id="inputMail" v-model="modifiedUser.mail" disabled> </td>
+                            </tr>
+                            <tr>
+                                <td> <b> Crédits </b> </td>
+                                <td> 
+                                    <input type="text" id="inputMail" v-model="modifiedUser.credits" disabled>
+                                </td>
                             </tr>
                             <tr>
                                 <td> <b> Statut </b> </td>

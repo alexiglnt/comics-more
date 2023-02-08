@@ -32,6 +32,9 @@ class Comic
     #[ORM\Column(length: 255)]
     private ?string $extension = null;
 
+    #[ORM\Column]
+    private ?int $credits = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -81,6 +84,18 @@ class Comic
     public function setExtension(string $extension): self
     {
         $this->extension = $extension;
+
+        return $this;
+    }
+
+    public function getCredits(): ?int
+    {
+        return $this->credits;
+    }
+
+    public function setCredits(int $credits): self
+    {
+        $this->credits = $credits;
 
         return $this;
     }

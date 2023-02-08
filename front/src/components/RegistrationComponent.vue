@@ -61,7 +61,8 @@ export default {
                     email: this.mail,
                     password: this.password,
                     prenom: this.name,
-                    nom: this.surname
+                    nom: this.surname,
+                    credits: 10
                 })
                     .then(response => {
                         console.log('response', response);

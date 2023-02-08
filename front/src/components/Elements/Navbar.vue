@@ -4,7 +4,8 @@ export default {
     data() {
         return {
             isAdmin: false,
-            isConnected: localStorage.getItem('isConnected')
+            isConnected: localStorage.getItem('isConnected'),
+            credits: 0,
         }
     },
     methods: {
@@ -41,6 +42,7 @@ export default {
         // Check if user is admin
         const userInfos = JSON.parse(localStorage.getItem('userInfos'));
         if (userInfos) {
+            this.credits = JSON.parse(localStorage.getItem('userInfos')).credits;
             if (userInfos.roles[0] === 'ROLE_ADMIN') {
                 this.isAdmin = true;
             }
@@ -74,6 +76,12 @@ export default {
                     <a class="nav-links"> Plus de comics </a>
                 </div>
                 <div>
+                    <a v-if="isConnected == 'true'" @click="() => redirect('BuyCredits')" class="coin" title="Vos crédits" >
+                        <span class="material-symbols-outlined">
+                            monetization_on
+                        </span>
+                        {{ credits }}
+                    </a>
                     <a v-if="isConnected == 'false'" @click="() => redirect('Login')" class="btn">
                         <span class="material-symbols-outlined">
                             person
@@ -98,6 +106,30 @@ export default {
 </template>
 
 <style scoped >
+
+a.coin {
+    text-decoration: none;
+    cursor: pointer;
+    color: #333;
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+a.coin>span.material-symbols-outlined {
+    color: var(--main-color);
+    transform: translateY(10px);
+    transition: 0.5s ease ;
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 300,
+        'GRAD' 0,
+        'opsz' 48
+}
+
+a.coin>span.material-symbols-outlined:hover {
+    color: var(--font-color);
+    transition: 0.5s ease ;
+}
 .anchor-pack a {
     text-decoration: none;
     position: relative;

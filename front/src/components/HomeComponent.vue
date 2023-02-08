@@ -19,6 +19,7 @@ export default {
             research: '',
             researchNotFound: false,
             lastComics: [],
+            isConnected: localStorage.getItem('isConnected'),
         }
     },
     methods: {
@@ -126,7 +127,8 @@ export default {
             <h1> Comics More </h1> <br>
             <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
                 Choisissez votre comics !
-            </button>
+            </button> <br> <br>
+            <p v-if="isConnected == 'false'" > 10 crédits gratuits à votre première inscription ! </p>
         </div>
     </section>
 

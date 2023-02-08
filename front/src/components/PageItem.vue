@@ -447,16 +447,20 @@ export default {
                             <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
                             <p v-if="this.currentHouse.name == 'MARVEL'">
                                 Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
-                                    src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
+                                src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
                             </p>
                             <p v-else-if="this.currentHouse.name == 'DC COMICS'">
                                 Maison d'édition : <img @click="() => redirect('DC-Comics')" id="house-logo-dc"
-                                    src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
+                                src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
                             </p>
                             <p v-else>
                                 Maison d'édition : <b @click="() => redirect('OtherComics')"> {{
                                     this.currentHouse.name
                                 }} </b>
+                            </p>
+                            <p>
+                                Crédits : <b> {{ this.currentComic.credits }}  </b> 
+                                <span class="material-symbols-outlined"> monetization_on </span>
                             </p>
                             <p class="redArrow">
                                 <span class="material-symbols-outlined "> south </span>

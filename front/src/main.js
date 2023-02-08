@@ -8,9 +8,6 @@ import { authGuard, MyAccountGuard, AdminGuard, ComicsGuard } from './_helpers/g
 import App from './App.vue';
 import * as Page from './views/route-import.js';
 
-
-import BuyCredits from './components/BuyCredits.vue';
-
 const routes = [
 	{ path: '/', component: Page.Home, name: 'Home' },
 	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
@@ -36,7 +33,10 @@ const routes = [
 		path: '/Admin', component: Page.Admin, name: 'Admin', beforeEnter: AdminGuard
 	}, 
 	{ 
-		path: '/BuyCredits', component: BuyCredits, name: 'BuyCredits',
+		path: '/BuyCredits', component: Page.BuyCredits, name: 'BuyCredits',
+	}, 
+	{ 
+		path: '/BuyCredits/Payment', component: Page.BuyCreditsPayment, name: 'BuyCreditsPayment', // mettre un guard pour vérifier si l'utilisateur est connecté et si il a choisi le nombre de crédits à acheter
 	}, 
 	{ 
 		path: '/MentionsLegales', component: Page.MentionsLegales, name: 'MentionsLegales',

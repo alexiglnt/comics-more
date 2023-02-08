@@ -2,10 +2,15 @@ import axios from 'axios';
 import instance from '../../axios-infos';
 
 
-
+// LoginGuard
 export function authGuard(to) {
 
-    let isAuth = localStorage.getItem('isConnected');
+    let isAuth = 'false';
+
+    if(localStorage.getItem('isConnected'))
+    {
+        isAuth = localStorage.getItem('isConnected');
+    }
 
     // Si l'utilisateur n'est pas connecté on le redirige vers la page de login
     if (isAuth == 'false') {
@@ -21,7 +26,12 @@ export function authGuard(to) {
 
 export function MyAccountGuard(to) {
 
-    let isAuth = localStorage.getItem('isConnected');
+    let isAuth = 'false';
+
+    if(localStorage.getItem('isConnected'))
+    {
+        isAuth = localStorage.getItem('isConnected');
+    }
 
     // Si l'utilisateur est connecté on le redirige vers sa page de profil
     if (isAuth == 'true') {

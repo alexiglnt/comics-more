@@ -18,7 +18,8 @@ export default {
             userInfos: '',
             visibilityMode: 'visibility_off',
             badRequest: false,
-            cpt: 0
+            cpt: 0,
+            cpt_lib: 0,
         }
     },
     methods: {
@@ -33,6 +34,49 @@ export default {
                 this.visibilityMode = 'visibility_off';
             }
         },
+        verifyBookmarkAndLibrary() {
+            const URL = `${instance.baseURL}/api/bookmarks`;
+            const URL_lib = `${instance.baseURL}/api/libraries`;
+
+            axios.get(URL)
+                .then(res => {
+                    let bookmarks = res.data['hydra:member'];
+
+                    bookmarks.forEach(bm => {
+                        if (bm.userID === this.userInfos.id) {
+                            this.cpt++;
+                        }
+                    });
+
+                    if (this.cpt === 0) {
+                        this.createBookmark();
+                    }
+
+                    return axios.get(URL_lib);
+                })
+                .then(res => {
+                    let libraries = res.data['hydra:member'];
+
+                    libraries.forEach(lib => {
+                        if (lib.userID === this.userInfos.id) {
+                            this.cpt_lib++;
+                        }
+                    });
+
+                    console.log('CPT LIB : ', this.cpt_lib);
+                    if (this.cpt_lib === 0) {
+                        this.createLibrary();
+                    }
+
+                    console.log('REDIRECTION');
+                    this.$router.push({
+                        name: 'ProfilUser',
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
         createBookmark() {
             const URL = `${instance.baseURL}/api/bookmarks`;
 
@@ -42,11 +86,30 @@ export default {
             })
                 .then(res => {
                     console.log('BOOKMARK CREATED', res);
+                })
+                .catch(err => {
+                    console.log('ERROR : ', err);
+                })
+        },
+        createLibrary() {
+            const URL_lib = `${instance.baseURL}/api/libraries`;
 
-                    // On redirige l'utilisateur vers la page de profil
-                    this.$router.push({
-                        name: 'ProfilUser',
-                    });
+            axios.post(URL_lib,
+                {
+                    userID: this.userInfos.id,
+                    comicsUserHas: "[]"
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.token
+                    }
+                })
+                .then(res => {
+                    console.log('LIBRARY CREATED', res);
+                })
+                .catch(err => {
+                    console.log('ERROR : ', err);
                 })
         },
         isBookmarkExist() {
@@ -77,10 +140,10 @@ export default {
                 })
                 .then(() => {
                     // On redirige l'utilisateur vers la page de profil
-                    console.log('REDIRECTION');
-                    this.$router.push({
-                        name: 'ProfilUser',
-                    });
+                    // console.log('REDIRECTION');
+                    // this.$router.push({
+                    //     name: 'ProfilUser',
+                    // });
                 })
         },
         async getUserInformation() {
@@ -111,7 +174,7 @@ export default {
                             localStorage.setItem('userInfos', JSON.stringify(this.userInfos));
 
                             // On vérifie si l'utilisateur connecté a déjà des bookmarks
-                            this.isBookmarkExist();
+                            this.verifyBookmarkAndLibrary();
                         }
                     }
                 })
