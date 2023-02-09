@@ -60,6 +60,9 @@ export default {
                     libraries.forEach(lib => {
                         if (lib.userID === this.userInfos.id) {
                             this.cpt_lib++;
+                            console.log('LIB : ', lib);
+                            localStorage.setItem('userLibrary', JSON.stringify(lib));
+                            console.log('LIBRARY : ', localStorage.getItem('userLibrary'));
                         }
                     });
 

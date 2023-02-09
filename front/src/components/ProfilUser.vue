@@ -42,6 +42,7 @@ export default {
             // On vide le localStorage
             localStorage.removeItem('token');
             localStorage.removeItem('userInfos');
+            localStorage.removeItem('userLibrary');
 
             localStorage.setItem('isConnected', false);
             this.isConnected = localStorage.getItem('isConnected');

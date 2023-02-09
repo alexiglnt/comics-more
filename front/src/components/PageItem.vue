@@ -35,7 +35,9 @@ export default {
                 state: 'bookmark_add',
                 data: {},
                 isChecked: false,
-            }
+            },
+            isInLibrary: false,
+            isAdmin: false
         }
     },
     methods: {
@@ -371,15 +373,44 @@ export default {
                     console.log(error);
                 });
         },
+        verifyIfComicIsInLibrary() {
+            let cpt = 0;
+            let library = JSON.parse(localStorage.getItem('userLibrary'));
+
+            let str = library.comicsUserHas;
+
+            // transform str in array after removing the first and last character
+            let tabLib = str.substring(1, str.length - 1).split(',');
+            console.log(tabLib);
+
+            // On vérifie si le comic est déjà dans la librairie
+            tabLib.forEach((comic) => {
+                if (comic == this.$route.params.id) {
+                    cpt++;
+                }
+            });
+
+            if (cpt > 0) {
+                this.isInLibrary = true;
+            }
+
+
+
+            // if (this.userLibrary.includes(`/${this.$route.params.id}/`)) {
+            //     this.isInLibrary = true;
+            // }
+        }
     },
     async mounted() {
-
-        console.log(this.$route.params.id);
-
         // Récupération de la collection
         await this.recupCollection();
 
         if (this.isConnected == 'true') {
+            // On vérifie si l'utilisateur est admin
+            if (JSON.parse(localStorage.getItem('userInfos')).roles[0] == 'ROLE_ADMIN') {
+                this.isAdmin = true;
+            }
+
             // Récupération des bookmarks
             await this.recupBookmarkInfos();
         }
@@ -393,6 +424,10 @@ export default {
             top: 0,
             behavior: "smooth"
         });
+
+        // On vérifie si le comics de la page est contenu dans userLibrary
+        this.verifyIfComicIsInLibrary();
+
     }
 }
 
@@ -408,7 +443,7 @@ export default {
 
         <!-- On affiche le mode de lecture -->
         <div class="select-readMode" v-if="isConnected == 'true'">
-            <label for="selectReadMode"> Mode de lecture  </label>
+            <label for="selectReadMode"> Mode de lecture </label>
             <select name="selectReadMode" id="selectReadMode" v-model="this.readMode">
                 <option value="scroll">Tout sur la même page</option>
                 <option value="onePage">Page par Page</option>
@@ -447,11 +482,11 @@ export default {
                             <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
                             <p v-if="this.currentHouse.name == 'MARVEL'">
                                 Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
-                                src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
+                                    src="../assets/Marvel_Logo.svg" title="MARVEL" alt="">
                             </p>
                             <p v-else-if="this.currentHouse.name == 'DC COMICS'">
                                 Maison d'édition : <img @click="() => redirect('DC-Comics')" id="house-logo-dc"
-                                src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
+                                    src="../assets/DC_Comics_logo.png" title="DC COMICS" alt="">
                             </p>
                             <p v-else>
                                 Maison d'édition : <b @click="() => redirect('OtherComics')"> {{
@@ -459,7 +494,7 @@ export default {
                                 }} </b>
                             </p>
                             <p>
-                                Crédits : <b> {{ this.currentComic.credits }}  </b> 
+                                Crédits : <b> {{ this.currentComic.credits }} </b>
                                 <span class="material-symbols-outlined"> monetization_on </span>
                             </p>
                             <p class="redArrow">
@@ -476,7 +511,7 @@ export default {
         <h1> Bonne lecture 😀 </h1> <br>
 
         <!-- On affiche les images du comics -->
-        <div v-if="isConnected == 'true'">
+        <div v-if="isConnected == 'true' && isInLibrary == true || isAdmin === true">
             <div v-if="this.readMode === 'scroll'">
                 <div class="container-images-scroll">
                     <div class="images" v-for="image in linkImages">
@@ -496,11 +531,26 @@ export default {
                     <img id="currentImg" :src="this.linkCurrentPage" @click="() => changePage('next')">
 
                     <!-- Bouton droit -->
-                    <button v-if="currentPage < this.currentComic.nbPage" type="button" class="arrow-next" @click="() => changePage('next')">
+                    <button v-if="currentPage < this.currentComic.nbPage" type="button" class="arrow-next"
+                        @click="() => changePage('next')">
                         >
                     </button>
                     <button v-else type="button" class="arrow-next" disabled> > </button>
                 </div>
+            </div>
+        </div>
+        <div v-else-if="isConnected == 'true' && isInLibrary == false">
+            <div class="band-connect">
+                <div class="band-connect-left">
+                    <h2> Ce comics coute {{ this.currentComic.credits }} crédits </h2>
+                    <button type="button" class="btn" @click="() => this.redirect('Login')">
+                        Acheter ce crédit : {{ this.currentComic.credits }}
+                        <span class="material-symbols-outlined">
+                            monetization_on
+                        </span>
+                    </button>
+                </div>
+                <img :src="this.linkCurrentPage" alt="">
             </div>
         </div>
         <div v-else>
@@ -531,10 +581,10 @@ export default {
 
 
 <style scoped >
-
 .rt {
     height: 100%;
 }
+
 .redArrow {
     display: flex;
     justify-content: flex-end;
