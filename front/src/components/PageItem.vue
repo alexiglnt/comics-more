@@ -37,6 +37,7 @@ export default {
                 isChecked: false,
             },
             isInLibrary: false,
+            tabLibrary: [],
             isAdmin: false
         }
     },
@@ -380,8 +381,11 @@ export default {
             let str = library.comicsUserHas;
 
             // transform str in array after removing the first and last character
-            let tabLib = str.substring(1, str.length - 1).split(',');
-            console.log(tabLib);
+            // let tabLib = str.substring(1, str.length - 1).split(',');
+            // this.tabLibrary = tabLib;
+
+            let tabLib = str.split(',');
+            this.tabLibrary = tabLib;
 
             // On vérifie si le comic est déjà dans la librairie
             tabLib.forEach((comic) => {
@@ -393,12 +397,87 @@ export default {
             if (cpt > 0) {
                 this.isInLibrary = true;
             }
+        },
+        spendCredits() {
+            const URL = `${instance.baseURL}/api/users/${JSON.parse(localStorage.getItem('userInfos')).id}`;
 
+            if (JSON.parse(localStorage.getItem('userInfos')).credits - this.currentComic.credits < 0) {
+                alert('Vous n\'avez pas assez de crédits pour acheter ce comic. Vous allez être redirigé vers la page de recharge de crédits.');
+                this.$router.push('/BuyCredits');
+            } else {
+                // Modification du nombre de credits de l'utilisateur
+                axios.put(URL,
+                    {
+                        credits: JSON.parse(localStorage.getItem('userInfos')).credits - this.currentComic.credits,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        }
+                    })
+                    .then((response) => {
+                        console.log(response);
 
+                        if (response.status == 200) {
+                            // On modifie le nombre de crédits dans le localStorage
+                            let userInfos = JSON.parse(localStorage.getItem('userInfos'));
+                            userInfos.credits = userInfos.credits - this.currentComic.credits;
+                            localStorage.setItem('userInfos', JSON.stringify(userInfos));
 
-            // if (this.userLibrary.includes(`/${this.$route.params.id}/`)) {
-            //     this.isInLibrary = true;
-            // }
+                            // On ajoute le comic à la librairie
+                            this.addComicToUserLibrary(this.$route.params.id);
+                        }
+                    })
+                    .catch((error) => {
+                        accountService.tokenExpired(error);
+                        alert('L\'opération n\'a pas fonctionnée. Vous n\'avez pas été débité de vos crédits. Veuillez réessayer ultérieurement.')
+                        console.log(error);
+                    });
+            }
+        },
+        addComicToUserLibrary(comicID) {
+
+            // On récupère la librairie de l'utilisateur
+            let libraryID = JSON.parse(localStorage.getItem('userLibrary')).id;
+            let tabLib = this.tabLibrary;
+
+            // On ajoute l'id du comic à la librairie
+            tabLib.push(comicID.toString());
+
+            // On transforme le tableau en string
+            tabLib = tabLib.join(',');
+
+            // On transforme dans le localStorage
+            let library = JSON.parse(localStorage.getItem('userLibrary'));
+            library.comicsUserHas = tabLib;
+            localStorage.setItem('userLibrary', JSON.stringify(library));
+
+            // On ajoute le comic à la librairie de l'utilisateur
+            const URL = `${instance.baseURL}/api/libraries/${libraryID}`;
+
+            axios.put(URL,
+                {
+                    comicsUserHas: tabLib,
+                },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response) => {
+                    console.log(response);
+
+                    if (response.status == 200) {
+                        alert('Vous pouvez désormais lire ce comic ! Bonne lecture !');
+                        this.isInLibrary = true;
+                    }
+                })
+                .catch((error) => {
+                    accountService.tokenExpired(error);
+                    console.log(error);
+                });
         }
     },
     async mounted() {
@@ -543,7 +622,7 @@ export default {
             <div class="band-connect">
                 <div class="band-connect-left">
                     <h2> Ce comics coute {{ this.currentComic.credits }} crédits </h2>
-                    <button type="button" class="btn" @click="() => this.redirect('Login')">
+                    <button type="button" class="btn" @click="() => this.spendCredits()">
                         Acheter ce crédit : {{ this.currentComic.credits }}
                         <span class="material-symbols-outlined">
                             monetization_on

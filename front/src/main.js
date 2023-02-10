@@ -21,6 +21,12 @@ const routes = [
 		path: '/MyAccount', component: Page.ProfilUser, name: 'ProfilUser', beforeEnter: MyAccountGuard
 	}, 
 	{ 
+		path: '/MyAccount/Bookmarks', component: Page.Bookmarks, name: 'Bookmarks'
+	}, 
+	{ 
+		path: '/MyAccount/Library', component: Page.Library, name: 'Library'
+	}, 
+	{ 
 		path: '/Marvel', component: Page.MarvelPage, name: 'MarvelPage'
 	}, 
 	{ 

@@ -100,7 +100,7 @@ export default {
             axios.post(URL_lib,
                 {
                     userID: this.userInfos.id,
-                    comicsUserHas: "[]"
+                    comicsUserHas: "0"
                 },
                 {
                     headers: {
@@ -109,7 +109,8 @@ export default {
                     }
                 })
                 .then(res => {
-                    console.log('LIBRARY CREATED', res);
+                    console.log('LIBRARY CREATED', res.data);
+                    localStorage.setItem('userLibrary', JSON.stringify(res.data));
                 })
                 .catch(err => {
                     console.log('ERROR : ', err);

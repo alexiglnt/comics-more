@@ -1,6 +1,6 @@
 <script>
 import Navbar from './Elements/Navbar.vue';
-import Bookmarks from './Elements/Bookmarks.vue';
+import Bookmarks from './Elements/BookmarksComponents.vue';
 
 import axios from 'axios';
 import instance from '../../axios-infos';
@@ -212,10 +212,22 @@ export default {
 
         <div class="separation"> </div>
 
-        <div class="bookmarks">
+
+        <div class="blocs-container">
+            <div class="bloc" @click="() => redirect('Library')" >
+                <h2> Votre bibliothèque </h2>
+                <span class="material-symbols-outlined"> library_books </span>
+            </div>
+            <div class="bloc" @click="() => redirect('Bookmarks')" >
+                <h2> Vos favoris </h2>
+                <span class="material-symbols-outlined"> bookmark </span>
+            </div>
+        </div>
+
+        <!-- <div class="bookmarks">
             <h1> Vos favoris ✨ </h1>
             <Bookmarks />
-        </div>
+        </div> -->
 
     </div>
 
@@ -223,6 +235,49 @@ export default {
 
 
 <style scoped>
+
+
+.blocs-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+    width: 70%;
+}
+
+.bloc {
+    width: 400px;
+    height: 300px;
+    background-color: var(--bg-color);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-family: var(--font-family);
+    color: var(--font-color);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    transition: 0.3s ease;
+}
+
+.bloc:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.bloc span {
+    font-size: 5em;
+    margin-top: 20px;
+    color: var(--secondary-color);
+}
+
 #modal {
     display: none;
     /** None car Caché de base **/

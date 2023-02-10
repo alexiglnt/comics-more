@@ -12,6 +12,8 @@ import PolitiqueConfidentialite from './FooterLinks/PolitiqueConfidentialite.vue
 import ConditionUtilisations from './FooterLinks/ConditionUtilisations.vue';
 import BuyCredits from './BuyCredits.vue';
 import BuyCreditsPayment from './BuyCreditsPayment.vue';
+import Bookmarks from './Bookmarks.vue';
+import Library from './Library.vue';
 
 export { 
     Home, 
@@ -27,5 +29,7 @@ export {
     PolitiqueConfidentialite,
     ConditionUtilisations,
     BuyCredits,
-    BuyCreditsPayment
+    BuyCreditsPayment,
+    Bookmarks,
+    Library
 };
