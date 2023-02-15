@@ -59,7 +59,7 @@ export default {
                     .then((response) => {
 
                         let tmp = response.data;
-                        tmp.name = tmp.name.replaceAll('+', ' ');
+                         tmp.name = tmp.name.replaceAll('+', ' ');
                         this.comics.push(tmp);
                     })
                     .catch((error) => {

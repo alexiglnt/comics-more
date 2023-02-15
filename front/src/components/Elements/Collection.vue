@@ -25,9 +25,6 @@ export default {
 
             axios.get(URL)
                 .then((response) => {
-
-                    //const tpmCollections = response.data['hydra:member'];
-
                     // Filter the collections to get the one with the name passed in props
                     this.collections = response.data['hydra:member'].filter(collection => collection.name == this.name);
                     this.comicsLinks = this.collections[0].comics;
@@ -47,9 +44,10 @@ export default {
                         let tmp = response.data;
                         tmp.name = tmp.name.replaceAll('+', ' ');
 
-
-                        // Add the comic to the comics array
-                        this.comics.push(tmp);
+                        // Limiter le nombre de comics à 4
+                        if (this.comics.length < 4) {
+                            this.comics.push(tmp);
+                        }
                     })
                     .catch((error) => {
                         console.log(error);
@@ -61,6 +59,9 @@ export default {
                 comic.name = comic.name.replaceAll('+', ' ');
             });
 
+        },
+        goToCollection(collectionName) {
+            this.$router.push({ name: 'Collection', params: { name: collectionName } });
         },
     },
     mounted() {
@@ -86,6 +87,7 @@ export default {
             <div v-else >
                 <h1> Collection <span style="color: var(--main-color);" > {{ name }} </span> </h1>
             </div>
+            <p @click="() => goToCollection(name)" > Voir tout </p>
         </div>
         <div class="grid-collection">
             <div v-for="comic in comics">
@@ -107,8 +109,25 @@ export default {
     margin-inline: 5%;
 }
 
+.line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
 .line h1 {
     text-align: start;
+}
+
+.line p {
+    font-size: 1.2em;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.line p:hover {
+    color: var(--main-color);
 }
 
 .grid-collection {

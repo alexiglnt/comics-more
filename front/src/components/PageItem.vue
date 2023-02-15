@@ -45,6 +45,9 @@ export default {
         redirect(routeName) {
             this.$router.push({ name: routeName });
         },
+        goToCollection(collectionName) {
+            this.$router.push({ name: 'Collection', params: { name: collectionName } });
+        },
         // Récupération des liens des images du comics depuis la BDD liée à l'API
         async recupCollection() {
             // On sauvegarde les infos du comics actuel dans la variable currentComic
@@ -521,7 +524,7 @@ export default {
         </div>
 
         <!-- On affiche le mode de lecture -->
-        <div class="select-readMode" v-if="isConnected == 'true'">
+        <div class="select-readMode" v-if="isConnected == 'true' && isInLibrary == true || isAdmin === true">
             <label for="selectReadMode"> Mode de lecture </label>
             <select name="selectReadMode" id="selectReadMode" v-model="this.readMode">
                 <option value="scroll">Tout sur la même page</option>
@@ -557,7 +560,13 @@ export default {
                         </div>
                         <div class="rt">
                             <h3> <b> {{ this.currentComicName }} </b> </h3>
-                            <p> Collection : <b> {{ this.currentCollection.name }} </b> </p>
+                            <p> 
+                                Collection : 
+                                <span id="span-collection" @click="() => goToCollection(this.currentCollection.name)" > 
+                                    <b> {{ this.currentCollection.name }} </b> 
+                                    <span class="material-symbols-outlined"> open_in_new </span>
+                                </span> 
+                            </p>
                             <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
                             <p v-if="this.currentHouse.name == 'MARVEL'">
                                 Maison d'édition : <img @click="() => redirect('MarvelPage')" id="house-logo-marvel"
@@ -572,7 +581,7 @@ export default {
                                     this.currentHouse.name
                                 }} </b>
                             </p>
-                            <p>
+                            <p class="creditPrice" >
                                 Crédits : <b> {{ this.currentComic.credits }} </b>
                                 <span class="material-symbols-outlined"> monetization_on </span>
                             </p>
@@ -623,7 +632,7 @@ export default {
                 <div class="band-connect-left">
                     <h2> Ce comics coute {{ this.currentComic.credits }} crédits </h2>
                     <button type="button" class="btn" @click="() => this.spendCredits()">
-                        Acheter ce crédit : {{ this.currentComic.credits }}
+                        Acheter ce comics : {{ this.currentComic.credits }}
                         <span class="material-symbols-outlined">
                             monetization_on
                         </span>
@@ -660,6 +669,33 @@ export default {
 
 
 <style scoped >
+
+.creditPrice span {
+    margin-left: 5px;
+    transform: translateY(5px);
+    color: #efc000;
+}
+
+#span-collection {
+    cursor: pointer;
+    color: var(--main-color);
+}
+
+#span-collection span {
+    transform: translateY(5px);
+    margin-left: 5px;
+}
+
+#span-collection:hover {
+    color: var(--secondary-color);
+}
+
+#span-collection span:hover {
+    color: var(--secondary-color);
+}
+#span-collection:hover {
+    color: var(--secondary-color);
+}
 .rt {
     height: 100%;
 }

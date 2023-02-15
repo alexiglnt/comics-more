@@ -14,6 +14,7 @@ import BuyCredits from './BuyCredits.vue';
 import BuyCreditsPayment from './BuyCreditsPayment.vue';
 import Bookmarks from './Bookmarks.vue';
 import Library from './Library.vue';
+import Collection from './Collection.vue';
 
 export { 
     Home, 
@@ -31,5 +32,6 @@ export {
     BuyCredits,
     BuyCreditsPayment,
     Bookmarks,
-    Library
+    Library,
+    Collection
 };

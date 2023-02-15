@@ -3,7 +3,7 @@ import './style.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createRouter, createWebHistory } from 'vue-router';
-import { authGuard, MyAccountGuard, AdminGuard, ComicsGuard } from './_helpers/guards.js';
+import { authGuard, MyAccountGuard, AdminGuard, ComicsGuard, PaymentGuard } from './_helpers/guards.js';
 
 import App from './App.vue';
 import * as Page from './views/route-import.js';
@@ -13,6 +13,9 @@ const routes = [
 	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
 	{ 
 		path: '/Comics/:id(\\d+)', component: Page.Comics, name: 'Comics', props: true, beforeEnter: ComicsGuard
+	}, 
+	{ 
+		path: '/Collection/:name', component: Page.Collection, name: 'Collection', props: true
 	}, 
 	{ 
 		path: '/Login', component: Page.Login, name: 'Login', beforeEnter: authGuard
@@ -39,10 +42,10 @@ const routes = [
 		path: '/Admin', component: Page.Admin, name: 'Admin', beforeEnter: AdminGuard
 	}, 
 	{ 
-		path: '/BuyCredits', component: Page.BuyCredits, name: 'BuyCredits',
+		path: '/BuyCredits', component: Page.BuyCredits, name: 'BuyCredits', beforeEnter: MyAccountGuard
 	}, 
 	{ 
-		path: '/BuyCredits/Payment', component: Page.BuyCreditsPayment, name: 'BuyCreditsPayment', // mettre un guard pour vérifier si l'utilisateur est connecté et si il a choisi le nombre de crédits à acheter
+		path: '/BuyCredits/Payment', component: Page.BuyCreditsPayment, name: 'BuyCreditsPayment', beforeEnter: PaymentGuard
 	}, 
 	{ 
 		path: '/MentionsLegales', component: Page.MentionsLegales, name: 'MentionsLegales',

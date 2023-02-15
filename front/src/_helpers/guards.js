@@ -7,8 +7,7 @@ export function authGuard(to) {
 
     let isAuth = 'false';
 
-    if(localStorage.getItem('isConnected'))
-    {
+    if (localStorage.getItem('isConnected')) {
         isAuth = localStorage.getItem('isConnected');
     }
 
@@ -28,8 +27,7 @@ export function MyAccountGuard(to) {
 
     let isAuth = 'false';
 
-    if(localStorage.getItem('isConnected'))
-    {
+    if (localStorage.getItem('isConnected')) {
         isAuth = localStorage.getItem('isConnected');
     }
 
@@ -90,3 +88,24 @@ export function ComicsGuard(to) {
         }
         );
 }
+
+// Vérifie si l'utilisateur est connecté pour accéder à la page de paiement et que il a choisi un nombre de crédits
+export function PaymentGuard(to) {
+
+    let isAuth = 'false';
+
+    if (localStorage.getItem('isConnected')) {
+        isAuth = localStorage.getItem('isConnected');
+    }
+
+    if (localStorage.getItem('nbCredits')) {
+        let credits = localStorage.getItem('nbCredits');
+
+        // Si l'utilisateur est connecté et qu'il a choisi un nombre de crédits on le redirige vers la page de paiement
+        if (isAuth == 'true' && credits != '0') {
+            return true;
+        }
+    }
+    // Sinon on le redirige vers la page de login
+    window.location.href = '/Login';
+} 
