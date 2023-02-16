@@ -119,6 +119,37 @@ export default {
             this.nouvNom = this.nom;
             this.nouvPrenom = this.prenom;
             this.nouvMail = this.mail;
+        },
+        handleClickDeleteBtn() {
+            // prompt pour demander la confirmation de la suppression du compte
+            const confirmation = prompt("Voulez-vous vraiment supprimer votre compte ? (Tapez 'supprimer' pour confirmer)");
+
+            if (confirmation === "supprimer") {
+                this.deleteUserAccount();
+            }
+            else {
+                alert("Votre compte n'a pas été supprimé !");
+            }
+        },
+        deleteUserAccount() {
+            const URL = `${instance.baseURL}/api/users/${this.user.id}`;
+
+            axios.delete(URL, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                }
+            })
+                .then((response) => {
+                    if (response.status === 204) {
+                        alert('Toutes vos données ont bien été supprimées ! Revenez nous voir bientôt !');
+                        this.logout();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    accountService.tokenExpired(error);
+                });
         }
     },
     mounted() {
@@ -190,7 +221,7 @@ export default {
                             </tr>
                             <tr>
                                 <td> <b> Crédits </b> </td>
-                                <td> 
+                                <td>
                                     <input type="text" id="inputMail" v-model="modifiedUser.credits" disabled>
                                 </td>
                             </tr>
@@ -214,20 +245,21 @@ export default {
 
 
         <div class="blocs-container">
-            <div class="bloc" @click="() => redirect('Library')" >
+            <div class="bloc" @click="() => redirect('Library')">
                 <h2> Votre bibliothèque </h2>
                 <span class="material-symbols-outlined"> library_books </span>
             </div>
-            <div class="bloc" @click="() => redirect('Bookmarks')" >
+            <div class="bloc" @click="() => redirect('Bookmarks')">
                 <h2> Vos favoris </h2>
                 <span class="material-symbols-outlined"> bookmark </span>
             </div>
-        </div>
+        </div> <br>
 
-        <!-- <div class="bookmarks">
-            <h1> Vos favoris ✨ </h1>
-            <Bookmarks />
-        </div> -->
+
+        <button class="cubeBtn" @click="handleClickDeleteBtn">
+            Supprimer mon compte et mes informations &nbsp;
+            <span class="material-symbols-outlined"> delete </span>
+        </button>
 
     </div>
 
@@ -235,8 +267,6 @@ export default {
 
 
 <style scoped>
-
-
 .blocs-container {
     display: flex;
     justify-content: space-around;
@@ -248,15 +278,17 @@ export default {
 .bloc {
     width: 400px;
     height: 300px;
-    background-color: var(--bg-color);
+    background-color: var(--card-color);
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 10px 10px 2px 1px var(--secondary-color);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5em;
     font-family: var(--font-family);
     color: var(--font-color);
+    font-family: var(--font);
+    letter-spacing: 1px;
 
     display: flex;
     flex-direction: column;
@@ -267,7 +299,7 @@ export default {
 }
 
 .bloc:hover {
-    transform: scale(1.05);
+    transform: translateY(-10px);
     cursor: pointer;
     transition: 0.3s ease;
 }
@@ -563,6 +595,26 @@ td input:hover {
 #save-btn:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+
+.cubeBtn {
+    background-color: var(--main-color);
+    border: none;
+    color: var(--bg-color);
+    font-size: 1.2em;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.cubeBtn:hover {
+    box-shadow: 0 0 5px var(--main-color);
 }
 
 .bookmarks {

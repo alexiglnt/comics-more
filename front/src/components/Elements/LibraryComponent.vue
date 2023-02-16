@@ -13,7 +13,8 @@ export default {
     data() {
         return {
             tabLibrary: [],
-            comics: []
+            comics: [],
+            isAdmin: JSON.parse(localStorage.getItem('userInfos')).roles[0] === 'ROLE_ADMIN' ? true : false
         };
     },
     methods: {
@@ -53,13 +54,34 @@ export default {
 
             console.log(this.comics);
         },
+        getAllComics() {
+            const URl = `${instance.baseURL}/api/comics`;
+
+            axios.get(URl)
+                .then((response) => {
+                    response.data['hydra:member'].forEach(comic => {
+                        comic.name = comic.name.replaceAll('+', ' ');
+                        this.comics.push(comic);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         readTheComic(comic) {
             localStorage.setItem('currentComic', JSON.stringify(comic));
             this.$router.push({ path: `/Comics/${comic.id}` })
         },
     },
-    mounted() {
-        this.getLibrary();
+    async mounted() {
+        console.log(this.isAdmin);
+        
+        if(!this.isAdmin) {
+            await this.getLibrary();
+        }
+        else {
+            await this.getAllComics();
+        }
     }
 };
 
@@ -70,10 +92,12 @@ export default {
     <Navbar />
 
     <div class="library">
-        <h1> VOTRE BIBLIOTHEQUE </h1>
+        <h1> VOTRE BIBLIOTHEQUE </h1> <br> <br>
 
-        <div class="grid-container">
-
+        <div v-if="comics.length == 0" >
+            <h2> Vous n'avez aucun favoris 😭 </h2>
+        </div>
+        <div v-else class="grid-container">
             <div v-for="comic in comics" :key="comic.id">
                 <div class="card">
                     <Card :data="comic" :handle-click="this.readTheComic" />
@@ -129,6 +153,12 @@ export default {
 
 .card img {
     width: 200px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
 }
 
 </style>

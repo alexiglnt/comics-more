@@ -84,7 +84,10 @@ export default {
 
     <div class="bookmarks-container">
 
-        <div class="grid-container">
+        <div v-if="comics.length == 0" >
+            <h2> Vous n'avez aucun favoris 😭 </h2>
+        </div>
+        <div v-else class="grid-container">
                 
             <div v-for="comic in comics" :key="comic.id">
                 <div class="card">
@@ -133,6 +136,12 @@ export default {
 
 .card img {
     width: 200px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 2px;
 }
 
 </style>

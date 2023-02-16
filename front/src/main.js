@@ -8,6 +8,8 @@ import { authGuard, MyAccountGuard, AdminGuard, ComicsGuard, PaymentGuard } from
 import App from './App.vue';
 import * as Page from './views/route-import.js';
 
+import Facture from './components/Elements/Facture.vue';
+
 const routes = [
 	{ path: '/', component: Page.Home, name: 'Home' },
 	{ path: '/Registration', component: Page.Registration, name: 'Registration'}, 
@@ -55,6 +57,9 @@ const routes = [
 	}, 
 	{ 
 		path: '/ConditionsGeneralesUtilisations', component: Page.ConditionUtilisations, name: 'ConditionsGeneralesUtilisations',
+	}, 
+	{ 
+		path: '/Facture', component: Facture, name: 'Facture',
 	}, 
 	{ path: '/:pathMatch(.*)*', redirect: '/' }
 ];

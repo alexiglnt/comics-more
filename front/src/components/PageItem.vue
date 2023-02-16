@@ -195,7 +195,7 @@ export default {
             });
         },
         splitAndReplace(str, number) {
-            return `/${str.split('/').filter((item) => item !== '').join('/').replace(`${number}/`, '')}/`;
+            return `${str.replace(`${number}/`, '')}`;
         },
         // Change la couleur/icone du bouton bookmark
         changeDesignBookmark() {
@@ -205,17 +205,17 @@ export default {
             this.bookmark.state = this.bookmark.state === 'bookmark_add' ? 'bookmark' : 'bookmark_add';
         },
         handleBookmarked() {
-            this.changeDesignBookmark();
+            // this.changeDesignBookmark();
 
             // On vérifie si l'utilisateur est connecté
             if (localStorage.getItem('isConnected') === 'true') {
 
                 // On vérifie si le comic est déjà bookmarké
                 if (this.bookmark.isChecked === false) {
-                    alert(`${this.currentComic.name.replaceAll('+', ' ')} ajouté aux favoris `);
+                    console.log('add');
                     this.addToBookmarks();
                 } else {
-                    alert(`${this.currentComic.name.replaceAll('+', ' ')} retiré des favoris `);
+                    console.log('remove');
                     this.removeFromBookmarks();
                 }
             } else {
@@ -329,10 +329,8 @@ export default {
                 }
             }
 
-            axios.put(URL, {
-                // On ajoute l'id du comic au contenu de comicsId
-                comicsId: `${comicsID}${this.$route.params.id}/`,
-            },
+            // On vérifie si le comic est déjà dans la base de données avec une requête GET
+            axios.get(URL,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -341,23 +339,53 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
+
+                    // On parcours la liste des comics du bookmark
+                    if (!response.data.comicsId.includes(`/${this.$route.params.id}/`)) {
+                        axios.put(URL, {
+                            // On ajoute l'id du comic au contenu de comicsId
+                            comicsId: `${comicsID}${this.$route.params.id}/`,
+                        },
+                            {
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                }
+                            })
+                            .then((response) => {
+                                console.log(response);
+
+                                if (response.status == 200) {
+                                    alert(`${this.currentComic.name.replaceAll('+', ' ')} ajouté aux favoris `);
+                                    this.bookmark.isChecked = !this.bookmark.isChecked;
+                                    this.changeDesignBookmark();
+                                }
+
+                            })
+                            .catch((error) => {
+                                accountService.tokenExpired(error);
+                                console.log(error);
+
+                                alert('Une erreur est survenue, veuillez réessayer ultérieurement');
+
+                            });
+                    }
                 })
                 .catch((error) => {
-                    accountService.tokenExpired(error);
                     console.log(error);
                 });
-
         },
         removeFromBookmarks() {
-
+            console.log('------- REMOVE FROM BOOKMARKS -------');
             const URL = `${instance.baseURL}/api/bookmarks/${this.bookmark.data.id}`;
 
             // On récupère le contenu de comicsId du bookmark
             const comicsID = this.bookmark.data.comicsId;
+            console.log('comicsID', comicsID);
 
             // On supprime l'id du comic du contenu de comicsId
             const comicsIDUpdated = this.splitAndReplace(comicsID, this.$route.params.id);
-            console.log(comicsIDUpdated);
+            console.log('comicsIDUpdated', comicsIDUpdated);
 
 
             axios.put(URL, {
@@ -371,10 +399,18 @@ export default {
                 })
                 .then((response) => {
                     console.log(response);
+
+                    if (response.status == 200) {
+                        alert(`${this.currentComic.name.replaceAll('+', ' ')} retiré des favoris `);
+                        this.bookmark.isChecked = !this.bookmark.isChecked;
+                        this.changeDesignBookmark();
+                    }
+
                 })
                 .catch((error) => {
                     accountService.tokenExpired(error);
                     console.log(error);
+                    alert('Une erreur est survenue, veuillez réessayer ultérieurement');
                 });
         },
         verifyIfComicIsInLibrary() {
@@ -560,12 +596,12 @@ export default {
                         </div>
                         <div class="rt">
                             <h3> <b> {{ this.currentComicName }} </b> </h3>
-                            <p> 
-                                Collection : 
-                                <span id="span-collection" @click="() => goToCollection(this.currentCollection.name)" > 
-                                    <b> {{ this.currentCollection.name }} </b> 
+                            <p>
+                                Collection :
+                                <span id="span-collection" @click="() => goToCollection(this.currentCollection.name)">
+                                    <b> {{ this.currentCollection.name }} </b>
                                     <span class="material-symbols-outlined"> open_in_new </span>
-                                </span> 
+                                </span>
                             </p>
                             <p> Nombre de pages : <b> {{ this.currentComic.nbPage }} </b> </p>
                             <p v-if="this.currentHouse.name == 'MARVEL'">
@@ -581,7 +617,7 @@ export default {
                                     this.currentHouse.name
                                 }} </b>
                             </p>
-                            <p class="creditPrice" >
+                            <p class="creditPrice">
                                 Crédits : <b> {{ this.currentComic.credits }} </b>
                                 <span class="material-symbols-outlined"> monetization_on </span>
                             </p>
@@ -669,7 +705,6 @@ export default {
 
 
 <style scoped >
-
 .creditPrice span {
     margin-left: 5px;
     transform: translateY(5px);
@@ -693,9 +728,11 @@ export default {
 #span-collection span:hover {
     color: var(--secondary-color);
 }
+
 #span-collection:hover {
     color: var(--secondary-color);
 }
+
 .rt {
     height: 100%;
 }
