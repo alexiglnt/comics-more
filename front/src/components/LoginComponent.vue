@@ -5,6 +5,8 @@ import { accountService } from '../_services';
 
 import Navbar from './Elements/Navbar.vue';
 
+import gsap from 'gsap';
+
 export default {
     name: 'LoginComponent',
     components: { Navbar },
@@ -209,7 +211,18 @@ export default {
                     console.log(error);
                     this.badRequest = true;
                 });
-
+        },
+        beforeEnter(el) {
+            el.style.opacity = 0;
+            el.style.transform = "translateY(-80px)";
+        },
+        enter(el) {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                delay: el.dataset.index * 0.2,
+            });
         },
     }
 }
@@ -226,45 +239,46 @@ export default {
 
 
     <div class="center">
-        <div class="container">
+        <transition-group appear @before-enter="beforeEnter" @enter="enter">
+            <div class="container" :data-index="index" :key="1" >
 
-            <h1> Connectez-vous ! </h1>
+                <h1> Connectez-vous ! </h1>
 
-            <form @submit="connectUser">
-                <!-- Email -->
-                <div class="container-input">
-                    <label for="mailInput">Mail</label>
-                    <input type="email" name="mailInput" placeholder="Email" v-model="mail">
-                </div>
+                <form @submit="connectUser">
+                    <!-- Email -->
+                    <div class="container-input">
+                        <label for="mailInput">Mail</label>
+                        <input type="email" name="mailInput" placeholder="Email" v-model="mail">
+                    </div>
 
-                <!-- Password -->
-                <div class="container-input">
+                    <!-- Password -->
+                    <div class="container-input">
 
-                    <label for="passwordInput">Password</label>
-                    <input type="password" id="password" name="passwordInput" placeholder="Mot de passe"
-                        v-model="password">
+                        <label for="passwordInput">Password</label>
+                        <input type="password" id="password" name="passwordInput" placeholder="Mot de passe"
+                            v-model="password">
 
-                    <!-- Visibility Button -->
-                    <button type="button" tabindex="-1" @click="changeVisibility">
-                        <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
-                    </button>
+                        <!-- Visibility Button -->
+                        <button type="button" tabindex="-1" @click="changeVisibility">
+                            <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
+                        </button>
 
-                </div> <br>
+                    </div> <br>
 
-                <!-- Si les données saisies sont invalides -->
-                <div v-if="badRequest == true" class="form-error">
-                    <p> Email ou mot de passe incorrect ! </p>
-                </div>
+                    <!-- Si les données saisies sont invalides -->
+                    <div v-if="badRequest == true" class="form-error">
+                        <p> Email ou mot de passe incorrect ! </p>
+                    </div>
 
-                <button type="submit" class="btn"> Connection </button>
-            </form>
-            <hr>
+                    <button type="submit" class="btn"> Connection </button>
+                </form>
+                <hr>
 
-            <p> Vous n'avez pas de compte ? <a href="/Registration"> Inscrivez-vous </a> </p>
+                <p> Vous n'avez pas de compte ? <a href="/Registration"> Inscrivez-vous </a> </p>
 
-        </div>
+            </div>
+        </transition-group>
     </div>
-
 </template>
 
 

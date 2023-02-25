@@ -14,7 +14,10 @@ export default {
         return {
             tabLibrary: [],
             comics: [],
-            isAdmin: JSON.parse(localStorage.getItem('userInfos')).roles[0] === 'ROLE_ADMIN' ? true : false
+            isAdmin: JSON.parse(localStorage.getItem('userInfos')).roles[0] === 'ROLE_ADMIN' ? true : false,
+            comicsByResearch: [],
+            research: '',
+            researchNotFound: false,
         };
     },
     methods: {
@@ -72,11 +75,33 @@ export default {
             localStorage.setItem('currentComic', JSON.stringify(comic));
             this.$router.push({ path: `/Comics/${comic.id}` })
         },
+        searchComics() {
+            this.comicsByResearch = [];
+            this.researchNotFound = false;
+            // search comics by research
+            this.comics.forEach(comic => {
+                if (comic.name.toLowerCase().includes(this.research.toLowerCase())) {
+
+                    this.comicsByResearch.push(comic);
+                }
+            });
+
+            if (this.comicsByResearch.length == 0) {
+                this.researchNotFound = true;
+                document.querySelector('.grid-container').style.display = 'none';
+            }
+        },
+        resetResearch() {
+            this.comicsByResearch = [];
+            this.research = '';
+            this.researchNotFound = false;
+            document.querySelector('.grid-container').style.display = 'grid';
+        },
     },
     async mounted() {
         console.log(this.isAdmin);
-        
-        if(!this.isAdmin) {
+
+        if (!this.isAdmin) {
             await this.getLibrary();
         }
         else {
@@ -94,10 +119,34 @@ export default {
     <div class="library">
         <h1> VOTRE BIBLIOTHEQUE </h1> <br> <br>
 
-        <div v-if="comics.length == 0" >
-            <h2> Vous n'avez aucun favoris 😭 </h2>
+        <!-- RESEARCH BAR -->
+        <div class="form" >
+            <form @submit.prevent="searchComics">
+                <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
+                <button type="submit">
+                    <span class="material-symbols-outlined"> search </span>
+                </button>
+            </form>
         </div>
-        <div v-else class="grid-container">
+
+        <div v-if="comics.length == 0">
+            <h2> Vous n'avez aucun comics dans votre bibliotheque 😭 </h2>
+        </div>
+        <!-- COMICS -->
+        <div class="research-not-found" v-if="this.researchNotFound == true">
+            <h2> Aucun résultat trouvé 😔 </h2>
+            <button type="button" class="btn" @click="resetResearch">
+                Réinitialiser la recherche
+            </button>
+        </div>
+        <div class="grid-container" v-else-if="this.comicsByResearch.length != 0">
+            <div v-for="comic in comicsByResearch" :key="comic.id">
+                <div class="card">
+                    <Card :data="comic" :handle-click="this.readTheComic" />
+                </div>
+            </div>
+        </div>
+        <div class="grid-container" v-else>
             <div v-for="comic in comics" :key="comic.id">
                 <div class="card">
                     <Card :data="comic" :handle-click="this.readTheComic" />
@@ -106,7 +155,6 @@ export default {
         </div>
 
     </div>
-
 </template>
 
 
@@ -120,6 +168,7 @@ export default {
     font-family: var(--secondary-font);
     letter-spacing: 2px;
     font-size: 3em;
+    padding-right: 100px;
 
     text-align: center;
 }
@@ -161,4 +210,69 @@ h2 {
     letter-spacing: 2px;
 }
 
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-right: 100px;
+}
+
+form {
+    width: 1400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.research-not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+form input {
+    width: 50%;
+    height: 50px;
+    border-radius: 10px;
+    border: 3px solid var(--font-color);
+    padding: 0 20px;
+    font-size: 1.5em;
+    outline: none;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+form input:focus {
+    border: 5px solid var(--main-color);
+}
+
+form button {
+    width: 70px;
+    height: 70px;
+    border-radius: 1em;
+    border: 0px solid var(--font-color);
+    background-color: var(--main-color);
+    color: var(--font-color);
+    font-size: 1.5em;
+    outline: none;
+    cursor: pointer;
+    margin: 0 0px;
+    position: absolute;
+    right: 300px;
+    transition: 0.3s ease;
+}
+
+form button span {
+    font-size: 1.5em;
+}
+
+form button:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
 </style>

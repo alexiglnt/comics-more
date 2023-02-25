@@ -14,7 +14,10 @@ export default {
         return {
             bookmark: {},
             tabIDComics: [],
-            comics: []
+            comics: [],
+            comicsByResearch: [],
+            research: '',
+            researchNotFound: false,
         }
     },
     methods: {
@@ -39,7 +42,7 @@ export default {
                     // On récupère les id des comics et on les met dans un tableau
                     this.tabIDComics = this.bookmark.comicsId.split('/').filter((item) => item !== '');
                     console.log(this.tabIDComics);
-                    
+
                     // On récupère les infos des comics
                     this.getComics();
 
@@ -59,7 +62,7 @@ export default {
                     .then((response) => {
 
                         let tmp = response.data;
-                         tmp.name = tmp.name.replaceAll('+', ' ');
+                        tmp.name = tmp.name.replaceAll('+', ' ');
                         this.comics.push(tmp);
                     })
                     .catch((error) => {
@@ -71,6 +74,28 @@ export default {
             localStorage.setItem('currentComic', JSON.stringify(comic));
             this.$router.push({ path: `/Comics/${comic.id}` })
         },
+        searchComics() {
+            this.comicsByResearch = [];
+            this.researchNotFound = false;
+            // search comics by research
+            this.comics.forEach(comic => {
+                if (comic.name.toLowerCase().includes(this.research.toLowerCase())) {
+
+                    this.comicsByResearch.push(comic);
+                }
+            });
+
+            if (this.comicsByResearch.length == 0) {
+                this.researchNotFound = true;
+                document.querySelector('.grid-container').style.display = 'none';
+            }
+        },
+        resetResearch() {
+            this.comicsByResearch = [];
+            this.research = '';
+            this.researchNotFound = false;
+            document.querySelector('.grid-container').style.display = 'grid';
+        },
     },
     mounted() {
         this.getBookmarks();
@@ -81,14 +106,36 @@ export default {
 
 
 <template>
-
     <div class="bookmarks-container">
 
-        <div v-if="comics.length == 0" >
+        <!-- RESEARCH BAR -->
+        <div class="form">
+            <form @submit.prevent="searchComics">
+                <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
+                <button type="submit">
+                    <span class="material-symbols-outlined"> search </span>
+                </button>
+            </form>
+        </div>
+
+        <div v-if="comics.length == 0">
             <h2> Vous n'avez aucun favoris 😭 </h2>
         </div>
-        <div v-else class="grid-container">
-                
+        <!-- COMICS -->
+        <div class="research-not-found" v-if="this.researchNotFound == true">
+            <h2> Aucun résultat trouvé 😔 </h2>
+            <button type="button" class="btn" @click="resetResearch">
+                Réinitialiser la recherche
+            </button>
+        </div>
+        <div class="grid-container" v-else-if="this.comicsByResearch.length != 0">
+            <div v-for="comic in comicsByResearch" :key="comic.id">
+                <div class="card">
+                    <Card :data="comic" :handle-click="this.readTheComic" />
+                </div>
+            </div>
+        </div>
+        <div class="grid-container" v-else>
             <div v-for="comic in comics" :key="comic.id">
                 <div class="card">
                     <Card :data="comic" :handle-click="this.readTheComic" />
@@ -97,7 +144,6 @@ export default {
         </div>
 
     </div>
-
 </template>
 
 
@@ -144,4 +190,68 @@ h2 {
     letter-spacing: 2px;
 }
 
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+form {
+    width: 1400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.research-not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+form input {
+    width: 50%;
+    height: 50px;
+    border-radius: 10px;
+    border: 3px solid var(--font-color);
+    padding: 0 20px;
+    font-size: 1.5em;
+    outline: none;
+    background-color: var(--background-color);
+    color: var(--font-color);
+}
+
+form input:focus {
+    border: 5px solid var(--main-color);
+}
+
+form button {
+    width: 70px;
+    height: 70px;
+    border-radius: 1em;
+    border: 0px solid var(--font-color);
+    background-color: var(--main-color);
+    color: var(--font-color);
+    font-size: 1.5em;
+    outline: none;
+    cursor: pointer;
+    margin: 0 0px;
+    position: absolute;
+    right: 300px;
+    transition: 0.3s ease;
+}
+
+form button span {
+    font-size: 1.5em;
+}
+
+form button:hover {
+    transform: scale(1.1);
+    transition: 0.3s ease;
+}
 </style>

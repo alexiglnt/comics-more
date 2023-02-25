@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ComicsCollectionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -33,6 +34,10 @@ class ComicsCollection
     #[ORM\ManyToOne(inversedBy: 'collection')]
     #[Groups(['read'])]
     private ?House $house = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['read'])]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -94,6 +99,18 @@ class ComicsCollection
     public function setHouse(?House $house): self
     {
         $this->house = $house;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

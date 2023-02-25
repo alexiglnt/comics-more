@@ -6,6 +6,8 @@ import axios from 'axios';
 import instance from '../../axios-infos';
 import { accountService } from '../_services';
 
+import gsap from 'gsap';
+
 export default {
     components: { Navbar, Bookmarks },
     data() {
@@ -101,12 +103,23 @@ export default {
                     accountService.tokenExpired(error);
                 });
         },
-        openModal() {
+        openModal2() {
             const modal = document.getElementById('modal');
             const bigContainer = document.querySelector('.big-container');
 
             bigContainer.classList.add('blur');
             modal.style.display = 'flex';
+        },
+        openModal() {
+            // prompt
+            const confirmation = prompt("Voulez vous modifier vos informations ? (Tapez 'oui' pour confirmer)");
+
+            if (confirmation === "oui") {
+                this.saveModifications();
+            }
+            else {
+                alert("Vos informations n'ont pas été modifiées !");
+            }
         },
         closeModal() {
             const modal = document.getElementById('modal');
@@ -150,7 +163,19 @@ export default {
                     console.log(error);
                     accountService.tokenExpired(error);
                 });
-        }
+        },
+        beforeEnter(el) {
+            el.style.opacity = 0;
+            el.style.transform = "translateY(-80px)";
+        },
+        enter(el) {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                delay: el.dataset.index * 0.2,
+            });
+        },
     },
     mounted() {
         this.isConnected = localStorage.getItem('isConnected');
@@ -169,25 +194,25 @@ export default {
     <Navbar /> <br> <br>
 
     <!-- MODALE de confirmation de l'envoie des données -->
-    <div id="modal">
-        <div class="modal-content">
-            <h2>Confirmation</h2>
-            <button type="button" class="btn-close-modal" @click="closeModal">
-                <span class="material-symbols-outlined"> close </span>
-            </button>
-            <p> Are you sure you want to change your information ? <br> You will be redirect to login page </p>
-            <div class="modal-btn">
-                <button type="button" class="btn" @click="saveModifications"> Yes </button>
+    <!-- <div id="modal">
+            <div class="modal-content">
+                <h2>Confirmation</h2>
+                <button type="button" class="btn-close-modal" @click="closeModal">
+                    <span class="material-symbols-outlined"> close </span>
+                </button>
+                <p> Are you sure you want to change your information ? <br> You will be redirect to login page </p>
+                <div class="modal-btn">
+                    <button type="button" class="btn" @click="saveModifications"> Yes </button>
+                </div>
             </div>
-        </div>
-    </div>
+        </div> -->
 
     <div class="big-container">
 
 
         <!-- Si l'utilisateurs est connecté on affiche ça -->
-
-        <div v-if="isConnected == 'true'">
+        <transition-group appear @before-enter="beforeEnter" @enter="enter">
+        <div v-if="isConnected == 'true'" :data-index="index" :key="1" >
             <div>
                 <div class="title-logout">
                     <h1 v-if="user.prenom"> Bonjour <span> {{ user.prenom }} | </span> </h1>
@@ -222,7 +247,7 @@ export default {
                             <tr>
                                 <td> <b> Crédits </b> </td>
                                 <td>
-                                    <input type="text" id="inputMail" v-model="modifiedUser.credits" disabled>
+                                    <p> {{ modifiedUser.credits }} </p>
                                 </td>
                             </tr>
                             <tr>
@@ -240,6 +265,7 @@ export default {
 
             </div>
         </div>
+    </transition-group>
 
         <div class="separation"> </div>
 
@@ -262,7 +288,6 @@ export default {
         </button>
 
     </div>
-
 </template>
 
 

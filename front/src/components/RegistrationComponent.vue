@@ -3,6 +3,8 @@ import axios from 'axios';
 import instance from '../../axios-infos';
 import Navbar from './Elements/Navbar.vue';
 
+import gsap from 'gsap';
+
 export default {
     name: 'RegistrationComponent',
     components: { Navbar },
@@ -79,10 +81,19 @@ export default {
                             console.log(error);
                         }
                     });
-
-
-
             }
+        },
+        beforeEnter(el) {
+            el.style.opacity = 0;
+            el.style.transform = "translateY(-80px)";
+        },
+        enter(el) {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                delay: el.dataset.index * 0.2,
+            });
         },
     }
 }
@@ -97,59 +108,61 @@ export default {
     <div class="background"></div>
 
     <div class="center">
-        <div class="container">
 
-            <form @submit="Register">
-                <div class="name">
-                    <div class="container-input">
-                        <label for="prenomInput">Prénom</label>
-                        <input type="text" name="prenomInput" placeholder="John" v-model="name">
+        <transition-group appear @before-enter="beforeEnter" @enter="enter">
+            <div class="container" :data-index="index" :key="1">
+
+                <form @submit="Register">
+                    <div class="name">
+                        <div class="container-input">
+                            <label for="prenomInput">Prénom</label>
+                            <input type="text" name="prenomInput" placeholder="John" v-model="name">
+                        </div>
+
+                        <div class="container-input">
+                            <label for="nomInput">Nom</label>
+                            <input type="text" name="nomInput" placeholder="Doe" v-model="surname">
+                        </div>
                     </div>
 
                     <div class="container-input">
-                        <label for="nomInput">Nom</label>
-                        <input type="text" name="nomInput" placeholder="Doe" v-model="surname">
+                        <label for="mailInput">Mail</label>
+                        <input type="email" name="mailInput" placeholder="johndoe@gmail.com"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" v-model="mail">
                     </div>
-                </div>
 
-                <div class="container-input">
-                    <label for="mailInput">Mail</label>
-                    <input type="email" name="mailInput" placeholder="johndoe@gmail.com"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" v-model="mail">
-                </div>
+                    <div class="container-input">
+                        <label for="passwordInput">Mot de passe</label>
+                        <input type="password" id="password" name="passwordInput" placeholder="Entrez mot de passe"
+                            v-model="password">
+                        <button type="button" tabindex="-1" @click="() => { changeVisibility('password') }">
+                            <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
+                        </button>
+                    </div>
 
-                <div class="container-input">
-                    <label for="passwordInput">Mot de passe</label>
-                    <input type="password" id="password" name="passwordInput" placeholder="Entrez mot de passe"
-                        v-model="password">
-                    <button type="button" tabindex="-1" @click="() => { changeVisibility('password') }">
-                        <span class="material-symbols-outlined "> {{ visibilityMode }} </span>
-                    </button>
-                </div>
+                    <div class="container-input">
+                        <label for="confirmPasswordInput">Confirm Password</label>
+                        <input type="password" id="confirmPass" name="confirmPasswordInput"
+                            placeholder="Confirmez mot de passe" v-model="confirmPassword">
+                        <button type="button" tabindex="-1" @click="() => { changeVisibility('confirmPass') }">
+                            <span class="material-symbols-outlined "> {{ visibilityModeConfirm }} </span>
+                        </button>
+                    </div> <br>
 
-                <div class="container-input">
-                    <label for="confirmPasswordInput">Confirm Password</label>
-                    <input type="password" id="confirmPass" name="confirmPasswordInput"
-                        placeholder="Confirmez mot de passe" v-model="confirmPassword">
-                    <button type="button" tabindex="-1" @click="() => { changeVisibility('confirmPass') }">
-                        <span class="material-symbols-outlined "> {{ visibilityModeConfirm }} </span>
-                    </button>
-                </div> <br>
+                    <div v-if="errorEntry !== ''" class="form-error">
+                        <p> {{ errorEntry }} </p>
+                    </div>
 
-                <div v-if="errorEntry !== ''" class="form-error">
-                    <p> {{ errorEntry }} </p>
-                </div>
+                    <button type="submit" class="btn">S'inscrire</button>
+                </form>
 
-                <button type="submit" class="btn">S'inscrire</button>
-            </form>
+                <hr>
 
-            <hr>
+                <p> Vous avez deja un compte ? <a href="/Login"> Connectez-vous </a> </p>
 
-            <p> Vous avez deja un compte ? <a href="/Login"> Connectez-vous </a> </p>
-
-        </div>
+            </div>
+        </transition-group>
     </div>
-
 </template>
 
 

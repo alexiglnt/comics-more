@@ -4,13 +4,16 @@ import ScrollToUpBtn from './Elements/ScrollToUpBtn.vue';
 import Card from './Elements/Card.vue';
 import Footer from './Elements/Footer.vue';
 import Carousel from './Elements/Carousel.vue';
+import BandeDefilante from './Elements/BandeDefilante.vue';
 
 import axios from 'axios';
 import instance from '../../axios-infos';
 
+import gsap from "gsap";
+
 export default {
     components: {
-        Navbar, ScrollToUpBtn, Card, Footer, Carousel
+        Navbar, ScrollToUpBtn, Card, Footer, Carousel, BandeDefilante
     },
     data() {
         return {
@@ -100,8 +103,23 @@ export default {
                 negatif++;
             }
 
+            // inverser l'ordre du tableau
+            this.lastComics.reverse();
+
             console.log('les n derniers', this.lastComics);
 
+        },
+        beforeEnter(el) {
+            el.style.opacity = 0;
+            el.style.transform = "translateY(-80px)";
+        },
+        enter(el) {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                delay: el.dataset.index * 0.2,
+            });
         },
     },
     async mounted() {
@@ -112,7 +130,6 @@ export default {
 </script>
 
 <template>
-
     <Navbar />
 
     <!-- HOMEPAGE -->
@@ -122,14 +139,17 @@ export default {
             <img src="../assets/wave.svg" class="fond-curvy" alt="">
         </div>
 
-        <div class="presentation">
-            <h1 class="bienvenue" >BIENVENUE SUR</h1> <br>
-            <h1> Comics More </h1> <br>
-            <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
-                Choisissez votre comics !
-            </button> <br> <br>
-            <p v-if="isConnected == 'false'" > 10 crédits gratuits à votre première inscription ! </p>
-        </div>
+        <transition-group appear @before-enter="beforeEnter" @enter="enter">
+            <div class="presentation" :data-index="index" :key="1" >
+                <h1 class="bienvenue">BIENVENUE SUR</h1> <br>
+                <h1> Comics More </h1> <br>
+                <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
+                    Choisissez votre comics !
+                </button> <br> <br>
+                <!-- <p v-if="isConnected == 'false'" > 10 crédits gratuits à votre première inscription ! </p> -->
+                <BandeDefilante v-if="isConnected == 'false'" text="10 crédits gratuits à votre première inscription !" />
+            </div>
+        </transition-group>
     </section>
 
 
@@ -189,7 +209,6 @@ export default {
         <!-- <Footer /> -->
 
     </div>
-
 </template>
 
 

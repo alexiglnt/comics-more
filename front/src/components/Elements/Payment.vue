@@ -131,5 +131,7 @@ export default {
 <style scoped>
 #paypal-button-container {
     background: var(--bg-color);
+
+    width: 500px;
 }
 </style>

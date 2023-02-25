@@ -86,6 +86,12 @@ export default {
     <div class="container">
         <h1> COLLECTION <span> {{ collection.name }} </span> </h1>
 
+        <p v-if="collection.description" >
+            <span class="material-symbols-outlined"> format_quote </span> 
+            <br> {{ collection.description }} <br>
+            <span class="material-symbols-outlined second"> format_quote </span> <br>
+        </p>
+
         <div class="grid-container">
             <div v-for="comic in comics" :key="comic.id">
                 <div class="card">
@@ -107,6 +113,27 @@ export default {
     flex-direction: column;
     margin-top: 120px;
 
+}
+
+.container p {
+    width: 70%;
+    text-align: justify;
+    margin: 50px auto;
+    line-height: 2em;
+    font-style: italic;
+}
+
+.container p span {
+    font-size: 5em;
+    color: var(--primary-color);
+}
+
+.container span:nth-child(1) {
+    text-align: start;
+    transform: rotate(180deg);
+}
+.container .second {
+    float: right;
 }
 
 h1 {

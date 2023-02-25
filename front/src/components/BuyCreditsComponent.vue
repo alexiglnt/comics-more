@@ -1,5 +1,6 @@
 <script>
 import Navbar from './Elements/Navbar.vue'
+import ReassuranceAchat from './Elements/ReassuranceAchat.vue'
 
 import instance from '../../axios-infos'
 import axios from 'axios'
@@ -7,7 +8,7 @@ import axios from 'axios'
 export default {
     name: 'BuyCredits',
     components: {
-        Navbar
+        Navbar, ReassuranceAchat
     },
     data() {
         return {
@@ -79,6 +80,7 @@ export default {
         </form>
 
     </div>
+    <ReassuranceAchat />
 
 </template>
 
@@ -86,6 +88,7 @@ export default {
 <style scoped >
 .container {
     margin-top: 120px;
+    margin-bottom: 100px;
     text-align: center;
 
     display: flex;

@@ -961,6 +961,10 @@ h2 {
     width: 50%;
 }
 
+.band-connect-left .material-symbols-outlined {
+    transform: translateY(5px);
+}
+
 .select-readMode {
     position: fixed;
     left: 20px;
