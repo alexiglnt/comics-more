@@ -10,6 +10,8 @@ import axios from 'axios';
 import instance from '../../axios-infos';
 
 import gsap from "gsap";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // importer les styles CSS
 
 export default {
     components: {
@@ -124,6 +126,8 @@ export default {
     },
     async mounted() {
         await this.recupComics();
+
+        AOS.init();
     }
 }
 
@@ -155,11 +159,11 @@ export default {
 
 
     <!-- CAROUSEL -->
-    <div class="slogan">
+    <div class="slogan" data-aos="fade-up" >
         <h1> <span>&nbsp N</span>OS <span>&nbsp D</span>ERNIERS<span>&nbsp A</span>JOUTS @ </h1>
         <!-- <h1> $ £ @ # % & </h1> -->
     </div>
-    <div class="carousel-container">
+    <div class="carousel-container" data-aos="flip-left">
         <Carousel :data="lastComics" />
     </div>
 
@@ -168,13 +172,13 @@ export default {
     <!-- CONTAINER Searchbar + Comics -->
     <div class="container">
 
-        <div class="slogan">
-            <h1> <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
+        <div class="slogan" data-aos="fade-up">
+            <h1 > <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
         </div>
 
 
         <!-- RESEARCH BAR -->
-        <form @submit.prevent="searchComics">
+        <form @submit.prevent="searchComics" >
             <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
             <button type="submit">
                 <span class="material-symbols-outlined"> search </span>
@@ -183,7 +187,7 @@ export default {
 
 
         <!-- COMICS -->
-        <div class="research-not-found" v-if="this.researchNotFound == true">
+        <div class="research-not-found" v-if="this.researchNotFound == true" >
             <h2> Aucun résultat trouvé 😔 </h2>
             <button type="button" class="btn" @click="resetResearch">
                 Réinitialiser la recherche
@@ -191,14 +195,14 @@ export default {
         </div>
         <div class="grid-container" v-else-if="this.comicsByResearch.length != 0">
             <div v-for="comic in comicsByResearch" :key="comic.id">
-                <div class="card">
+                <div class="card" data-aos="flip-left">
                     <Card :data="comic" :handle-click="this.readTheComic" />
                 </div>
             </div>
         </div>
         <div class="grid-container" v-else>
             <div v-for="comic in comics" :key="comic.id">
-                <div class="card">
+                <div class="card" data-aos="flip-left">
                     <Card :data="comic" :handle-click="this.readTheComic" />
                 </div>
             </div>

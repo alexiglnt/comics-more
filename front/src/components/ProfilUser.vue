@@ -7,6 +7,8 @@ import instance from '../../axios-infos';
 import { accountService } from '../_services';
 
 import gsap from 'gsap';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // importer les styles CSS
 
 export default {
     components: { Navbar, Bookmarks },
@@ -182,6 +184,8 @@ export default {
         this.token = localStorage.getItem('token');
 
         this.initUserInfos();
+
+        AOS.init();
     },
 }
 </script>
@@ -195,94 +199,94 @@ export default {
 
     <!-- MODALE de confirmation de l'envoie des données -->
     <!-- <div id="modal">
-            <div class="modal-content">
-                <h2>Confirmation</h2>
-                <button type="button" class="btn-close-modal" @click="closeModal">
-                    <span class="material-symbols-outlined"> close </span>
-                </button>
-                <p> Are you sure you want to change your information ? <br> You will be redirect to login page </p>
-                <div class="modal-btn">
-                    <button type="button" class="btn" @click="saveModifications"> Yes </button>
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <button type="button" class="btn-close-modal" @click="closeModal">
+                        <span class="material-symbols-outlined"> close </span>
+                    </button>
+                    <p> Are you sure you want to change your information ? <br> You will be redirect to login page </p>
+                    <div class="modal-btn">
+                        <button type="button" class="btn" @click="saveModifications"> Yes </button>
+                    </div>
                 </div>
-            </div>
-        </div> -->
+            </div> -->
 
     <div class="big-container">
 
 
         <!-- Si l'utilisateurs est connecté on affiche ça -->
         <transition-group appear @before-enter="beforeEnter" @enter="enter">
-        <div v-if="isConnected == 'true'" :data-index="index" :key="1" >
-            <div>
-                <div class="title-logout">
-                    <h1 v-if="user.prenom"> Bonjour <span> {{ user.prenom }} | </span> </h1>
-                    <button type="button" id="btn-logout" @click="logout">
-                        Déconnexion
-                        <span class="material-symbols-outlined"> logout </span>
-                    </button>
-                </div>
-
-                <!-- TABLEAU des informations -->
-                <div class="container">
-                    <div class="table-title">
-                        <h2> Vos informations </h2>
-                        <button type="button" class="edit-btn" @click="editProfil">
-                            <span class="material-symbols-outlined"> {{ editBtnMode }} </span>
+            <div v-if="isConnected == 'true'" :data-index="index" :key="1">
+                <div>
+                    <div class="title-logout">
+                        <h1 v-if="user.prenom"> Bonjour <span> {{ user.prenom }} | </span> </h1>
+                        <button type="button" id="btn-logout" @click="logout">
+                            Déconnexion
+                            <span class="material-symbols-outlined"> logout </span>
                         </button>
                     </div>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td> <b> Prénom </b> </td>
-                                <td> <input type="text" id="inputNom" v-model="modifiedUser.prenom" disabled> </td>
-                            </tr>
-                            <tr>
-                                <td> <b> Nom </b> </td>
-                                <td> <input type="text" id="inputPrenom" v-model="modifiedUser.nom" disabled> </td>
-                            </tr>
-                            <tr>
-                                <td> <b> Mail </b> </td>
-                                <td> <input type="text" id="inputMail" v-model="modifiedUser.mail" disabled> </td>
-                            </tr>
-                            <tr>
-                                <td> <b> Crédits </b> </td>
-                                <td>
-                                    <p> {{ modifiedUser.credits }} </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> <b> Statut </b> </td>
-                                <td>
-                                    <p id="inputRole"> {{ modifiedUser.role[0] }} </p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                    <!-- TABLEAU des informations -->
+                    <div class="container">
+                        <div class="table-title">
+                            <h2> Vos informations </h2>
+                            <button type="button" class="edit-btn" @click="editProfil">
+                                <span class="material-symbols-outlined"> {{ editBtnMode }} </span>
+                            </button>
+                        </div>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td> <b> Prénom </b> </td>
+                                    <td> <input type="text" id="inputNom" v-model="modifiedUser.prenom" disabled> </td>
+                                </tr>
+                                <tr>
+                                    <td> <b> Nom </b> </td>
+                                    <td> <input type="text" id="inputPrenom" v-model="modifiedUser.nom" disabled> </td>
+                                </tr>
+                                <tr>
+                                    <td> <b> Mail </b> </td>
+                                    <td> <input type="text" id="inputMail" v-model="modifiedUser.mail" disabled> </td>
+                                </tr>
+                                <tr>
+                                    <td> <b> Crédits </b> </td>
+                                    <td>
+                                        <p> {{ modifiedUser.credits }} </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> <b> Statut </b> </td>
+                                    <td>
+                                        <p id="inputRole"> {{ modifiedUser.role[0] }} </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <br>
+                    <button id="save-btn" @click="openModal" disabled>Enregistrez les modifications</button>
+
                 </div>
-
-                <br>
-                <button id="save-btn" @click="openModal" disabled>Enregistrez les modifications</button>
-
             </div>
-        </div>
-    </transition-group>
+        </transition-group>
 
         <div class="separation"> </div>
 
 
         <div class="blocs-container">
-            <div class="bloc" @click="() => redirect('Library')">
+            <div class="bloc" @click="() => redirect('Library')" data-aos="fade-up-right" >
                 <h2> Votre bibliothèque </h2>
                 <span class="material-symbols-outlined"> library_books </span>
             </div>
-            <div class="bloc" @click="() => redirect('Bookmarks')">
+            <div class="bloc" @click="() => redirect('Bookmarks')" data-aos="fade-up-left">
                 <h2> Vos favoris </h2>
                 <span class="material-symbols-outlined"> bookmark </span>
             </div>
         </div> <br>
 
 
-        <button class="cubeBtn" @click="handleClickDeleteBtn">
+        <button class="cubeBtn" @click="handleClickDeleteBtn" >
             Supprimer mon compte et mes informations &nbsp;
             <span class="material-symbols-outlined"> delete </span>
         </button>
