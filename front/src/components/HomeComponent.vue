@@ -11,7 +11,7 @@ import instance from '../../axios-infos';
 
 import gsap from "gsap";
 import AOS from 'aos';
-import 'aos/dist/aos.css'; // importer les styles CSS
+import 'aos/dist/aos.css'; // importer les styles CSS de AOS
 
 export default {
     components: {
@@ -166,8 +166,6 @@ export default {
     <div class="carousel-container" data-aos="flip-left">
         <Carousel :data="lastComics" />
     </div>
-
-
 
     <!-- CONTAINER Searchbar + Comics -->
     <div class="container">

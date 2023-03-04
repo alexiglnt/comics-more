@@ -5,6 +5,10 @@ import Navbar from './Elements/Navbar.vue';
 
 import gsap from 'gsap';
 
+// Import des fonctions d'envoi d'email et du template HTML de l'email de bienvenue
+import sendEmail from '../../smtp/smtp';
+import { htmlEmailWelcome, htmlFacture } from '../../smtp/htmlMailTemplate';
+
 export default {
     name: 'RegistrationComponent',
     components: { Navbar },
@@ -20,6 +24,10 @@ export default {
             errorEntry: '',
             isBlankInput: false,
             isConfirmedPassword: false,
+            mailContent: {
+                subject: 'Bienvenue sur Comics More !',
+                body: ''
+            }
         }
     },
     methods: {
@@ -48,7 +56,7 @@ export default {
         Register(e) {
             e.preventDefault();
 
-            // On vérifie si 
+            // On vérifie si tous les champs sont remplis et si les mots de passe correspondent
             if (this.mail == '' || this.password == '' || this.confirmPassword == '' || this.name == '' || this.surname == '') {
                 this.errorEntry = 'Veuillez remplir tous les champs';
             }
@@ -69,6 +77,11 @@ export default {
                     .then(response => {
                         console.log('response', response);
 
+                        if (response.status == 201) {
+                            const msgBody = htmlEmailWelcome(this.name);
+                            sendEmail(this.mail, this.mailContent.subject, msgBody);
+                        }
+
                         // On redirige vers la page de login
                         this.$router.push({
                             name: 'Login',
@@ -83,6 +96,21 @@ export default {
                     });
             }
         },
+        test() {
+
+            const infosPayment = {
+                name: 'Alexi GALLONET',
+                mail: 'alexigallonet@gmail.com',
+                price: 20,
+                nbCredits: 10,
+                orderId: 'ORDERID-123456789',
+                paymentId: 'PAYID-L6XJYQY5YR123456789',
+                create_time: '2021-05-20T15:00:00Z',
+                payerId: 'PAYERID-123456789'
+            }
+
+            sendEmail('alexigallonet@gmail.com', 'Facture TEST', htmlFacture(infosPayment));
+        },
         beforeEnter(el) {
             el.style.opacity = 0;
             el.style.transform = "translateY(-80px)";
@@ -94,7 +122,7 @@ export default {
                 duration: 0.3,
                 delay: el.dataset.index * 0.2,
             });
-        },
+        }
     }
 }
 </script>
@@ -108,6 +136,8 @@ export default {
     <div class="background"></div>
 
     <div class="center">
+
+        <button type="button" @click="test" > MAIL </button>
 
         <transition-group appear @before-enter="beforeEnter" @enter="enter">
             <div class="container" :data-index="index" :key="1">

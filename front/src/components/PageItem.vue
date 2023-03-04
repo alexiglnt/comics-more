@@ -85,9 +85,9 @@ export default {
                     // convert name
                     this.currentComicName = this.currentComic.name.replaceAll('+', ' ');
 
-                    console.log('CURRENT COMICS MOTHER FICKER', this.currentComic);
+                    console.log('CURRENT COMICS MOTHER FUCKER', this.currentComic);
 
-                    // On lance cette fonction pour récupérer les infos du comics actuel
+                    // On lance cette fonction pour récupérer les liens des images du comics depuis la BDD liée à l'API
                     this.recupComic();
                 })
                 .catch(error => {

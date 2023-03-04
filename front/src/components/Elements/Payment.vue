@@ -45,7 +45,7 @@ export default {
                         console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
                         const transaction = orderData.purchase_units[0].payments.captures[0];
                         localStorage.setItem('paypalOrder', JSON.stringify(orderData, null, 2));
-                        
+
                         alert(`Transaction ${transaction.status} ! Vos crédits ont été ajoutés. Vous pouvez maintenant fermer cette fenêtre. Merci de votre confiance !`);
 
                         // Si la transaction est validée on ajoute les crédits
@@ -54,6 +54,15 @@ export default {
                             let userId = JSON.parse(localStorage.getItem('userInfos')).id;
                             let userCredits = parseInt(JSON.parse(localStorage.getItem('userInfos')).credits, 10);
                             let creditsToAdd = parseInt(localStorage.getItem('nbCredits'), 10);
+
+                            // const price = transaction.amount.value;
+                            // const create_time = orderData.purchase_units[0].payments.captures[0].create_time;
+                            // const payer_email = orderData.payer.email_address;
+                            // const payer_name = orderData.payer.name.given_name + ' ' + orderData.payer.name.surname;
+                            // const payer_id = orderData.payer.payer_id;
+                            // const order_id = orderData.id;
+                            // const payment_id = orderData.purchase_units[0].payments.captures[0].id;
+
 
                             axios.put(`${instance.baseURL}/api/users/${userId}`,
                                 {
@@ -118,7 +127,6 @@ export default {
 
 
 <template>
-
     <Navbar />
     <div class="container">
         <div id="paypal-button-container"></div>
