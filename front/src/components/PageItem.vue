@@ -6,10 +6,12 @@ import instance from '../../axios-infos.js'
 import axios from 'axios';
 import { accountService } from '../_services';
 
+import NoteComics from './Elements/NoteComics.vue';
+
 export default {
     name: 'Home',
     components: {
-        ScrollToTop, Navbar
+        ScrollToTop, Navbar, NoteComics
     },
     props: {
         id: Number
@@ -631,6 +633,7 @@ export default {
 
         </div>
 
+        <NoteComics :comic="this.currentComic" />
 
         <h1> Bonne lecture 😀 </h1> <br>
 

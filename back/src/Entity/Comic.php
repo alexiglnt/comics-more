@@ -35,6 +35,9 @@ class Comic
     #[ORM\Column]
     private ?int $credits = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +99,18 @@ class Comic
     public function setCredits(int $credits): self
     {
         $this->credits = $credits;
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

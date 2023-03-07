@@ -157,7 +157,7 @@ export function htmlFacture(paymentInfosOrder) {
                                     <table>
                                         <tr>
                                             <td class="title">
-                                                <img src="https://comicsmore.s3.eu-west-3.amazonaws.com/Docteur+Fatalis+T1+-+Mort+dans+l_apr%C3%A8s-midi/001.jpg" style="width:100px; max-width:100px;" />
+                                                <img src=" https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" style="width:100px; max-width:100px;" />
                                             </td>
 
                                             <td>
