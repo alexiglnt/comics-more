@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ComicRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -37,6 +38,9 @@ class Comic
 
     #[ORM\Column(nullable: true)]
     private ?float $note = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $usersWhoNoted = null;
 
     public function getId(): ?int
     {
@@ -111,6 +115,18 @@ class Comic
     public function setNote(?float $note): self
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getUsersWhoNoted(): ?string
+    {
+        return $this->usersWhoNoted;
+    }
+
+    public function setUsersWhoNoted(string $usersWhoNoted): self
+    {
+        $this->usersWhoNoted = $usersWhoNoted;
 
         return $this;
     }

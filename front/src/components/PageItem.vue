@@ -40,7 +40,10 @@ export default {
             },
             isInLibrary: false,
             tabLibrary: [],
-            isAdmin: false
+            isAdmin: false,
+            notifText: 'NO TEXT',
+            copied: false,
+            isButtonDisabled: false,
         }
     },
     methods: {
@@ -207,8 +210,6 @@ export default {
             this.bookmark.state = this.bookmark.state === 'bookmark_add' ? 'bookmark' : 'bookmark_add';
         },
         handleBookmarked() {
-            // this.changeDesignBookmark();
-
             // On vérifie si l'utilisateur est connecté
             if (localStorage.getItem('isConnected') === 'true') {
 
@@ -223,6 +224,11 @@ export default {
             } else {
                 this.$router.push('/Login');
             }
+
+            // isButtonDisabled = true;
+            // setTimeout(() => {
+            //     isButtonDisabled = false;
+            // }, 2000);
         },
         createBookmark() {
 
@@ -358,9 +364,17 @@ export default {
                                 console.log(response);
 
                                 if (response.status == 200) {
-                                    alert(`${this.currentComic.name.replaceAll('+', ' ')} ajouté aux favoris `);
+                                    // alert(`${this.currentComic.name.replaceAll('+', ' ')} ajouté aux favoris `);
+                                    this.notify(`Comics ajouté aux favoris `)
+
                                     this.bookmark.isChecked = !this.bookmark.isChecked;
                                     this.changeDesignBookmark();
+
+                                    // On désactive le bouton pendant 2 secondes pour eviter les spams
+                                    this.isButtonDisabled = true;
+                                    setTimeout(() => {
+                                        this.isButtonDisabled = false;
+                                    }, 2000);
                                 }
 
                             })
@@ -403,9 +417,16 @@ export default {
                     console.log(response);
 
                     if (response.status == 200) {
-                        alert(`${this.currentComic.name.replaceAll('+', ' ')} retiré des favoris `);
+                        // alert(`${this.currentComic.name.replaceAll('+', ' ')} retiré des favoris `);
+                        this.notify(`Comics retiré des favoris `)
                         this.bookmark.isChecked = !this.bookmark.isChecked;
                         this.changeDesignBookmark();
+
+                        // On désactive le bouton pendant 2 secondes pour eviter les spams
+                        this.isButtonDisabled = true;
+                        setTimeout(() => {
+                            this.isButtonDisabled = false;
+                        }, 2000);
                     }
 
                 })
@@ -519,6 +540,14 @@ export default {
                     accountService.tokenExpired(error);
                     console.log(error);
                 });
+        },
+        notify(text) {
+            this.notifText = text;
+            this.copied = true;
+
+            setTimeout(() => {
+                this.copied = false;
+            }, 2000);
         }
     },
     async mounted() {
@@ -555,7 +584,6 @@ export default {
 
 
 <template>
-
     <div id="container">
         <div v-if="!navbar.isNavbarHidden" id="navbar">
             <Navbar />
@@ -590,13 +618,15 @@ export default {
                             <h1> Informations </h1>
 
                             <!-- BOOKMARK BUTTON -->
-                            <button title="Ajouter aux favoris" type="button" class="bookmark-btn"
-                                v-if="this.isConnected == 'true'" @click="handleBookmarked">
+                            <button :disabled="this.isButtonDisabled" title="Ajouter aux favoris" type="button"
+                                class="bookmark-btn" v-if="this.isConnected == 'true'" @click="handleBookmarked">
                                 <span class="material-symbols-outlined bookmark-span"> {{ bookmark.state }} </span>
                             </button>
 
                         </div>
                         <div class="rt">
+                            <NoteComics :comic="this.currentComic"
+                                v-if="isConnected == 'true' && isInLibrary == true || isAdmin === true" />
                             <h3> <b> {{ this.currentComicName }} </b> </h3>
                             <p>
                                 Collection :
@@ -619,6 +649,10 @@ export default {
                                     this.currentHouse.name
                                 }} </b>
                             </p>
+                            <p v-if="this.currentComic.note" class="note-star">
+                                Note : <b> {{ this.currentComic.note }} <span class="material-symbols-outlined"> star
+                                    </span> </b>
+                            </p>
                             <p class="creditPrice">
                                 Crédits : <b> {{ this.currentComic.credits }} </b>
                                 <span class="material-symbols-outlined"> monetization_on </span>
@@ -632,9 +666,6 @@ export default {
             </div>
 
         </div>
-
-        <NoteComics :comic="this.currentComic" />
-
         <h1> Bonne lecture 😀 </h1> <br>
 
         <!-- On affiche les images du comics -->
@@ -700,14 +731,48 @@ export default {
 
         <ScrollToTop />
 
+        <span v-if="copied == true" class="copyFeedback notif"> {{ notifText }} </span>
     </div>
-
-
-
 </template>
 
 
 <style scoped >
+.bookmark-btn:disabled {
+    cursor: not-allowed;
+    background: transparent;
+}
+
+.copyFeedback {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+
+    width: 300px;
+    height: 50px;
+
+    background-color: #333;
+    color: #fff;
+    border-radius: 0.3em;
+    border-left: 5px solid var(--main-color);
+
+    text-align: center;
+
+    padding-top: 15px;
+
+    animation: fadeOut 3s linear forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
 .creditPrice span {
     margin-left: 5px;
     transform: translateY(5px);
@@ -744,7 +809,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .redArrow span {
@@ -864,6 +929,10 @@ h2 {
     height: 100%;
 }
 
+.right {
+    margin-top: 100px;
+}
+
 .right h1 {
     display: flex;
     justify-content: flex-start;
@@ -896,6 +965,10 @@ h2 {
 #house-logo-dc {
     width: 50px;
     transform: translateY(10px);
+}
+
+.container {
+    position: relative;
 }
 
 .container-images-scroll img {
@@ -1037,5 +1110,16 @@ button:disabled:hover {
     bottom: 0;
     left: 0;
     width: 100%;
+}
+
+.note-star span {
+    transform: translateY(2px);
+    font-size: 26px;
+    color: #efbf00;
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
 }
 </style>
