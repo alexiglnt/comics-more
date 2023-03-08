@@ -5,6 +5,9 @@ import axios from 'axios';
 import instance from '../../../axios-infos';
 import { accountService } from '../../_services';
 
+import { htmlFacture } from '../../../smtp/htmlMailTemplate';
+import sendMail from '../../../smtp/smtp';
+
 export default {
     name: 'Payment',
     props: ['priceToPay'],
@@ -63,6 +66,32 @@ export default {
                             // const order_id = orderData.id;
                             // const payment_id = orderData.purchase_units[0].payments.captures[0].id;
 
+                            let date = new Date(orderData.purchase_units[0].payments.captures[0].create_time);
+                            let options = {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                                second: 'numeric',
+                                timeZone: 'Europe/Paris'
+                            };
+                            let dateLocale = date.toLocaleString('fr-FR', options);
+
+
+                            const paymentInfosOrder = {
+                                orderId: orderData.id,
+                                paymentId: orderData.purchase_units[0].payments.captures[0].id,
+                                payerId: orderData.payer.payer_id,
+                                mail: orderData.payer.email_address,
+                                name: orderData.payer.name.given_name + ' ' + orderData.payer.name.surname,
+                                nbCredits: localStorage.getItem('nbCredits'),
+                                price: transaction.amount.value,
+                                create_time: dateLocale,
+                            }
+
+                            sendMail(paymentInfosOrder.mail, 'Facture ComicsMore', htmlFacture(paymentInfosOrder));
+                            console.log('paymentInfosOrder', paymentInfosOrder);
 
                             axios.put(`${instance.baseURL}/api/users/${userId}`,
                                 {

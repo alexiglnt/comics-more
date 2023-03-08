@@ -161,7 +161,7 @@ export function htmlFacture(paymentInfosOrder) {
                                             </td>
 
                                             <td>
-                                                ID Ordre : ${paymentInfosOrder.orderId} <br />
+                                                ID Commande : ${paymentInfosOrder.orderId} <br />
                                                 ID Paiement : ${paymentInfosOrder.paymentId} <br />
                                                 ID Payeur : ${paymentInfosOrder.payerId} <br />
                                                 Date de création : ${paymentInfosOrder.create_time} <br />
@@ -194,29 +194,29 @@ export function htmlFacture(paymentInfosOrder) {
                             <tr class="heading">
                                 <td>Méthode de paiement</td>
 
-                                <td>Check #</td>
+                                <td></td>
                             </tr>
 
                             <tr class="details">
                                 <td>PayPal</td>
 
-                                <td> Oui </td>
+                                <td>  </td>
                             </tr>
 
                             <tr class="heading">
-                                <td>Prix crédit</td>
+                                <td>Prix d'un crédit</td>
 
-                                <td>Unité</td>
+                                <td></td>
                             </tr>
 
                             <tr class="details">
                                 <td>2 €</td>
 
-                                <td> Oui </td>
+                                <td> </td>
                             </tr>
 
                             <tr class="heading">
-                                <td>Item</td>
+                                <td>Article(s)</td>
 
                                 <td>Prix</td>
                             </tr>
