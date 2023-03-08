@@ -43,11 +43,11 @@
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: var(--main-color);
+        background-color: var(--secondary-color);
         border: none;
         border-radius: 50%;
         padding: 10px;
-        color: var(--bg-color);
+        color: var(--font-color);
         cursor: pointer;
         transition: all 0.3s ease-in-out;
     }

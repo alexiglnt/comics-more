@@ -214,6 +214,10 @@ export default {
 
 
 <style scoped >
+
+.stars {
+    background: var(--bg-color);
+}
 .note-comics {
     background-color: #f0f0f0;
     /* border: 1px solid #ddd; */
@@ -283,7 +287,7 @@ export default {
 }
 
 .blank-star {
-    color: #efbf00;
+    color: var(--secondary-color);
     font-variation-settings:
         'FILL' 1,
         'wght' 400,

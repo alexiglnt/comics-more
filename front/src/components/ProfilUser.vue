@@ -307,7 +307,7 @@ export default {
 .bloc {
     width: 400px;
     height: 300px;
-    background-color: var(--card-color);
+    background-color: var(--font-color);
     border-radius: 20px;
     box-shadow: 10px 10px 2px 1px var(--secondary-color);
     display: flex;
@@ -315,7 +315,7 @@ export default {
     align-items: center;
     font-size: 1.5em;
     font-family: var(--font-family);
-    color: var(--font-color);
+    color: var(--bg-color);
     font-family: var(--font);
     letter-spacing: 1px;
 
@@ -445,6 +445,7 @@ h1 span {
 
 .table-title {
     background: var(--main-color);
+    color: var(--bg-color);
     margin: 0;
     padding: 1px;
     position: relative;
@@ -468,7 +469,6 @@ h1 span {
 .edit-btn {
     background-color: var(--main-color);
     border: none;
-    color: #000;
     font-size: 1.2em;
     padding: 0.5em 1em;
     border-radius: 5px;
@@ -481,7 +481,7 @@ h1 span {
 }
 
 .edit-btn span {
-    color: var(--font-color);
+    color: var(--bg-color);
 }
 
 table {
@@ -606,7 +606,7 @@ td input:hover {
 #save-btn {
     background-color: var(--main-color);
     border: none;
-    color: var(--font-color);
+    color: var(--bg-color);
     font-size: 1.2em;
     padding: 0.5em 1em;
     border-radius: 5px;
@@ -624,6 +624,7 @@ td input:hover {
 #save-btn:disabled {
     background: #ccc;
     cursor: not-allowed;
+    color: var(--bg-color);
 }
 
 

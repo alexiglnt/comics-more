@@ -41,7 +41,7 @@ export default {
                     <img class="logo-house" src="../assets/panini-comics.png" alt="">
                     <img class="logo-house2" src="../assets/image-comics.png" alt="">
                 </div>
-                <h1 class="title"> D'AUTRES COLLECTIONS DE COMICS TOUTES AUSSI PASSIONANTES </h1>
+                <h1 class="title"> DES AUTRES COLLECTIONS DE COMICS TOUTES AUSSI PASSIONANTES </h1>
                 <p>
                     <span class="material-symbols-outlined"> format_quote </span> <br>
                     Sur cette page, vous pourrez découvrir les collections de comics d'autres maisons d'éditions, telles que
@@ -145,4 +145,6 @@ export default {
     font-size: 2.5em;
     margin-top: 50px;
     font-family: var(--secondary-font);
-}</style>
+    line-height: normal;
+}
+</style>

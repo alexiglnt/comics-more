@@ -73,7 +73,7 @@ export default {
                 <div class="anchor-pack">
                     <a class="nav-links"> Marvel </a>
                     <a class="nav-links"> DC Comics </a>
-                    <a class="nav-links"> Plus de comics </a>
+                    <a class="nav-links"> D'autres univers </a>
                 </div>
                 <div>
                     <a v-if="isConnected == 'true'" @click="() => redirect('BuyCredits')" class="coin" title="Vos crédits" >
@@ -82,17 +82,18 @@ export default {
                         </span>
                         {{ credits }}
                     </a>
-                    <a v-if="isConnected == 'false'" @click="() => redirect('Login')" class="btn">
+                    <!-- BUTTONS -->
+                    <a v-if="isConnected == 'false'" @click="() => redirect('Login')" class="btn navBtn">
                         <span class="material-symbols-outlined">
                             person
                         </span>
                     </a>
-                    <a v-else @click="() => redirect('Login')" class="btn">
+                    <a v-else @click="() => redirect('Login')" class="btn navBtn">
                         <span class="material-symbols-outlined">
                             settings_account_box
                         </span>
                     </a>
-                    <a v-if="isAdmin === true" @click="() => redirect('Admin')" class="btn">
+                    <a v-if="isAdmin === true" @click="() => redirect('Admin')" class="btn navBtn">
                         <span class="material-symbols-outlined">
                             admin_panel_settings
                         </span>
@@ -107,10 +108,19 @@ export default {
 
 <style scoped >
 
+span.material-symbols-outlined {
+    color: var(--font-color);
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 48
+}
+
 a.coin {
     text-decoration: none;
     cursor: pointer;
-    color: #333;
+    color: var(--font-color);
     font-size: 20px;
     margin-right: 20px;
 }
@@ -226,7 +236,7 @@ a span {
     max-height: 120px;
     box-shadow: 3px 3px 5px rgba(51, 51, 51, 0.418);
     background-color: #f1f1f1b6;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(3px);
 
     z-index: 1000;
 }

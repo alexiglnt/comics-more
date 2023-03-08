@@ -44,7 +44,7 @@ export default {
     align-items: center;
     background-color: var(--secondary-color);
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 0px;
 }
 
 .reassurance-item {

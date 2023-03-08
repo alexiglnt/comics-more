@@ -21,7 +21,7 @@ export default {
     <div class="footer-container">
       <div class="content">
         <div class="left">
-          <img src="../../assets/logo_contour.png" alt="">
+          <img src="../../assets/CM_contour.png" alt="">
           
         </div>
         <div class="middle">
@@ -48,8 +48,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--bg-color);
-  color: var(--font-color);
+  background-color: var(--main-color);
+  color: var(--bg-color);
   padding: 3em;
 
   margin-top: 200px;

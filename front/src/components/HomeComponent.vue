@@ -134,33 +134,23 @@ export default {
 </script>
 
 <template>
-    <Navbar />
-
     <!-- HOMEPAGE -->
-    <section id="homepage">
 
-        <div class="accueil">
-            <img src="../assets/wave.svg" class="fond-curvy" alt="">
-        </div>
-
-        <transition-group appear @before-enter="beforeEnter" @enter="enter">
-            <div class="presentation" :data-index="index" :key="1" >
-                <h1 class="bienvenue">BIENVENUE SUR</h1> <br>
-                <h1> Comics More </h1> <br>
-                <button type="button" class="btn" @click="() => ScrollTo('.slogan')">
-                    Choisissez votre comics !
-                </button> <br> <br>
-                <!-- <p v-if="isConnected == 'false'" > 10 crédits gratuits à votre première inscription ! </p> -->
-                <BandeDefilante v-if="isConnected == 'false'" text="10 crédits gratuits à votre première inscription !" />
+    <transition-group appear @before-enter="beforeEnter" @enter="enter">
+        <section class="bg-home" :data-index="index" :key="1" >
+            <Navbar />
+            <div class="home-container">
+                <h1> Comics More </h1>
+                <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Je choisis ma BD </button>
             </div>
-        </transition-group>
-    </section>
+        </section>
+    </transition-group>
 
 
 
     <!-- CAROUSEL -->
-    <div class="slogan" data-aos="fade-up" >
-        <h1> <span>&nbsp N</span>OS <span>&nbsp D</span>ERNIERS<span>&nbsp A</span>JOUTS @ </h1>
+    <div class="slogan" data-aos="fade-up">
+        <h1> <span>&nbsp N</span>OS <span>&nbsp D</span>ERNIERS<span>&nbsp A</span>JOUTS </h1>
         <!-- <h1> $ £ @ # % & </h1> -->
     </div>
     <div class="carousel-container" data-aos="flip-left">
@@ -171,12 +161,12 @@ export default {
     <div class="container">
 
         <div class="slogan" data-aos="fade-up">
-            <h1 > <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
+            <h1> <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
         </div>
 
 
         <!-- RESEARCH BAR -->
-        <form @submit.prevent="searchComics" >
+        <form @submit.prevent="searchComics">
             <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
             <button type="submit">
                 <span class="material-symbols-outlined"> search </span>
@@ -185,7 +175,7 @@ export default {
 
 
         <!-- COMICS -->
-        <div class="research-not-found" v-if="this.researchNotFound == true" >
+        <div class="research-not-found" v-if="this.researchNotFound == true">
             <h2> Aucun résultat trouvé 😔 </h2>
             <button type="button" class="btn" @click="resetResearch">
                 Réinitialiser la recherche
@@ -216,6 +206,65 @@ export default {
 
 
 <style scoped >
+.callAction {
+    animation-name: pulse;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bg-home {
+    background-image: url('../assets/HomeBackground2.png');
+    background-size: cover;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-bottom: 100px;
+}
+
+
+.bg-home h1 {
+    font-family: var(--font-full);
+    font-size: calc(6vw + 6vh);
+    color: var(--yellow);
+    text-align: center;
+    margin-top: 10%;
+    padding-bottom: 120px;
+    -webkit-text-stroke: 6px #000;
+    text-shadow: 0 0 20px #000;
+    margin: 0;
+}
+
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.home-container button {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
 #homepage {
     background-color: var(--background-color);
     height: 100vh;
@@ -284,7 +333,7 @@ export default {
     border-radius: 1em;
     border: 0px solid var(--font-color);
     background-color: var(--main-color);
-    color: var(--font-color);
+    color: var(--bg-color);
     font-size: 1.5em;
     outline: none;
     cursor: pointer;
@@ -327,12 +376,12 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 80px;
+    font-size: 60px;
     font-family: var(--secondary-font);
 }
 
 h1 span {
-    color: #3D91C0;
+    color: var(--secondary-color);
 }
 
 a {

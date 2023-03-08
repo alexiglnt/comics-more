@@ -96,7 +96,7 @@ export default {
 
 .band-connect h2 {
     font-size: 1.8em;
-    color: var(--font-color);
+    color: var(--bg-color);
     line-height: 30px;
     text-align: center;
 

@@ -6,6 +6,11 @@
 }
 
 @font-face {
+  font-family: "Dimitris";
+  src: url(../src/assets/font/DIMITRI_.TTF) format('truetype');
+}
+
+@font-face {
   font-family: "Wigglye";
   src: url(../src/assets/font/Wigglye.ttf) format('truetype');
 }
@@ -13,6 +18,16 @@
 @font-face {
   font-family: "Amazing Spider-Man";
   src: url(../src/assets/font/The\ Amazing\ Spider-Man.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Batman Forever";
+  src: url(../src/assets/font/batmfa__.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: "Batman Forever Outline";
+  src: url(../src/assets/font/batmfo__.ttf) format('truetype');
 }
 
 :root {
@@ -28,29 +43,31 @@
 
   color-scheme: light dark;
   color: #242424;
-  background-color: #f1f1f1;
+  background-color: #fff;
 
-  --main-color: #d54c45;
+  --main-color: #000;
   /* --main-color: #ffa800; */
   --main-color-hover: #eb9202;
   --main-color-transparent: #ffaa00b6;
+  --yellow: #fde500;
 
-  --bg-color: #f1f1f1;
+  --bg-color: #fff;
   --font-color: #242424;
   --card-color: #ffffff;
 
-  --secondary-color: #3D91C0;
-  --secondary-color-hover: #1e72a2;
+  --secondary-color: #fde500;
+  --secondary-color-hover: #cbb700;
   --secondary-color-transparent: #1e72a2ad;
 
   --marvel-color: #ed1d24;
   --dc-color: #0078f0;
 
   --transparent-color: rgba(0, 0, 0, 0.6);
-  --navbar-height: 100px;
+  --navbar-height: 85px;
 
   --font: 'Dimis', cursive;
-  --secondary-font: "Amazing Spider-Man";
+  --font-full: 'Dimitris', cursive;
+  --secondary-font: "Batman Forever", cursive;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -59,7 +76,11 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 .font {
   font-family: 'Solitreo', cursive;
@@ -100,7 +121,35 @@ select:hover {
   background-color: #0a5a7f;
 }
 
+
 .btn {
+  background-color: var(--secondary-color);
+  color: #000;
+  font-size: 20px;
+  border: none;
+  box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.8);
+  transition: 0.4s ease;
+  text-decoration: none;
+  text-align: center;
+  padding: 10px 25px;
+  align-items: center;
+}
+
+.btn:hover {
+  background-color: var(--secondary-color-hover);
+  box-shadow: 0px 0px 0px rgba(51, 51, 51, 0);
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:active {
+  box-shadow: 2px 2px 5px var(--font-color);
+}
+
+
+
+/* .btn {
   background-color: #3D91C0;
   border-radius: 5px;
   color: white;
@@ -125,7 +174,10 @@ select:hover {
 
 .btn:active {
   box-shadow: 2px 2px 5px var(--font-color);
-}
+} */
+
+
+
 
 /* a {
   font-weight: 500;
