@@ -9,6 +9,7 @@ import { accountService } from '../_services';
 import gsap from 'gsap';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // importer les styles CSS
+import 'animate.css'
 
 export default {
     components: { Navbar, Bookmarks },
@@ -211,7 +212,7 @@ export default {
                 </div>
             </div> -->
 
-    <div class="big-container">
+    <div class="big-container animate__animated animate__backInUp">
 
 
         <!-- Si l'utilisateurs est connecté on affiche ça -->

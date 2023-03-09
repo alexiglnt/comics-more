@@ -1018,7 +1018,7 @@ h2 {
 
 .band-connect h2 {
     font-size: 2em;
-    color: var(--font-color);
+    color: var(--bg-color);
     line-height: 40px;
     margin-inline: 50px;
 }

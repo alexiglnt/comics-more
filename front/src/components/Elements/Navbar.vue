@@ -1,4 +1,5 @@
 <script>
+import 'animate.css';
 
 export default {
     data() {
@@ -67,9 +68,9 @@ export default {
 
     <div class="big-container">
 
-        <div class="container">
+        <div class="container animate__animated animate__backInLeft">
             <nav id="nav-container">
-                <img id="imgCM" src="../../assets/logo.png" width="5%">
+                <img id="imgCM" src="../../assets/logo.png" width="5%" class="animate__animated animate__rubberBand animate__delay-1s">
                 <div class="anchor-pack">
                     <a class="nav-links"> Marvel </a>
                     <a class="nav-links"> DC Comics </a>

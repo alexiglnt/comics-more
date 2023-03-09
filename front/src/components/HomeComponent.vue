@@ -12,6 +12,7 @@ import instance from '../../axios-infos';
 import gsap from "gsap";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // importer les styles CSS de AOS
+import 'animate.css';
 
 export default {
     components: {
@@ -119,7 +120,7 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 0.3,
+                duration: 0.5,
                 delay: el.dataset.index * 0.2,
             });
         },
@@ -136,15 +137,15 @@ export default {
 <template>
     <!-- HOMEPAGE -->
 
-    <transition-group appear @before-enter="beforeEnter" @enter="enter">
-        <section class="bg-home" :data-index="index" :key="1" >
-            <Navbar />
-            <div class="home-container">
-                <h1> Comics More </h1>
+    <section class="bg-home" >
+        <Navbar />
+        <transition-group appear @before-enter="beforeEnter" @enter="enter">
+            <div class="home-container" :data-index="index" :key="1" >
+                <h1 class="animate__animated animate__backInDown" > Comics More </h1>
                 <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Je choisis ma BD </button>
             </div>
+        </transition-group>
         </section>
-    </transition-group>
 
 
 
@@ -161,7 +162,7 @@ export default {
     <div class="container">
 
         <div class="slogan" data-aos="fade-up">
-            <h1> <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbsp P</span>ROFITEZ ! </h1>
+            <h1> <span> C</span>HOISISSEZ, <span>&nbspL</span>ISEZ ET<span>&nbspP</span>ROFITEZ ! </h1>
         </div>
 
 
@@ -248,8 +249,8 @@ export default {
     text-align: center;
     margin-top: 10%;
     padding-bottom: 120px;
-    -webkit-text-stroke: 6px #000;
-    text-shadow: 0 0 20px #000;
+    -webkit-text-stroke: 10px #000;
+    text-shadow: 0 0 50px #000;
     margin: 0;
 }
 

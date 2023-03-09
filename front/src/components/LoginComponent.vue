@@ -6,6 +6,7 @@ import { accountService } from '../_services';
 import Navbar from './Elements/Navbar.vue';
 
 import gsap from 'gsap';
+import 'animate.css'
 
 export default {
     name: 'LoginComponent',
@@ -220,7 +221,7 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 0.3,
+                duration: 0.5,
                 delay: el.dataset.index * 0.2,
             });
         },
@@ -239,8 +240,7 @@ export default {
 
 
     <div class="center">
-        <transition-group appear @before-enter="beforeEnter" @enter="enter">
-            <div class="container" :data-index="index" :key="1" >
+            <div class="container animate__animated animate__backInUp" >
 
                 <h1> Connectez-vous ! </h1>
 
@@ -277,7 +277,6 @@ export default {
                 <p> Vous n'avez pas de compte ? <a href="/Registration"> Inscrivez-vous </a> </p>
 
             </div>
-        </transition-group>
     </div>
 </template>
 

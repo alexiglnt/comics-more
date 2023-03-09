@@ -11,6 +11,7 @@
   "dependencies": {
     "@splidejs/splide": "^4.1.4",
     "@splidejs/vue-splide": "^0.6.12",
+    "animate.css": "^4.1.1",
     "aos": "^2.3.4",
     "axios": "^1.2.1",
     "gsap": "^3.11.4",

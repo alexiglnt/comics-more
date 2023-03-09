@@ -5,6 +5,7 @@ import Collection from './Elements/Collection.vue';
 import gsap from 'gsap';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // importer les styles CSS
+import 'animate.css'
 
 export default {
     name: 'OthersComicsComponent',
@@ -18,7 +19,7 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 0.3,
+                duration: 0.5,
                 delay: el.dataset.index * 0.2,
             });
         },
@@ -38,55 +39,72 @@ export default {
         <div :data-index="index" :key="1">
             <div class="container">
                 <div class="logos">
-                    <img class="logo-house" src="../assets/panini-comics.png" alt="">
-                    <img class="logo-house2" src="../assets/image-comics.png" alt="">
+                    <img class="logo-house animate__animated animate__rubberBand animate__delay-1s"
+                        src="../assets/panini-comics.png" alt="">
+                    <img class="logo-house2 animate__animated animate__rubberBand animate__delay-1s"
+                        src="../assets/image-comics.png" alt="">
                 </div>
                 <h1 class="title"> DES AUTRES COLLECTIONS DE COMICS TOUTES AUSSI PASSIONANTES </h1>
-                <p>
-                    <span class="material-symbols-outlined"> format_quote </span> <br>
-                    Sur cette page, vous pourrez découvrir les collections de comics d'autres maisons d'éditions, telles que
-                    Panini
-                    Comics ou Image Comics. Bien que Marvel et DC Comics soient deux des plus grandes maisons d'éditions de
-                    comics,
-                    il existe de nombreuses autres maisons qui ont produit des œuvres fantastiques et populaires. Les comics
-                    de
-                    ces
-                    autres maisons d'éditions peuvent souvent être plus difficiles à trouver que les grands titres de Marvel
-                    et
-                    DC
-                    Comics, mais ils valent certainement la peine d'être recherchés pour leur qualité et leur originalité.
+                <details>
+                    <summary> Voir la description des autres maisons d'éditions </summary>
+                    <p>
+                        <span class="material-symbols-outlined"> format_quote </span> <br>
+                        Sur cette page, vous pourrez découvrir les collections de comics d'autres maisons d'éditions, telles
+                        que
+                        Panini
+                        Comics ou Image Comics. Bien que Marvel et DC Comics soient deux des plus grandes maisons d'éditions
+                        de
+                        comics,
+                        il existe de nombreuses autres maisons qui ont produit des œuvres fantastiques et populaires. Les
+                        comics
+                        de
+                        ces
+                        autres maisons d'éditions peuvent souvent être plus difficiles à trouver que les grands titres de
+                        Marvel
+                        et
+                        DC
+                        Comics, mais ils valent certainement la peine d'être recherchés pour leur qualité et leur
+                        originalité.
 
-                    Panini Comics, par exemple, est une maison d'édition italienne qui publie des comics en France depuis
-                    les
-                    années
-                    1990. Image Comics est une maison d'édition américaine fondée en 1992 par plusieurs artistes et
-                    scénaristes
-                    de comics,
-                    tels que Todd McFarlane, Jim Lee, Rob Liefeld et Erik Larsen. Leur objectif était de créer des comics
-                    qui
-                    étaient libres de l'influence des grandes maisons d'éditions, comme Marvel et DC Comics, et de donner
-                    aux
-                    artistes et scénaristes un plus grand contrôle créatif sur leurs œuvres. Image Comics a publié des
-                    séries
-                    populaires telles que Spawn, The Walking Dead et Saga, qui ont toutes été acclamées par la critique et
-                    ont
-                    remporté de nombreux prix.
+                        Panini Comics, par exemple, est une maison d'édition italienne qui publie des comics en France
+                        depuis
+                        les
+                        années
+                        1990. Image Comics est une maison d'édition américaine fondée en 1992 par plusieurs artistes et
+                        scénaristes
+                        de comics,
+                        tels que Todd McFarlane, Jim Lee, Rob Liefeld et Erik Larsen. Leur objectif était de créer des
+                        comics
+                        qui
+                        étaient libres de l'influence des grandes maisons d'éditions, comme Marvel et DC Comics, et de
+                        donner
+                        aux
+                        artistes et scénaristes un plus grand contrôle créatif sur leurs œuvres. Image Comics a publié des
+                        séries
+                        populaires telles que Spawn, The Walking Dead et Saga, qui ont toutes été acclamées par la critique
+                        et
+                        ont
+                        remporté de nombreux prix.
 
-                    D'autres maisons d'éditions de comics notables incluent Dark Horse Comics, Boom! Studios, IDW Publishing
-                    et
-                    Valiant Comics, qui ont toutes publié des séries acclamées par la critique et qui ont de nombreux fans
-                    dévoués.
-                    En explorant les comics de ces maisons d'éditions, vous découvrirez des histoires captivantes et des
-                    personnages
-                    passionnants qui sont tout aussi intéressants que ceux de Marvel et DC Comics. Alors, n'hésitez pas à
-                    explorer
-                    cette page pour découvrir les merveilles que ces maisons d'éditions ont à offrir. <br>
-                    <span class="material-symbols-outlined second"> format_quote </span> <br>
-                </p>
+                        D'autres maisons d'éditions de comics notables incluent Dark Horse Comics, Boom! Studios, IDW
+                        Publishing
+                        et
+                        Valiant Comics, qui ont toutes publié des séries acclamées par la critique et qui ont de nombreux
+                        fans
+                        dévoués.
+                        En explorant les comics de ces maisons d'éditions, vous découvrirez des histoires captivantes et des
+                        personnages
+                        passionnants qui sont tout aussi intéressants que ceux de Marvel et DC Comics. Alors, n'hésitez pas
+                        à
+                        explorer
+                        cette page pour découvrir les merveilles que ces maisons d'éditions ont à offrir. <br>
+                        <span class="material-symbols-outlined second"> format_quote </span> <br>
+                    </p>
+                </details>
             </div>
 
 
-            <div class="collections-container" data-aos="fade-up" >
+            <div class="collections-container" data-aos="fade-up">
                 <Collection name="The Boys" />
                 <Collection name="Invincible" />
             </div>
@@ -105,7 +123,7 @@ export default {
 .container p {
     width: 70%;
     text-align: justify;
-    margin: 50px auto;
+    margin: 0px auto;
     line-height: 2em;
     font-style: italic;
 }
@@ -146,5 +164,4 @@ export default {
     margin-top: 50px;
     font-family: var(--secondary-font);
     line-height: normal;
-}
-</style>
+}</style>

@@ -4,6 +4,7 @@ import instance from '../../axios-infos';
 import Navbar from './Elements/Navbar.vue';
 
 import gsap from 'gsap';
+import 'animate.css'
 
 // Import des fonctions d'envoi d'email et du template HTML de l'email de bienvenue
 import sendEmail from '../../smtp/smtp';
@@ -96,21 +97,6 @@ export default {
                     });
             }
         },
-        test() {
-
-            const infosPayment = {
-                name: 'Alexi GALLONET',
-                mail: 'alexigallonet@gmail.com',
-                price: 20,
-                nbCredits: 10,
-                orderId: 'ORDERID-123456789',
-                paymentId: 'PAYID-L6XJYQY5YR123456789',
-                create_time: '2021-05-20T15:00:00Z',
-                payerId: 'PAYERID-123456789'
-            }
-
-            sendEmail('alexigallonet@gmail.com', 'Facture TEST', htmlFacture(infosPayment));
-        },
         beforeEnter(el) {
             el.style.opacity = 0;
             el.style.transform = "translateY(-80px)";
@@ -119,7 +105,7 @@ export default {
             gsap.to(el, {
                 opacity: 1,
                 y: 0,
-                duration: 0.3,
+                duration: 0.5,
                 delay: el.dataset.index * 0.2,
             });
         }
@@ -137,10 +123,8 @@ export default {
 
     <div class="center">
 
-        <button type="button" @click="test" > MAIL </button>
-
-        <transition-group appear @before-enter="beforeEnter" @enter="enter">
-            <div class="container" :data-index="index" :key="1">
+        
+            <div class="container animate__animated animate__backInUp">
 
                 <form @submit="Register">
                     <div class="name">
@@ -191,7 +175,6 @@ export default {
                 <p> Vous avez deja un compte ? <a href="/Login"> Connectez-vous </a> </p>
 
             </div>
-        </transition-group>
     </div>
 </template>
 
