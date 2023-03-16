@@ -439,27 +439,29 @@ export default {
                 });
         },
         verifyIfComicIsInLibrary() {
-            let cpt = 0;
-            let library = JSON.parse(localStorage.getItem('userLibrary'));
+            
+            if (localStorage.getItem('userLibrary')) {
+                let cpt = 0;
+                let library = JSON.parse(localStorage.getItem('userLibrary'));
+                let str = library.comicsUserHas;
 
-            let str = library.comicsUserHas;
+                // transform str in array after removing the first and last character
+                // let tabLib = str.substring(1, str.length - 1).split(',');
+                // this.tabLibrary = tabLib;
 
-            // transform str in array after removing the first and last character
-            // let tabLib = str.substring(1, str.length - 1).split(',');
-            // this.tabLibrary = tabLib;
+                let tabLib = str.split(',');
+                this.tabLibrary = tabLib;
 
-            let tabLib = str.split(',');
-            this.tabLibrary = tabLib;
+                // On vérifie si le comic est déjà dans la librairie
+                tabLib.forEach((comic) => {
+                    if (comic == this.$route.params.id) {
+                        cpt++;
+                    }
+                });
 
-            // On vérifie si le comic est déjà dans la librairie
-            tabLib.forEach((comic) => {
-                if (comic == this.$route.params.id) {
-                    cpt++;
+                if (cpt > 0) {
+                    this.isInLibrary = true;
                 }
-            });
-
-            if (cpt > 0) {
-                this.isInLibrary = true;
             }
         },
         spendCredits() {
@@ -733,9 +735,10 @@ export default {
 
 
         <!-- SECTION COMMENTAIRES -->
-        <section id="comment-section" >
+        <section id="comment-section">
             <h1> Section commentaires </h1>
             <AddComment v-if="isConnected == 'true' && isInLibrary == true || isAdmin === true" />
+
 
             <CommentList :comic="this.currentComic" />
         </section>
@@ -749,7 +752,6 @@ export default {
 
 
 <style scoped >
-
 #comment-section {
     margin-top: 100px;
 }

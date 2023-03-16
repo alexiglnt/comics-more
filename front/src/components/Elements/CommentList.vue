@@ -42,15 +42,19 @@ export default {
         this.getComments();
 
         this.isConnected = localStorage.getItem('isConnected');
-        this.library = JSON.parse(localStorage.getItem('userLibrary')).comicsUserHas;
 
-        this.library = this.library.split(',');
 
-        this.library.forEach(comic => {
-            if (comic == this.comic.id) {
-                this.isInLibrary = true;
-            }
-        })
+        if (localStorage.getItem('userLibrary')) {
+            this.library = JSON.parse(localStorage.getItem('userLibrary')).comicsUserHas;
+
+            this.library = this.library.split(',');
+
+            this.library.forEach(comic => {
+                if (comic == this.comic.id) {
+                    this.isInLibrary = true;
+                }
+            })
+        }
 
         console.log(this.library);
     }
@@ -62,7 +66,7 @@ export default {
 <template>
     <div>
         <h2 v-if="comments.length !== 0"> Ce que les utilisateurs ont pensés de ce comics ! </h2>
-        <div v-else-if="comments.length === 0 && this.isInLibrary == false" class="arrow-container" >
+        <div v-else-if="comments.length === 0 && this.isInLibrary == true" class="arrow-container">
             <h2>
                 Soyez le premier à ajouter un commentaire !
             </h2>
@@ -70,7 +74,7 @@ export default {
                 <span class="material-symbols-outlined "> north </span>
             </p>
         </div>
-        <div v-else >
+        <div v-else>
             <h2> Il n'y a aucun commentaires pour le moment </h2>
         </div>
         <div v-for="comment in comments" :key="comment.id">
@@ -96,6 +100,7 @@ div {
 
 h2 {
     font-weight: 200;
+    font-family: var(--secondary-font);
 }
 
 span {
