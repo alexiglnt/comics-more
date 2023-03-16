@@ -269,6 +269,7 @@ form button {
 
 form button span {
     font-size: 1.5em;
+    color: var(--bg-color);
 }
 
 form button:hover {

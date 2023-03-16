@@ -139,12 +139,10 @@ export default {
 
     <section class="bg-home" >
         <Navbar />
-        <transition-group appear @before-enter="beforeEnter" @enter="enter">
-            <div class="home-container" :data-index="index" :key="1" >
+            <div class="home-container" >
                 <h1 class="animate__animated animate__backInDown" > Comics More </h1>
-                <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Je choisis ma BD </button>
+                <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Choisissez votre BD </button>
             </div>
-        </transition-group>
         </section>
 
 

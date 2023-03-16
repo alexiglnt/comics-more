@@ -10,6 +10,8 @@ import OtherComics from './OtherComics.vue';
 import MentionsLegales from './FooterLinks/MentionsLegales.vue';
 import PolitiqueConfidentialite from './FooterLinks/PolitiqueConfidentialite.vue';
 import ConditionUtilisations from './FooterLinks/ConditionUtilisations.vue';
+import NousContacter from './FooterLinks/NousContacter.vue';
+import PlanSite from './FooterLinks/PlanSite.vue';
 import BuyCredits from './BuyCredits.vue';
 import BuyCreditsPayment from './BuyCreditsPayment.vue';
 import Bookmarks from './Bookmarks.vue';
@@ -29,6 +31,8 @@ export {
     MentionsLegales,
     PolitiqueConfidentialite,
     ConditionUtilisations,
+    NousContacter,
+    PlanSite,
     BuyCredits,
     BuyCreditsPayment,
     Bookmarks,

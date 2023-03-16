@@ -29,8 +29,8 @@ export default {
             <li @click="() => redirect('MentionsLegales')" > Mentions légales </li>
             <li @click="() => redirect('PolitiqueConfidentialite')" > Politique de confidentialité </li>
             <li @click="() => redirect('ConditionsGeneralesUtilisations')" > Conditions générales d'utilisation </li>
-            <li @click="() => redirect('Home')" > Nous contacter </li>
-            <li @click="() => redirect('Home')" > Plan du site </li>
+            <li @click="() => redirect('ContactUs')" > Nous contacter </li>
+            <li @click="() => redirect('PlanSite')" > Plan du site </li>
           </ul>
         </div>
         <div class="right">

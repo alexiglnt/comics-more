@@ -7,11 +7,13 @@ import axios from 'axios';
 import { accountService } from '../_services';
 
 import NoteComics from './Elements/NoteComics.vue';
+import CommentList from './Elements/CommentList.vue';
+import AddComment from './Elements/AddComment.vue';
 
 export default {
     name: 'Home',
     components: {
-        ScrollToTop, Navbar, NoteComics
+        ScrollToTop, Navbar, NoteComics, CommentList, AddComment
     },
     props: {
         id: Number
@@ -24,7 +26,7 @@ export default {
             comic: [],                  // les infos du comics
             currentHouse: [],        // les infos de la maison d'édition
             linkImages: [],
-            readMode: 'scroll',         // mode de lecture (scroll ou onePage)
+            readMode: 'onePage',         // mode de lecture (scroll ou onePage)
             currentPage: 1,             // page courante
             linkCurrentPage: '',
             optionPageValue: 1,
@@ -666,6 +668,7 @@ export default {
             </div>
 
         </div>
+
         <h1> Bonne lecture 😀 </h1> <br>
 
         <!-- On affiche les images du comics -->
@@ -729,6 +732,15 @@ export default {
         </button>
 
 
+        <!-- SECTION COMMENTAIRES -->
+        <section id="comment-section" >
+            <h1> Section commentaires </h1>
+            <AddComment v-if="isConnected == 'true' && isInLibrary == true || isAdmin === true" />
+
+            <CommentList :comic="this.currentComic" />
+        </section>
+
+
         <ScrollToTop />
 
         <span v-if="copied == true" class="copyFeedback notif"> {{ notifText }} </span>
@@ -737,6 +749,16 @@ export default {
 
 
 <style scoped >
+
+#comment-section {
+    margin-top: 100px;
+}
+
+
+h1 {
+    font-family: var(--secondary-font);
+}
+
 .bookmark-btn:disabled {
     cursor: not-allowed;
     background: transparent;

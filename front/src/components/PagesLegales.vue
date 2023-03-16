@@ -22,7 +22,8 @@ export default {
 
 h1 {
     text-align: center;
-    font-size: 60px;
+    font-size: 50px;
+    line-height: 50px;
     font-weight: bold;
     margin-bottom: 50px;
     font-family: var(--secondary-font);

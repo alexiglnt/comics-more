@@ -66,3 +66,4 @@ security:
         - { path: ^/api/bookmarks, roles: PUBLIC_ACCESS,  methods: [POST] }
         - { path: ^/api/credits, roles: IS_AUTHENTICATED_FULLY,  methods: [GET] }
         - { path: ^/api/library, roles: IS_AUTHENTICATED_FULLY,  methods: [GET, POST, PUT] }
+        - { path: ^/api/comment, roles: PUBLIC_ACCESS,  methods: [GET, POST, PUT] }
