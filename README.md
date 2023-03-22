@@ -1,3 +1,13 @@
+<p align="center">
+   <br/>
+   <a href="https://next-auth.js.org" target="_blank"><img width="250px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
+   <h3 align="center">Comics More</h3>
+   <p align="center">
+    Site e-commerce de lecture de comics en ligne
+   </p>
+
+
+
 # Comics More
 
 Comics More est un site en ligne dédié à la lecture de comics, tels que **MARVEL** et **DC Comics**. Le site utilise un système de **crédits** pour l'achat de ces bandes dessinées, chaque comics étant évalué en fonction de son nombre de pages. Les utilisateurs reçoivent 10 crédits gratuits lors de leur inscription. Ils ont le choix entre deux **modes de paiement** pour acheter des crédits : par **carte bancaire** ou via un **compte PayPal**. Une fois les crédits achetés, les utilisateurs peuvent retrouver leurs comics dans leur **bibliothèque personnelle**. Ils peuvent effectuer des recherches de comics en utilisant la barre de recherche ou en explorant les différentes collections de personnages. Par exemple, la collection Spider-Man regroupe tous les comics liés à ce personnage, qui est publié sous la maison d'édition Marvel. Les utilisateurs peuvent également ajouter des comics à leurs favoris.
