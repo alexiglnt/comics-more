@@ -6,7 +6,7 @@
     Site e-commerce de lecture de comics en ligne
    </p>
 
-
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/home.png?raw=true)
 
 # Comics More
 
