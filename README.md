@@ -1,12 +1,17 @@
 <p align="center">
    <br/>
-   <a href="https://next-auth.js.org" target="_blank"><img width="250px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
+   <a href="https://next-auth.js.org" target="_blank"><img width="200px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
    <h3 align="center">Comics More</h3>
    <p align="center">
     Site e-commerce de lecture de comics en ligne
    </p>
 
 ![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/home.png?raw=true)
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/carroussel.png?raw=true)
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/comics.png?raw=true)
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/paypal.png?raw=true)
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/account.png?raw=true)
+![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/dc.png?raw=true)
 
 # Comics More
 
