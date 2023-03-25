@@ -67,6 +67,16 @@ const routes = [
 
 
 
+// // On bloque le clic droit
+// document.addEventListener('contextmenu', event => event.preventDefault());
+
+// // On bloque le clic sur f12
+// document.addEventListener('keydown', event => {
+//     if (event.key === 'F12') {
+//         event.preventDefault();
+//     }
+// });
+
 
 
 

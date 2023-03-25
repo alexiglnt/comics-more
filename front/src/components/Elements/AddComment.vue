@@ -24,8 +24,9 @@ export default {
                 .then(response => {
                     console.log(response);
                     if (response.status === 201) {
-                        alert('Commentaire ajouté ! Il sera visible dans quelques instants.')
+                        // alert('Commentaire ajouté ! Il sera visible dans quelques instants.')
                         this.comment = '';
+                        window.location.reload();
                     }
                 })
                 .catch(error => {

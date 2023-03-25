@@ -5,15 +5,12 @@ import Card from './Elements/Card.vue';
 import Footer from './Elements/Footer.vue';
 import Carousel from './Elements/Carousel.vue';
 import BandeDefilante from './Elements/BandeDefilante.vue';
-
 import axios from 'axios';
 import instance from '../../axios-infos';
-
 import gsap from "gsap";
 import AOS from 'aos';
 import 'aos/dist/aos.css'; // importer les styles CSS de AOS
 import 'animate.css';
-
 export default {
     components: {
         Navbar, ScrollToUpBtn, Card, Footer, Carousel, BandeDefilante
@@ -44,26 +41,20 @@ export default {
             element.scrollIntoView({ behavior: 'smooth' });
         },
         recupComics() {
-
             const URL = `${instance.baseURL}/api/comics`;
-
             axios.get(URL)
                 .then((response) => {
                     this.comics = response.data['hydra:member'];
                     console.log(this.comics);
-
                     // convert name
                     this.comics.forEach(comic => {
                         comic.name = this.convertName(comic.name, '+', ' ');
                     });
-
                     this.recupLastComics(9);
-
                 })
                 .catch((error) => {
                     console.log(error);
                 });
-
         },
         convertName(str, pattern, replacement) {
             str = str.replaceAll(pattern, replacement);
@@ -75,11 +66,9 @@ export default {
             // search comics by research
             this.comics.forEach(comic => {
                 if (comic.name.toLowerCase().includes(this.research.toLowerCase())) {
-
                     this.comicsByResearch.push(comic);
                 }
             });
-
             if (this.comicsByResearch.length == 0) {
                 this.researchNotFound = true;
                 document.querySelector('.grid-container').style.display = 'none';
@@ -92,29 +81,41 @@ export default {
             document.querySelector('.grid-container').style.display = 'grid';
         },
         recupLastComics(n) {
-
             // En dessous de 9, le carousel s'affiche mal
             if (n < 9) {
                 n = 9;
             }
-
             // On recupere les n derniers comics
             let negatif = -n;
             for (let i = 0; i < n; i++) {
-
                 this.lastComics.push(this.comics.at(negatif));
                 negatif++;
             }
-
             // inverser l'ordre du tableau
             this.lastComics.reverse();
-
             console.log('les n derniers', this.lastComics);
-
         },
         beforeEnter(el) {
             el.style.opacity = 0;
             el.style.transform = "translateY(-80px)";
+        },
+        showSuggestions() {
+            const searchInput = document.getElementById('searchInput');
+            const input = searchInput.value;
+            const result = this.comics.filter(item => item.name.toLowerCase().includes(input.toLowerCase()));
+            let suggestion = '';
+            const inputSizeToBegin = 0;
+            let nbSuggestions = result.length > 4 ? 5 : result.length;
+            if (input.length > inputSizeToBegin) {
+                for (let i = 0; i < nbSuggestions; i++) {
+                    suggestion += `<a class="suggestion" href="/Comics/${result[i].id}"><p id="suggestion-item">${result[i].name}</p></a>`;
+                    console.log(result);
+                }
+                document.getElementById('suggestions').innerHTML = suggestion;
+            }
+            else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
         },
         enter(el) {
             gsap.to(el, {
@@ -127,23 +128,21 @@ export default {
     },
     async mounted() {
         await this.recupComics();
-
         AOS.init();
     }
 }
-
 </script>
 
 <template>
     <!-- HOMEPAGE -->
 
-    <section class="bg-home" >
+    <section class="bg-home">
         <Navbar />
-            <div class="home-container" >
-                <h1 class="animate__animated animate__backInDown" > Comics More </h1>
-                <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Choisissez votre BD </button>
-            </div>
-        </section>
+        <div class="home-container">
+            <h1 class="animate__animated animate__backInDown"> Comics More </h1>
+            <button type="button" class="btn callAction" @click="() => ScrollTo('.slogan')"> Choisissez votre BD </button>
+        </div>
+    </section>
 
 
 
@@ -165,11 +164,14 @@ export default {
 
 
         <!-- RESEARCH BAR -->
-        <form @submit.prevent="searchComics">
-            <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
-            <button type="submit">
-                <span class="material-symbols-outlined"> search </span>
-            </button>
+        <form @submit.prevent="searchComics" @keyup=showSuggestions>
+            <div class="box-searchBar">
+                <input id="searchInput" type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
+                <button type="submit">
+                    <span class="material-symbols-outlined"> search </span>
+                </button>
+                <div id="suggestions"></div>
+            </div>
         </form>
 
 
@@ -235,10 +237,8 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
     margin-bottom: 100px;
 }
-
 
 .bg-home h1 {
     font-family: var(--font-full);
@@ -311,7 +311,7 @@ export default {
 }
 
 .container form input {
-    width: 50%;
+    width: 800px;
     height: 50px;
     border-radius: 10px;
     border: 3px solid var(--font-color);
@@ -340,6 +340,7 @@ export default {
     position: absolute;
     right: 300px;
     transition: 0.3s ease;
+    transform: translateY(-6px);
 }
 
 .container form button span {
@@ -347,7 +348,7 @@ export default {
 }
 
 .container form button:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) translateY(-6px);
     transition: 0.3s ease;
 }
 
@@ -405,9 +406,7 @@ a {
     font-size: 1.5em;
     text-align: center;
     margin-bottom: 0px;
-
     width: 200px;
-
     transition: all 0.3s ease-in-out;
 }
 
@@ -420,7 +419,6 @@ a {
     width: 200px;
 }
 
-
 .fond-curvy {
     width: 100%;
     position: absolute;
@@ -428,7 +426,6 @@ a {
     bottom: 20%;
     display: block;
     z-index: -1;
-
     user-select: none;
     /* désactivé la surbrillance de texte sélectionné */
 }
@@ -452,8 +449,6 @@ a {
     margin-bottom: 10px;
 }
 
-
-
 .presentation a span {
     transform: translateY(5px);
 }
@@ -472,4 +467,13 @@ a {
     align-items: center;
     flex-direction: column;
 }
+
+form a {
+    color: var(--font-color);
+    font-size: 1.5em;
+    margin-top: 20px;
+    text-decoration: none;
+}
+
+
 </style>

@@ -24,7 +24,9 @@ export default {
     },
     mounted() {
         // Logo redirection to home
-        document.getElementById("imgCM").addEventListener("click", () => this.redirect('Home'));
+        document.getElementById("imgCM").addEventListener("click", () => {
+            this.redirect('Home')
+        });
 
 
         // Navbar links redirection
@@ -65,19 +67,21 @@ export default {
 </script>
 
 <template>
-
     <div class="big-container">
 
         <div class="container animate__animated animate__backInLeft">
             <nav id="nav-container">
-                <img id="imgCM" src="../../assets/logo.png" width="5%" class="animate__animated animate__rubberBand animate__delay-1s">
+                <span id="imgCM">
+                    <img src="../../assets/logo.png" width="5%"
+                    class="animate__animated animate__rubberBand animate__delay-1s">
+                </span>
                 <div class="anchor-pack">
                     <a class="nav-links"> Marvel </a>
                     <a class="nav-links"> DC Comics </a>
                     <a class="nav-links"> D'autres univers </a>
                 </div>
                 <div>
-                    <a v-if="isConnected == 'true'" @click="() => redirect('BuyCredits')" class="coin" title="Vos crédits" >
+                    <a v-if="isConnected == 'true'" @click="() => redirect('BuyCredits')" class="coin" title="Vos crédits">
                         <span class="material-symbols-outlined">
                             monetization_on
                         </span>
@@ -104,11 +108,9 @@ export default {
         </div>
 
     </div>
-
 </template>
 
 <style scoped >
-
 span.material-symbols-outlined {
     color: var(--font-color);
     font-variation-settings:
@@ -129,7 +131,7 @@ a.coin {
 a.coin>span.material-symbols-outlined {
     color: var(--main-color);
     transform: translateY(10px);
-    transition: 0.5s ease ;
+    transition: 0.5s ease;
     font-variation-settings:
         'FILL' 1,
         'wght' 300,
@@ -139,8 +141,9 @@ a.coin>span.material-symbols-outlined {
 
 a.coin>span.material-symbols-outlined:hover {
     color: var(--font-color);
-    transition: 0.5s ease ;
+    transition: 0.5s ease;
 }
+
 .anchor-pack a {
     text-decoration: none;
     position: relative;
@@ -281,5 +284,14 @@ a#btn-contact:hover {
     cursor: pointer;
     color: white;
     transition: 0.2s ease;
+}
+
+#imgCM {
+    cursor: pointer;
+    width: 100px;
+}
+
+#imgCM img {
+    width: 90%;
 }
 </style>

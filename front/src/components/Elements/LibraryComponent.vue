@@ -97,6 +97,24 @@ export default {
             this.researchNotFound = false;
             document.querySelector('.grid-container').style.display = 'grid';
         },
+        showSuggestions() {
+            const searchInput = document.getElementById('searchInput');
+            const input = searchInput.value;
+            const result = this.comics.filter(item => item.name.toLowerCase().includes(input.toLowerCase()));
+            let suggestion = '';
+            const inputSizeToBegin = 0;
+            let nbSuggestions = result.length > 4 ? 5 : result.length;
+            if (input.length > inputSizeToBegin) {
+                for (let i = 0; i < nbSuggestions; i++) {
+                    suggestion += `<a class="suggestion" href="/Comics/${result[i].id}"><p id="suggestion-item">${result[i].name}</p></a>`;
+                    console.log(result);
+                }
+                document.getElementById('suggestions').innerHTML = suggestion;
+            }
+            else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        },
     },
     async mounted() {
         console.log(this.isAdmin);
@@ -120,12 +138,15 @@ export default {
         <h1> VOTRE BIBLIOTHEQUE </h1> <br> <br>
 
         <!-- RESEARCH BAR -->
-        <div class="form" >
-            <form @submit.prevent="searchComics">
-                <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
-                <button type="submit">
-                    <span class="material-symbols-outlined"> search </span>
-                </button>
+        <div class="form">
+            <form @submit.prevent="searchComics" @keyup=showSuggestions>
+                <div class="box-searchBar">
+                    <input id="searchInput" type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
+                    <button type="submit">
+                        <span class="material-symbols-outlined"> search </span>
+                    </button>
+                    <div id="suggestions"></div>
+                </div>
             </form>
         </div>
 
@@ -210,16 +231,22 @@ h2 {
     letter-spacing: 2px;
 }
 
+.research-not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-right: 100px;
 }
 
 form {
-    width: 1400px;
+    width: 1500px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,15 +255,8 @@ form {
     position: relative;
 }
 
-.research-not-found {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
 form input {
-    width: 50%;
+    width: 800px;
     height: 50px;
     border-radius: 10px;
     border: 3px solid var(--font-color);
@@ -257,7 +277,7 @@ form button {
     border-radius: 1em;
     border: 0px solid var(--font-color);
     background-color: var(--main-color);
-    color: var(--font-color);
+    color: var(--bg-color);
     font-size: 1.5em;
     outline: none;
     cursor: pointer;
@@ -265,15 +285,15 @@ form button {
     position: absolute;
     right: 300px;
     transition: 0.3s ease;
+    transform: translateY(-6px);
 }
 
 form button span {
     font-size: 1.5em;
-    color: var(--bg-color);
 }
 
 form button:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) translateY(-6px);
     transition: 0.3s ease;
 }
 </style>
