@@ -7,9 +7,9 @@ import axios from 'axios';
 // });
 
 const instance = {
-	baseURL: 'https://127.0.0.1:8000',
+	baseURL: 'https://localhost:8000',
     AWS_URL: 'https://comicsmore.s3.eu-west-3.amazonaws.com',
-    frontURL: 'http://127.0.0.1:5173'
+    frontURL: 'http://localhost:5173'
 };
 
 // const instance = 'https://127.0.0.1:8000';

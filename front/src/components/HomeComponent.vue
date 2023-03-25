@@ -116,6 +116,27 @@ export default {
             el.style.opacity = 0;
             el.style.transform = "translateY(-80px)";
         },
+        showSuggestions(){
+            const searchInput = document.getElementById('searchInput');
+            const input = searchInput.value;
+            const result = this.comics.filter(item => item.name.toLowerCase().includes(input.toLowerCase()));
+
+            let suggestion = '';
+            const inputSizeToBegin = 2;
+            let nbSuggestions = result.length > 4 ? 5 : result.length;
+
+            if(input.length > inputSizeToBegin){
+                for(let i = 0 ; i < nbSuggestions ; i++){
+                    suggestion += `<a class="suggestion" href="/Comics/${result[i].id}"><div id="suggestions">${result[i].name}</div></a>`;
+                    console.log(result);
+                }
+                document.getElementById('suggestions').innerHTML = suggestion;
+            }
+            else{
+                document.getElementById('suggestions').innerHTML = '';
+            }           
+},
+
         enter(el) {
             gsap.to(el, {
                 opacity: 1,
@@ -165,11 +186,14 @@ export default {
 
 
         <!-- RESEARCH BAR -->
-        <form @submit.prevent="searchComics">
-            <input type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
-            <button type="submit">
-                <span class="material-symbols-outlined"> search </span>
-            </button>
+        <form @submit.prevent="searchComics" @keyup=showSuggestions>
+            <div class="box-searchBar">
+                <input id="searchInput" type="text" placeholder="Vous cherchez quelque chose ?" v-model="this.research">
+                <button type="submit">
+                    <span class="material-symbols-outlined"> search </span>
+                </button>
+                <div id="suggestions"></div>
+            </div>
         </form>
 
 
@@ -311,7 +335,7 @@ export default {
 }
 
 .container form input {
-    width: 50%;
+    width: 800px;
     height: 50px;
     border-radius: 10px;
     border: 3px solid var(--font-color);
@@ -471,5 +495,16 @@ a {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+
+/* Cassé wtf */
+a.suggestion {
+  color: inherit;
+  text-decoration: none;
+}
+a.suggestion:hover {
+  background-color: #e0e0e0;
+  color: black;
 }
 </style>
