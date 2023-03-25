@@ -1,6 +1,6 @@
 <p align="center">
-   <br/>
    <a href="https://next-auth.js.org" target="_blank"><img width="200px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
+   <br/>
    <h3 align="center">Comics More</h3>
    <p align="center">
     Site e-commerce de lecture de comics en ligne
