@@ -96,10 +96,9 @@ select {
   padding: 10px;
   margin: 10px;
   text-align: center;
-  border-radius: 0.3em;
   font-size: inherit;
   color: var(--bg-color);
-  background-color: #094466;
+  background-color: #333;
   border: none;
   outline: none;
 }
@@ -118,7 +117,7 @@ option {
 }
 
 select:hover {
-  background-color: #0a5a7f;
+  background-color: #333;
 }
 
 

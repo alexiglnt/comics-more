@@ -1,6 +1,6 @@
 <p align="center">
-   <a href="https://next-auth.js.org" target="_blank"><img width="200px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
    <br/>
+   <a href="https://next-auth.js.org" target="_blank"><img width="200px" src="https://comicsmore.s3.eu-west-3.amazonaws.com/logo.png" /></a>
    <h3 align="center">Comics More</h3>
    <p align="center">
     Site e-commerce de lecture de comics en ligne
@@ -12,6 +12,14 @@
 ![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/paypal.png?raw=true)
 ![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/account.png?raw=true)
 ![alt text](https://github.com/alexiglnt/comics-more/blob/main/front/src/assets/img_readme/dc.png?raw=true)
+
+# Pour le jury
+
+Pour tester le site, vous pouvez vous créer un compte utilisateur ou utiliser les identifiants d'un compte administrateur :
+email : jackbiboustone@gmail.com
+Mdp : password
+
+Un administrateur dispose de tout les comics gratuitement et peut naviguer sur tout le site sans utiliser de crédits. Toutn les comics sont stockés dans sa bibibliothèque personnelle.
 
 # Comics More
 
